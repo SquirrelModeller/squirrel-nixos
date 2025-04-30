@@ -1,0 +1,38 @@
+(defpoll clock_time :interval "60s" "date '+\%H:\%M'")
+(defpoll clock_date :interval "1h" "date '+%b %d, %Y'")
+(defvar time_rev false)
+
+(defwidget clock_module []
+  (eventbox
+    :onhover "${EWW_CMD} update time_rev=true"
+    :onhoverlost "${EWW_CMD} update time_rev=false"
+    (box :class "clock"
+      :valign "center"
+      :space-evenly "false"
+      (label :text clock_time)
+      (revealer :transition "slideleft"
+        :reveal time_rev
+        :class "testingclock"
+        :duration "350ms"
+        (button :onclick "~/.config/eww/scripts/pop calendar0" clock_date )))))
+
+(defwindow calendar0
+  :stacking "fg"
+  :focusable "false"
+  :monitor 0
+  :geometry (geometry
+    :x "20"
+    :y "0px"
+    :anchor "top right"
+    :width "270px"
+  :height "60px")
+  (cal))
+
+(defwidget cal []
+  (box
+    :class "cal "
+    :orientation "v"
+    (box
+      :class "cal-in calendar"
+      (calendar :class "cal"
+      ))))

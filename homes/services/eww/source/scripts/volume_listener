@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+script_name$(basename $0)
+for pid in $(pgrep -f $script_name); do
+    if [ $pid != $$ ]; then
+	kill $pid
+    fi
+done
+
+pactl subscribe | while read -r event; do
+    if [[ $event == *' sink '* ]]; then
+        echo $(pactl get-sink-volume $(pactl get-default-sink) | grep -oP '[0-9]+(?=%)' | head -n 1)
+    fi
+done

@@ -1,0 +1,10 @@
+(defwidget metric [icon ?font-size]
+    (label :class "metric_icon"
+      :text icon
+      :halign "center" :valign "center"
+    ))
+  
+  (defwidget sep [seperation]
+    (box :class "seperator"
+      :space-evenly "true"
+    :style "margin: 0 ${seperation};"))

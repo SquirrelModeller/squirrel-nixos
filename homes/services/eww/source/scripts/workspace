@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+ic=(1 2 3 4 5 6 7 8 9 10)
+
+declare -A ws_states
+
+for num in $(hyprctl workspaces | grep "ID" | grep -v lastwindowtitle | awk '{print $3}'); do
+  ws_states["$num"]="occupied"
+done
+
+hyprctl monitors | grep -B 4 "focused: yes" | awk 'NR==1{print $3}' | while read -r num; do
+  ws_states["$num"]="focused"
+  focused_ws="$num"
+  mon=$(hyprctl monitors | grep -B 2 "\($num\)" | awk 'NR==1{print $2}')
+done
+
+function workspaces {
+ local focused_ws="$(hyprctl activeworkspace | grep "ID" | awk '{print $3}')"
+ 
+  for i in "${!ws_states[@]}"; do
+    unset ws_states["$i"]
+  done
+
+  for num in $(hyprctl workspaces | grep "ID" | grep -v lastwindowtitle | awk '{print $3}'); do
+    ws_states["$num"]="occupied"
+  done
+  ws_states["$focused_ws"]="focused"
+}
+
+function module {
+  local wknames=(0)
+  for i in "${!ic[@]}"; do
+    local state=${ws_states["$((i+1))"]}
+    if [[ -z "$state" ]]; then
+      state="empty"
+    fi
+    wknames+=("$state")
+  done
+
+  echo 	"(eventbox :onscroll \"echo {} | sed -e 's/up/-1/g' -e 's/down/+1/g' | xargs hyprctl dispatch workspace\" \
+          (box	:class \"works  workspaces\"	:orientation \"h\" :spacing 5 :space-evenly \"false\" :halign \"start\"	\
+              "$(for i in "${!ic[@]}"; do printf "(button :onclick \"hyprctl dispatch workspace $((i+1))\" :class \"ws-btn ${wknames[i+1]}\" \"${ic[i]}\")"; done) " \
+          )\
+        )"
+}
+
+module
+
+socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - | while read -r event; do
+  workspaces "$event"
+  module
+done

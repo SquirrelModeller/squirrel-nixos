@@ -1,0 +1,51 @@
+.album_art {
+  background-size: cover;
+  background-position: center;
+}
+
+.mutebg {
+  background-color: $backgroundcolor;
+  padding: 0.5rem;
+}
+
+.music_borders {
+  border-radius: 10px;
+}
+
+.song {
+  font-size: 18px;
+  font-weight: bold;
+  color: $primary;
+}
+
+.song_artist {
+  font-size: 14px;
+  font-weight: bold;
+  color: $orange;
+}
+
+scale {
+  min-width: 100px;
+  padding: $padding_1;
+}
+scale contents trough highlight {
+  padding-top: 6px;
+}
+scale contents {
+  background-color: $secondary;
+}
+scale contents trough highlight {
+  background-color: $primary;
+}
+
+scale contents trough slider {
+  // background-color: $primary;
+  margin: -15;
+  border-radius: 100%;
+
+}
+
+.music_controls {
+  // font-family: JetBrainsMono Nerd Font Mono, monospace;
+  // font-family: Gallaudet;
+}

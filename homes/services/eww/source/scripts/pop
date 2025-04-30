@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <window name>"
+  exit 1
+fi
+
+window_list=$(eww -c ~/.config/eww active-windows | awk -F ': ' '{print $1}')
+
+if echo "$window_list" | grep -q "^$1$"; then
+  eww -c ~/.config/eww close $1
+else
+  eww -c ~/.config/eww open $1
+fi

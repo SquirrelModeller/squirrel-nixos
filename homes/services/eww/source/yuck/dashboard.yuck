@@ -1,0 +1,43 @@
+(defpoll time :interval "1s" `date +%H`)
+
+(defwidget dashboard1 []
+(box :class "dashboard" 
+
+(box :class "grid-class" :orientation "v"
+(label :text "${jq(time, ' if . < 12 then \"Good Morning\" else if . <18 then \"Good Afternoon\" else \"Good Evening\" end end ' )}")
+
+(label :text "hi")
+
+)
+
+
+
+
+
+(box :class "grid-class grid-size"
+(button :class "dashboard-buttons")
+)
+
+(box :class "grid-class" :orientation "v" 
+(box :class "grid-children")
+(box :class "grid-children" :halign "center" :valign "center" :width "100" :height "50")
+)
+)
+)
+
+
+
+
+
+(defwindow dashboard
+    :stacking "overlay"
+    :focusable "false"
+    :monitor 0
+    :namespace "dashboard"
+    :geometry (geometry
+      ; :anchor "top center"
+      :x "2200px"
+      :y "-3.3334%"
+      :height "30%"
+      :width "30%")
+    (dashboard1 ))

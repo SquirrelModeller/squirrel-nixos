@@ -1,0 +1,41 @@
+@import "scss/variables.scss";
+@import "scss/sys-tray.scss";
+@import "scss/music.scss";
+@import "scss/workspace.scss";
+@import "scss/clock.scss";
+@import "scss/calendar.scss";
+@import "scss/dashboard.scss";
+@import "scss/countdown.scss";
+
+* {
+  all: unset;
+  font-family: JetBrainsMono Nerd Font;
+  
+  // font-family: Cantarell;
+  // font-family: Gallaudet;
+  font-size: $fontsize_regular;
+}
+
+$borderradius: 100px;
+
+
+
+.bar_class {
+  padding: 20px 15px 0px;
+}
+
+.backgroundcol {
+  background-color: $back;
+  border-radius: $borderradius;
+}
+
+button {
+  border-radius: $borderradius;
+  transition-duration: 0.2s;
+}
+
+
+tooltip {
+  background-color: $backgroundcolor;
+  border-radius: $borderradius;
+}

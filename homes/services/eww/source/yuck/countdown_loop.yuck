@@ -1,0 +1,18 @@
+(defvar countdown_input "8")
+(defvar countdown_running false)
+(deflisten countdown_data :initial "{\"count\": 0, \"total\": 8}" "bash /home/squirrel/.config/themes/eww/scripts/countdown_loop.sh")
+
+(defwidget countdown_display []
+  (box :class "countdown" :orientation "v" :space-evenly false
+    (box :class "countdown-text"
+      (label :text "${countdown_data.count}/${countdown_data.total}")
+    )
+
+    (scale :min 0 :max "${countdown_data.total}" :active false :value "${countdown_data.count}")
+    (box :class "countdown-controls"
+      (input :value countdown_input :onchange "eww update countdown_input={}")
+      (button :onclick "${EWW_CMD} update countdown_data={\"count\": 2, \"total\": 4}" "Start")
+      (button :onclick "${EWW_CMD} update countdown_running=true && ${EWW_CMD} update countdown_data=\"$(bash /home/squirrel/.config/themes/eww/scripts/countdown_loop.sh start ${countdown_input})\"" "Start")
+    )
+  )
+)
