@@ -13,6 +13,7 @@
     pulse.enable = true;
   };
 
+  services.pipewire.wireplumber.enable = true;
   # I found that wpctl worked fine to set the default sound
   # I have not configured that yet though in these files
   # This is left here until i figure out how to properly configure the sound
