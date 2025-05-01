@@ -6,6 +6,8 @@
 }: {
   programs.ssh = {
     enable = true;
+    forwardAgent = true;
+    addKeysToAgent = "yes";
     matchBlocks = {
       "github" = {
         hostname = "github.com";
@@ -13,4 +15,5 @@
       };
     };
   };
+  services.ssh-agent.enable = true;
 }
