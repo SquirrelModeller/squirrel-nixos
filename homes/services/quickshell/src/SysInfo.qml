@@ -35,7 +35,7 @@ Rectangle {
 
     Process {
         running: true
-        command: [ ".config/quickshell/monitor" ]
+        command: [ "systeminfo-cpu-ram-stats" ]
         stdout: SplitParser {
             onRead: data => {
                 let parts = data.trim().split(" ");

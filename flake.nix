@@ -22,6 +22,11 @@
       };
     };
 
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "hyprland/nixpkgs";
@@ -43,6 +48,7 @@
     hyprland,
     hyprpaper,
     alejandra,
+    quickshell,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -63,7 +69,7 @@
 
         ./users/squirrel.nix
         {
-          modules.usrEnv.services.bar = "eww";
+          modules.usrEnv.services.bar = "quickshell";
 
           modules.usrEnv.programs.launchers.tofi.enable = true;
           modules.usrEnv.programs.apps.vscodium.enable = true;
@@ -89,6 +95,9 @@
             useUserPackages = true;
             backupFileExtension = "backup";
             users.squirrel = import ./homes/squirrel.nix;
+            extraSpecialArgs = {
+              quickshell = inputs.quickshell;
+            };
           };
         }
       ];

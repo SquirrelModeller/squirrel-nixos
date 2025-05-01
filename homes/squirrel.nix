@@ -18,6 +18,7 @@
     ../lib/services/uiDaemon.nix
     ./services/wayland/hyprpaper/default.nix
     ./services/eww/default.nix
+    ./services/quickshell/default.nix
     ./programs
     ./themes/gtk.nix
   ];
