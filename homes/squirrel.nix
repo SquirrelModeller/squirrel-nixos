@@ -29,7 +29,7 @@
     grim
     slurp
     wl-clipboard
-    neofetch
+    fastfetch
     socat
   ];
 
