@@ -3,7 +3,7 @@
   pkgs,
   lib,
   osConfig,
-  quickshell,
+  inputs,
   ...
 }: let
   inherit (lib) mkIf;
@@ -14,7 +14,7 @@
 in {
   config = mkIf (env.services.bar == "quickshell") {
     home.packages = with pkgs; [
-      quickshell.packages.${system}.default
+      inputs.quickshell.packages.${pkgs.system}.default
       systeminfo
     ];
 
@@ -22,7 +22,7 @@ in {
 
     modules.usrEnv.services.uiDaemon = {
       enable = true;
-      package = quickshell.packages.x86_64-linux.default;
+      package = inputs.quickshell.packages.${pkgs.system}.default;
       command = "quickshell -d";
       isDaemon = false;
     };

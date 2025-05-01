@@ -2,11 +2,18 @@
   description = "Squirrel OS";
 
   inputs = {
+    systems.url = "github:nix-systems/default-linux";
+
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
@@ -41,66 +48,42 @@
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    hyprland,
-    hyprpaper,
-    alejandra,
-    quickshell,
-    ...
-  } @ inputs: let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = import inputs.systems;
+
+      flake = {
+        nixosConfigurations.modeller = inputs.nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./modules/options
+            ./settings.nix
+            ./modules/core
+            ./hardware-configuration.nix
+            ./system.nix
+            ./packages.nix
+            ./users/squirrel.nix
+
+            {
+              environment.systemPackages = [
+                inputs.alejandra.defaultPackage."x86_64-linux"
+              ];
+            }
+            {
+              programs.dconf.enable = true;
+            }
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                backupFileExtension = "backup";
+                users.squirrel = import ./homes/squirrel.nix;
+                extraSpecialArgs = {inherit inputs;};
+              };
+            }
+          ];
+        };
+      };
     };
-  in {
-    nixosConfigurations.modeller = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        ./modules/options
-        ./modules/core
-
-        ./hardware-configuration.nix
-        ./system.nix
-        ./packages.nix
-
-        ./users/squirrel.nix
-        {
-          modules.usrEnv.services.bar = "quickshell";
-
-          modules.usrEnv.programs.launchers.tofi.enable = true;
-          modules.usrEnv.programs.apps.vscodium.enable = true;
-          modules.usrEnv.programs.apps.kitty.enable = true;
-          modules.usrEnv.programs.apps.firefox.enable = true;
-          modules.usrEnv.style.gtk.enable = true;
-        }
-        {
-          networking.hostName = "modeller";
-        }
-        {
-          programs.dconf.enable = true;
-        }
-
-        {
-          environment.systemPackages = [alejandra.defaultPackage.${system}];
-        }
-
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            users.squirrel = import ./homes/squirrel.nix;
-            extraSpecialArgs = {
-              quickshell = inputs.quickshell;
-            };
-          };
-        }
-      ];
-    };
-  };
 }
