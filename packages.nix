@@ -10,6 +10,5 @@
     git
     tree
     ranger
-    inputs.alejandra.defaultPackage.${pkgs.system}
   ];
 }

@@ -3,6 +3,7 @@
   lib,
   pkgs,
   osConfig,
+  inputs,
   ...
 }: {
   wayland.windowManager.hyprland = {
@@ -31,6 +32,8 @@
     wl-clipboard
     fastfetch
     socat
+    inputs.alejandra.defaultPackage.${pkgs.system}
+    nixpkgs-fmt
   ];
 
   home.stateVersion = "24.11";

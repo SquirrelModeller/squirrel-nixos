@@ -5,5 +5,6 @@ in {
     vscodium.enable = mkEnableOption "VSCode";
     kitty.enable = mkEnableOption "Kitty Terminal Emulator";
     firefox.enable = mkEnableOption "Firefox Browser";
+    emacs.enable = mkEnableOption "Emacs";
   };
 }

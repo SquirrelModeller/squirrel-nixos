@@ -5,9 +5,9 @@
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = import inputs.systems;
 
-      flake = {
+           flake = {
         nixosConfigurations.modeller = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+              system = "x86_64-linux";
           specialArgs = {inherit inputs;};
           modules = [
             ./modules/options
