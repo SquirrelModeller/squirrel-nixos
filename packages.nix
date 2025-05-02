@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   environment.systemPackages = with pkgs; [
@@ -9,5 +10,6 @@
     git
     tree
     ranger
+    inputs.alejandra.defaultPackage.${pkgs.system}
   ];
 }

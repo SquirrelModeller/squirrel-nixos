@@ -1,6 +1,28 @@
 {
   description = "Squirrel OS";
 
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = import inputs.systems;
+
+      flake = {
+        nixosConfigurations.modeller = inputs.nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {inherit inputs;};
+          modules = [
+            ./modules/options
+            ./settings.nix
+            ./modules/core
+            ./hardware-configuration.nix
+            ./system.nix
+            ./packages.nix
+            ./users/squirrel.nix
+            ./hosts
+          ];
+        };
+      };
+    };
+
   inputs = {
     systems.url = "github:nix-systems/default-linux";
 
@@ -47,43 +69,4 @@
     alejandra.url = "github:kamadorueda/alejandra/4.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };
-
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = import inputs.systems;
-
-      flake = {
-        nixosConfigurations.modeller = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./modules/options
-            ./settings.nix
-            ./modules/core
-            ./hardware-configuration.nix
-            ./system.nix
-            ./packages.nix
-            ./users/squirrel.nix
-
-            {
-              environment.systemPackages = [
-                inputs.alejandra.defaultPackage."x86_64-linux"
-              ];
-            }
-            {
-              programs.dconf.enable = true;
-            }
-            inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-                users.squirrel = import ./homes/squirrel.nix;
-                extraSpecialArgs = {inherit inputs;};
-              };
-            }
-          ];
-        };
-      };
-    };
 }
