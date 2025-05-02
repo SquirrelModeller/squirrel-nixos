@@ -2,13 +2,13 @@
   description = "Squirrel OS";
 
   outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
 
-           flake = {
+      flake = {
         nixosConfigurations.modeller = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-          specialArgs = {inherit inputs;};
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./modules/options
             ./settings.nix
