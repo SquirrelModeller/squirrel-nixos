@@ -9,6 +9,11 @@
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  environment.variables = {
+    EDITOR = "vim";
+    VISUAL = "vim";
+  };
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
