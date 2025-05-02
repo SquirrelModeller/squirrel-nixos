@@ -9,7 +9,7 @@
 
 (setq make-backup-files nil)
 ;;(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
-
+(setq auto-save-default nil)
 
 (windmove-default-keybindings)
 
