@@ -1,15 +1,16 @@
-{
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, osConfig
+, ...
+}:
+let
   inherit (lib) mkIf getExe;
   inherit (osConfig) modules;
 
   env = modules.usrEnv;
-in {
+in
+{
   config = mkIf env.programs.apps.kitty.enable {
     home.packages = with pkgs; [
       kitty
@@ -18,6 +19,7 @@ in {
       enable = true;
       settings = {
         background_opacity = "0.85";
+        enable_audio_bell = false;
         background = "#282828";
         font_family = "Jetbrains Mono";
         confirm_os_window_close = 0;

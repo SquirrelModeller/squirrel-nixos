@@ -1,0 +1,395 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Squirrel
+#+PROPERTY: header-args:emacs-lisp :tangle config.el
+
+* Introduction
+
+This is my Emacs configuration.
+
+* Basic Settings
+
+** General Settings
+
+Basic Emacs settings.
+
+#+begin_src emacs-lisp
+;;; init.el --- Emacs Configuration File for NixOS
+;;; Commentary:
+;;; Emacs configuration.
+
+;;; Code:
+
+;; Disable backup and auto-save files
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
+;; Set up XDG directory
+(setq user-emacs-directory "~/.config/emacs/")
+
+;; Automatic bracket pairing
+(electric-pair-mode 1)
+
+;; Window navigation using Shift+arrow keys
+(windmove-default-keybindings)
+#+end_src
+
+** Display Settings
+
+Configurations for how Emacs looks and displays information.
+
+#+begin_src emacs-lisp
+;; Display settings
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode t)
+(set-face-attribute 'default nil :height 130)
+
+;; Disable UI elements for a cleaner interface
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(blink-cursor-mode -1)
+#+end_src
+
+* Package Management
+
+Package management in Emacs
+
+#+begin_src emacs-lisp
+;; Initialize package management
+(require 'package)
+
+;; Package archives setup - legacy
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
+
+;; For NixOS: Don't automatically install packages since that's handled by Nix
+(require 'use-package)
+
+;; For NixOS: Don't try to ensure packages are installed through package.el
+;; since they should be provided by the Nix configuration
+(setq use-package-always-ensure nil)
+
+;; Make use-package verbose for debugging
+; (setq use-package-verbose t)
+#+end_src
+
+* UI Enhancements
+
+Configuration for themes and UI improvements.
+
+** Theme Setup
+
+#+begin_src emacs-lisp
+;; Theme setup
+(add-to-list 'custom-theme-load-path "~/.config/emacs/themes/")
+(load-theme 'my-kitty t)
+#+end_src
+
+** Dashboard
+
+Welcome screen for Emacs.
+
+#+begin_src emacs-lisp
+;; Dashboard
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-banner-logo-title "Welcome Squirrel"
+        dashboard-vertically-center-content t
+        dashboard-center-content t
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-icon-type 'icons
+        dashboard-startup-banner "~/Desktop/Files/Personal Files/Pictures/Logo/SquirrelLogo.png"))
+#+end_src
+
+** Minimap
+
+Code overview sidebar.
+
+#+begin_src emacs-lisp
+;; Minimap - code overview sidebar
+(use-package minimap
+  :bind (("C-c m" . minimap-mode))
+  :config
+  (setq minimap-window-location 'right)
+  (custom-set-faces
+   '(minimap-active-region-background
+     ((((background dark)) (:background "#3e3e3e"))
+      (((background light)) (:background "#d0d0d0"))
+      (t (:background "#3e3e3e"))))))
+#+end_src
+
+** Rainbow Mode
+
+Colorize color strings in buffers.
+
+#+begin_src emacs-lisp
+;; Rainbow mode - colorize color strings
+(use-package rainbow-mode
+  :hook ((prog-mode . rainbow-mode)
+         (conf-mode . rainbow-mode)
+         (css-mode . rainbow-mode)
+         (html-mode . rainbow-mode)
+         (text-mode . rainbow-mode))
+  :config
+  (setq rainbow-x-colors t
+        rainbow-html-colors t
+        rainbow-latex-colors t
+        rainbow-r-colors t
+        rainbow-ansi-colors t
+        rainbow-escape-sequences t))
+#+end_src
+
+* Navigation & Productivity
+
+Tools and configurations to improve Emacs navigation and productivity.
+
+** Neotree
+
+File system explorer.
+
+#+begin_src emacs-lisp
+;; Neotree - file system explorer
+(use-package neotree
+  :bind ([f8] . neotree-toggle)
+  :config
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (custom-set-faces
+   '(neo-dir-link-face ((t (:foreground "#FF9D64"))))
+   '(neo-expand-btn-face ((t (:foreground "#FF9D64"))))
+   '(neo-file-link-face ((t (:foreground "#FFFFFF"))))
+   '(neo-root-dir-face ((t (:foreground "#FF9D64" :weight bold))))))
+#+end_src
+
+** Multiple Cursors
+
+Edit multiple regions simultaneously.
+
+#+begin_src emacs-lisp
+;; Multiple cursors
+(use-package multiple-cursors
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
+#+end_src
+
+** Workgroups2
+
+Window configuration management.
+
+#+begin_src emacs-lisp
+;; Workgroups2 - window configuration management
+(use-package workgroups2
+  :config
+  (workgroups-mode 1)
+  (setq wg-session-file "~/.config/emacs/workgroups"
+        wg-emacs-exit-save-behavior 'save
+        wg-workgroups-mode-exit-save-behavior 'save
+        wg-mode-line-display-on t
+        wg-flag-modified t)
+  :bind (("C-c w c" . wg-create-workgroup)
+         ("C-c w k" . wg-kill-workgroup)
+         ("C-c w s" . wg-switch-to-workgroup)
+         ("C-c w r" . wg-rename-workgroup)))
+#+end_src
+
+** Elscreen
+
+Tab system for Emacs.
+
+#+begin_src emacs-lisp
+;; Elscreen - tab system for Emacs
+(use-package elscreen
+  :config
+  (elscreen-start))
+#+end_src
+
+* Development Tools
+
+Configuration for development-specific tools.
+
+** Company
+
+Text completion framework.
+
+#+begin_src emacs-lisp
+;; Company - text completion framework
+(use-package company
+  :hook (after-init . global-company-mode)
+  :config
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 1
+        company-selection-wrap-around t
+        company-tooltip-align-annotations t)
+  :bind (:map company-active-map
+              ("TAB" . company-complete-selection)
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)))
+#+end_src
+
+** Flycheck
+
+Syntax checking.
+
+#+begin_src emacs-lisp
+;; Flycheck - syntax checking
+(use-package flycheck
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+#+end_src
+
+** Format-all
+
+Code formatting.
+
+#+begin_src emacs-lisp
+;; Format-all - code formatting
+(use-package format-all
+  :commands format-all-mode
+  :hook ((prog-mode . format-all-ensure-formatter)
+         (before-save . format-all-buffer))
+  :config
+  (setq format-all-show-errors 'warnings))
+#+end_src
+
+* Language Support
+
+Configuration for specific programming languages.
+
+** QML Mode
+
+#+begin_src emacs-lisp
+;; QML mode
+(use-package qml-mode
+  :mode "\\.qml\\'")
+#+end_src
+
+** Nix Mode
+
+#+begin_src emacs-lisp
+;; Nix mode
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :hook (nix-mode . format-all-mode))
+
+;; Configure formatters for specific languages
+;;(with-eval-after-load 'format-all
+;;  (setq-default format-all-formatters '((nix-mode . nixpkgs-fmt))))
+#+end_src
+
+** Org Mode
+
+I played around with different org packages to display various things.
+I think I should default to just the org-modern with a few config tweaks to it.
+For now this setup works, so I'll leave it be.
+
+#+begin_src emacs-lisp
+;; Org mode configuration
+(use-package org
+  :mode ("\\.org\\'" . org-mode)
+  :config
+  (setq org-startup-indented t
+        org-pretty-entities t
+        org-hide-emphasis-markers t
+        org-startup-with-inline-images t
+        org-image-actual-width '(300))
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t)))
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode))
+
+  ;; Syntax highlighting in source blocks while editing
+  (setq org-src-fontify-natively t
+        org-src-tab-acts-natively t)
+
+  ;; Visual-line-mode for wrapped lines
+  (add-hook 'org-mode-hook 'visual-line-mode)
+
+  ;; Variable-pitch fonts for text
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+
+  ;; Keep fixed-pitch for code, tables, etc.
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-table ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit fixed-pitch))))
+   '(org-verbatim ((t (:inherit fixed-pitch)))))
+
+  ;; Add structure template shortcuts
+  (require 'org-tempo)
+
+  ;; Preview LaTeX fragments
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+  (setq org-latex-create-preview-through-shell-escape t)
+
+  (use-package org-modern
+    :hook (org-mode . org-modern-mode)))
+
+;; Prevent identation while edeting org documents
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (electric-indent-local-mode -1)
+	    (setq org-edit-src-content-indentation 0)))
+#+end_src
+
+* Custom Keybindings
+
+My custom key bindings. I should probably use the evil package.
+
+#+begin_src emacs-lisp
+;; HJKL navigation (EVIL HAHAHA)
+(global-set-key (kbd "C-l") 'forward-char)
+(global-set-key (kbd "C-h") 'backward-char)
+(global-set-key (kbd "C-k") 'previous-line)
+(global-set-key (kbd "C-j") 'next-line)
+(global-set-key (kbd "M-l") 'forward-word)
+(global-set-key (kbd "M-h") 'backward-word)
+
+;; Misc bindings
+(global-set-key (kbd "C-c l") 'recenter-top-bottom)
+(global-set-key (kbd "C-c k") 'kill-line)
+(global-set-key (quote [M-down]) (quote scroll-up-line))
+(global-set-key (quote [M-up]) (quote scroll-down-line))
+#+end_src
+
+* System Integration
+
+System-specific integrations.
+
+** Wayland Clipboard Integration
+
+#+begin_src emacs-lisp
+;; Wayland clipboard integration
+(defun wl-copy (text)
+  "Copy TEXT to Wayland clipboard using wl-copy."
+  (let ((p (make-process :name "wl-copy"
+                         :command '("wl-copy")
+                         :connection-type 'pipe)))
+    (process-send-string p text)
+    (process-send-eof p)))
+(setq interprogram-cut-function 'wl-copy)
+#+end_src
+
+* NixOS Specific Settings
+
+Settings specific to NixOS.
+
+#+begin_src emacs-lisp
+;; Prevent Custom from modifying this file
+(when (file-exists-p custom-file)
+   (load custom-file))
+
+(provide 'init)
+;;; init.el ends here
+#+end_src
