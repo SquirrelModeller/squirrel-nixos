@@ -8,4 +8,7 @@
   modules.usrEnv.programs.apps.emacs.enable = true;
 
   modules.usrEnv.style.gtk.enable = true;
+
+  modules.system.virtualisation.enable = false;
+  modules.system.virtualisation.qemu.enable = false;
 }

@@ -1,11 +1,10 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   users.users.squirrel = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = [ "wheel" "libvirtd" "kvm" ];
     shell = pkgs.bash;
     home = "/home/squirrel";
   };

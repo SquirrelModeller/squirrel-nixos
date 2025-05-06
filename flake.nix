@@ -13,7 +13,6 @@
             ./modules/options
             ./settings.nix
             ./modules/core
-            ./hardware-configuration.nix
             ./system.nix
             ./packages.nix
             ./users/squirrel.nix

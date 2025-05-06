@@ -3,5 +3,6 @@
     ./programs
     ./services
     ./style
+    ./system
   ];
 }
