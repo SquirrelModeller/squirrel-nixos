@@ -341,6 +341,10 @@ For now this setup works, so I'll leave it be.
 	  (lambda ()
 	    (electric-indent-local-mode -1)
 	    (setq org-edit-src-content-indentation 0)))
+
+;; Overwrite org-return-indent, as it prevents evil
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-j") 'next-line))
 #+end_src
 
 * Custom Keybindings
