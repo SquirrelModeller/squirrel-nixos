@@ -1,46 +1,73 @@
-{ config
-, lib
+{ lib
 , osConfig
 , pkgs
+, inputs
 , ...
 }:
 let
   inherit (lib) mkIf;
   inherit (osConfig) modules;
   env = modules.usrEnv;
+
+  devTools = with pkgs; [
+    clang-tools
+    rust-analyzer
+    nil
+    nodePackages.typescript-language-server
+    nodePackages.bash-language-server
+    inputs.quickshell
+  ];
+  emacsWrapped = pkgs.symlinkJoin {
+    name = "emacs-wrapped";
+    paths = [ pkgs.emacs ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/emacs \
+        --suffix PATH : "${lib.makeBinPath devTools}"
+    '';
+    meta = pkgs.emacs.meta // {
+      description = "Emacs wrapped with language server tools";
+    };
+  };
+
 in
 {
   config = mkIf env.programs.apps.emacs.enable {
     programs.emacs = {
       enable = true;
-      extraPackages = epkgs:
-        with epkgs; [
-          use-package
-          format-all
-          nix-mode
-          dashboard
-          elscreen
-          flycheck
-          workgroups2
-          rainbow-mode
-          multiple-cursors
-          company
-          qml-mode
-          neotree
-          minimap
-          all-the-icons
-          org
-          org-bullets
-          org-modern
-          org-present
-          ox-reveal
-          htmlize
-        ];
+      package = emacsWrapped;
+      extraPackages = epkgs: with epkgs; [
+        use-package
+        format-all
+        nix-mode
+        dashboard
+        elscreen
+        flycheck
+        workgroups2
+        rainbow-mode
+        multiple-cursors
+        company
+        qml-mode
+        neotree
+        minimap
+        all-the-icons
+        org
+        org-bullets
+        org-modern
+        org-present
+        ox-reveal
+        htmlize
+        lsp-mode
+        lsp-ui
+        lsp-pyright
+        which-key
+        company-box
+      ];
     };
 
     home.activation.tangleEmacsConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       echo "Tangling Emacs config.org..."
-      ${pkgs.emacs}/bin/emacs --batch \
+      ${emacsWrapped}/bin/emacs --batch \
         --eval "(require 'org)" \
         --eval "(org-babel-tangle-file \"$HOME/.config/emacs/config.org\")"
     '';
@@ -48,13 +75,11 @@ in
     home.file = {
       ".config/emacs/config.org".source = ./config.org;
       ".config/emacs/early-init.el".text = ''
-        ;;; early-init.el --- Load config
         (setq user-emacs-directory "~/.config/emacs/")
         (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
         (when (file-exists-p custom-file)
           (load custom-file nil t))
         (load-file (expand-file-name "config.el" user-emacs-directory))
-        ;;; early-init.el ends here
       '';
     };
 
