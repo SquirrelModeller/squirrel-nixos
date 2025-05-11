@@ -51,6 +51,10 @@ Configurations for how Emacs looks and displays information.
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (blink-cursor-mode -1)
+
+;; Load font
+(use-package all-the-icons)
+
 #+end_src
 
 * Package Management

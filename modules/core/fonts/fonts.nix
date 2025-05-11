@@ -1,33 +1,40 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{ pkgs, ... }: {
   fonts = {
     enableDefaultPackages = false;
-
     fontconfig = {
       enable = true;
       hinting.enable = true;
       antialias = true;
       defaultFonts = {
-        monospace = ["JetBrains Mono" "Noto Sans CJK JP"];
-        sansSerif = ["Noto Sans CJK JP"];
-        serif = ["Noto Serif CJK JP"];
+        monospace = [
+          "JetBrains Mono"
+          "Noto Sans"
+          "Unifont"
+        ];
+        sansSerif = [
+          "Noto Sans"
+          "Noto Sans CJK JP"
+          "Unifont"
+        ];
+        serif = [
+          "Noto Serif"
+          "Noto Serif CJK JP"
+          "Unifont"
+        ];
       };
     };
-
     fontDir = {
       enable = true;
       decompressFonts = true;
     };
-
     packages = with pkgs; [
-      nerd-fonts.terminess-ttf
-      nerd-fonts.fira-code
-      nerd-fonts.droid-sans-mono
       jetbrains-mono
+      noto-fonts
       noto-fonts-cjk-sans
+      noto-fonts-emoji
+      noto-fonts-extra
+      unifont
+      nerd-fonts.hack
     ];
   };
 }

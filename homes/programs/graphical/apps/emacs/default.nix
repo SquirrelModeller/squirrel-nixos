@@ -42,6 +42,7 @@ in
       extraPackages = epkgs: with epkgs; [
         use-package
         format-all
+        all-the-icons
         nix-mode
         dashboard
         elscreen
