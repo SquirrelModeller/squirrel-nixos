@@ -168,10 +168,10 @@ Colorize color strings in buffers.
          (html-mode . rainbow-mode)
          (text-mode . rainbow-mode))
   :config
-  (setq rainbow-x-colors t
+  (setq rainbow-x-colors nil
         rainbow-html-colors t
         rainbow-latex-colors t
-        rainbow-r-colors t
+        rainbow-r-colors nil
         rainbow-ansi-colors t
         rainbow-escape-sequences t))
 #+end_src

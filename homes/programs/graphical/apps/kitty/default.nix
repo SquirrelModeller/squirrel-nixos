@@ -1,12 +1,12 @@
-{ config
-, lib
+{ lib
 , pkgs
 , osConfig
 , ...
 }:
 let
-  inherit (lib) mkIf getExe;
+  inherit (lib) mkIf;
   inherit (osConfig) modules;
+  inherit (modules.style.colorScheme) colors;
 
   env = modules.usrEnv;
 in
@@ -23,20 +23,22 @@ in
         background = "#282828";
         font_family = "Jetbrains Mono";
         confirm_os_window_close = 0;
-        color1 = "#D35151";
-        color2 = "#FF9D64";
-        color3 = "#FFC66D";
-        color4 = "#E3E3AC";
-        color5 = "#b16286";
-        color6 = "#FFCF95";
-        color7 = "#ada498";
-        color9 = "#fb4934";
-        color10 = "#D9843F";
-        color11 = "#fabd2d";
-        color12 = "#FFFFBB";
-        color13 = "#d3869b";
-        color14 = "#8ec07c";
-        color15 = "#928374";
+        color0 = colors.base00;
+        color8 = colors.baseA0;
+        color1 = colors.base01;
+        color9 = colors.base09;
+        color2 = colors.base02;
+        color10 = colors.base0A;
+        color3 = colors.base03;
+        color11 = colors.base0B;
+        color4 = colors.base04;
+        color12 = colors.base0C;
+        color5 = colors.base05;
+        color13 = colors.base0D;
+        color6 = colors.base06;
+        color14 = colors.base0E;
+        color7 = colors.base07;
+        color15 = colors.base0F;
       };
     };
   };

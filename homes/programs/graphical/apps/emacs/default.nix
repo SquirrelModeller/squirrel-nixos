@@ -32,6 +32,9 @@ let
 
 in
 {
+  imports = [
+    ./themes/generate-theme.nix
+  ];
   config = mkIf env.programs.apps.emacs.enable {
     programs.emacs = {
       enable = true;
@@ -101,6 +104,6 @@ in
       '';
     };
 
-    xdg.configFile."emacs/themes/my-kitty-theme.el".source = ./themes/my-kitty-theme.el;
+    #xdg.configFile."emacs/themes/my-kitty-theme.el".source = ./themes/my-kitty-theme.el;
   };
 }
