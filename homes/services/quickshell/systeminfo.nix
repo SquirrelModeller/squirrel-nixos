@@ -1,7 +1,5 @@
-{
-  pkgs,
-  lib,
-  system ? builtins.currentSystem,
+{ pkgs
+,
 }:
 pkgs.stdenv.mkDerivation {
   pname = "systeminfo-cpu-ram-stats";
@@ -9,7 +7,7 @@ pkgs.stdenv.mkDerivation {
 
   src = ./src;
 
-  nativeBuildInputs = [pkgs.gcc];
+  nativeBuildInputs = [ pkgs.gcc ];
 
   buildPhase = ''
     g++ -o systeminfo-cpu-ram-stats systeminfo.cpp

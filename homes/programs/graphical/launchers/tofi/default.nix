@@ -1,15 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  ...
-}: let
-  inherit (lib) mkIf getExe;
+{ lib
+, pkgs
+, osConfig
+, ...
+}:
+let
+  inherit (lib) mkIf;
   inherit (osConfig) modules;
 
   env = modules.usrEnv;
-in {
+in
+{
   config = mkIf env.programs.launchers.tofi.enable {
     home.packages = with pkgs; [
       tofi

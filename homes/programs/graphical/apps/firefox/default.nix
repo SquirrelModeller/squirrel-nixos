@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, osConfig
-, ...
-}:
+{ lib, osConfig, ... }:
 let
   lock-false = {
     Value = false;

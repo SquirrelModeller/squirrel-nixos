@@ -1,14 +1,14 @@
-{
-  config,
-  pkgs,
-  lib,
-  osConfig,
-  ...
-}: let
-  inherit (lib) mkIf getExe;
+{ pkgs
+, lib
+, osConfig
+, ...
+}:
+let
+  inherit (lib) mkIf;
   inherit (osConfig) modules;
   env = modules.usrEnv;
-in {
+in
+{
   config = mkIf (env.services.bar == "eww") {
     home.packages = with pkgs; [
       eww

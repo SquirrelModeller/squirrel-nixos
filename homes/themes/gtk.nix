@@ -1,17 +1,16 @@
-{
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  inputs,
-  ...
-}: let
+{ lib
+, osConfig
+, inputs
+, ...
+}:
+let
   inherit (lib) mkIf;
   inherit (osConfig) modules;
 
   env = modules.usrEnv;
-in {
-  imports = [inputs.catppuccin.homeModules.catppuccin];
+in
+{
+  imports = [ inputs.catppuccin.homeModules.catppuccin ];
   config = mkIf env.style.gtk.enable {
     gtk = {
       enable = true;
@@ -20,7 +19,7 @@ in {
         flavor = "mocha";
         accent = "peach";
         size = "standard";
-        tweaks = ["normal"];
+        tweaks = [ "normal" ];
       };
     };
 

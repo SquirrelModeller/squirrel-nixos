@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, osConfig
-, inputs
-, ...
-}: {
+{ pkgs, inputs, ... }: {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
