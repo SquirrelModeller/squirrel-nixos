@@ -1,17 +1,16 @@
-{
-  config,
-  lib,
-  pkgs,
-  osConfig,
-  inputs,
-  ...
+{ config
+, lib
+, pkgs
+, osConfig
+, inputs
+, ...
 }: {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
     systemd = {
       enable = true;
-      variables = ["--all"];
+      variables = [ "--all" ];
     };
   };
 
@@ -34,6 +33,7 @@
     socat
     inputs.alejandra.defaultPackage.${pkgs.system}
     nixpkgs-fmt
+    vlc
   ];
 
   home.stateVersion = "24.11";
