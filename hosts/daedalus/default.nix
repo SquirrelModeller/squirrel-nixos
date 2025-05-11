@@ -5,6 +5,7 @@
 , modulesPath
 , ...
 }:
+
 let
   gpuIds = [
     "1002:744c"
@@ -19,17 +20,19 @@ in
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  nixpkgs = {
+    hostPlatform = lib.mkDefault "x86_64-linux";
+  };
+
   boot = {
-    initrd = {
-      availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
-      kernelModules = [ ];
-    };
+    initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
     kernelModules =
       [ "kvm-amd" ] ++
       (if config.modules.system.virtualisation.enable then
         [ "vfio_pci" ]
       else
         [ "amdgpu" ]);
+
     kernelParams = [
       "amd_iommu=on"
       "iommu=pt"
@@ -37,16 +40,23 @@ in
       "vfio-pci.ids=${lib.concatStringsSep "," gpuIds}"
       "video=efifb:off"
     ];
+
     extraModprobeConfig = lib.mkIf config.modules.system.virtualisation.enable ''
       options vfio-pci ids=${lib.concatStringsSep "," gpuIds}
       options vfio_iommu_type1 allow_unsafe_interrupts=1
     '';
+
     extraModulePackages = [ ];
   };
 
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware = {
+    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [ mesa ];
+    };
+  };
 
   environment.variables = {
     EDITOR = "vim";

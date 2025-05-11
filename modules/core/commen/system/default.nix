@@ -5,5 +5,6 @@
     ./services/dbus.nix
     ./services/gtk.nix
     ./virtualisation
+    ./gaming/steam.nix
   ];
 }

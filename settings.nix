@@ -11,4 +11,6 @@
 
   modules.system.virtualisation.enable = false;
   modules.system.virtualisation.qemu.enable = false;
+
+  modules.system.programs.gaming.steam.enable = true;
 }
