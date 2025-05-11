@@ -28,6 +28,7 @@
     inputs.alejandra.defaultPackage.${pkgs.system}
     nixpkgs-fmt
     vlc
+    playerctl
   ];
 
   home.stateVersion = "24.11";
