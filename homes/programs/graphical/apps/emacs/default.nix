@@ -16,6 +16,7 @@ let
     nodePackages.typescript-language-server
     nodePackages.bash-language-server
     inputs.quickshell
+    nodePackages.vscode-langservers-extracted
   ];
   emacsWrapped = pkgs.symlinkJoin {
     name = "emacs-wrapped";
