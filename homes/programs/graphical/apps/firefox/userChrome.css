@@ -1,0 +1,99 @@
+:root {
+  --sfwindow: #3b3b3b;
+  --sfsecondary: base99;
+  --tab-text: base02;
+  --tab-text-focus: base00;
+}
+
+:root {
+  --toolbar-bgcolor: var(--sfsecondary) !important;
+  --tabs-border-color: var(--sfsecondary) !important;
+  --lwt-sidebar-background-color: var(--sfwindow) !important;
+  --lwt-toolbar-field-focus: var(--sfsecondary) !important;
+
+  --toolbarbutton-icon-fill: var(--tab-text) !important;
+  --toolbar-color: var(--tab-text-focus) !important;
+
+  /* Has something to do with background color. Can be used for transparency*/
+  /*--toolbar-field-focus-border-color*/
+
+  --toolbox-bgcolor: var(--sfsecondary) !important;
+  --toolbox-bgcolor-inactive: var(--sfsecondary) !important;
+
+  --toolbar-field-focus-border-color: var(--sfsecondary) !important;
+  --toolbar-field-background-color: var(--sfsecondary) !important;
+  --urlbar-box-focus-bgcolor: var(--sfsecondary) !important;  
+}
+
+* {
+  box-shadow: 0 0 0 0 !important;
+}
+
+.sidebar-splitter {
+  border: none !important;
+}
+
+* {
+  box-shadow: 0 0 0 0 !important;
+}
+
+.sidebar-splitter {
+  border: none !important;
+}
+
+#navigator-toolbox,
+.urlbarView-body-inner,
+.search-one-offs {
+  border: none !important;
+}
+
+
+.browser-toolbox-background {
+  background-color: var(--sfsecondary) !important;
+}
+
+
+#tabbrowser-tabs,
+#sidebar-box,
+#urlbar-input-container,
+#urlbar-background,
+.toolbar-items,
+.sidebar-placesTree,
+.browserSidebarContainer,
+.titlebar-spacer,
+.titlebar-buttonbox-container,
+.panel-subview-body {
+  background-color: var(--sfsecondary) !important;
+  border: none !important;
+}
+
+#nav-bar {
+  border-top: none !important;
+}
+
+/* Removes glowing effect */
+#urlbar[focused]:not([suppress-focus-border]) > #urlbar-background,
+#searchbar:focus-within {
+  outline: none !important;
+}
+
+.tab-labeld {
+  color: #f9f3e0;
+}
+
+tab {
+  color: var(--tab-text) !important;
+}
+tab:where([visuallyselected="true"]) {
+  color: #FFE6D4 !important;
+}
+
+menupopup,
+panel {
+  --panel-background: var(--sfsecondary) !important;
+  --panel-border-color: none !important;
+}
+
+#unified-extensions-view {
+  background-color: var(--sfsecondary) !important;
+}

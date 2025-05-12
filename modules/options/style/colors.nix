@@ -24,6 +24,8 @@ in
           base0E = "#8ec07c"; ##eab964
           base07 = "#ada498";
           base0F = "#928374";
+
+          background = "#1f1f1f";
         };
       };
     };

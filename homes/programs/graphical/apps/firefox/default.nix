@@ -4,12 +4,9 @@ let
     Value = false;
     Status = "locked";
   };
-  lock-true = {
-    Value = true;
-    Status = "locked";
-  };
-  inherit (lib) mkIf getExe;
+  inherit (lib) mkIf;
   inherit (osConfig) modules;
+  inherit (modules.style.colorScheme) colors;
 
   env = modules.usrEnv;
 
@@ -54,6 +51,7 @@ in
           settings = privacy // {
             "browser.startup.page" = 3;
             "browser.toolbars.bookmarks.visibility" = "never";
+            "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           };
         };
       };
@@ -75,5 +73,16 @@ in
         };
       };
     };
+
+    home.file.".mozilla/firefox/squirrel/chrome/userChrome.css".text =
+      let
+        cssTemplate = builtins.readFile ./userChrome.css;
+        processedCss = lib.strings.replaceStrings
+          [ "base00" "base01" "base02" "base03" "base99" ]
+          [ colors.base00 colors.base01 colors.base02 colors.base03 colors.background ]
+          cssTemplate;
+      in
+      processedCss;
   };
 }
+
