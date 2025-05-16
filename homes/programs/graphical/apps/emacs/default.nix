@@ -9,6 +9,22 @@ let
   inherit (osConfig) modules;
   env = modules.usrEnv;
 
+  tree-sitter-parsers = grammars: with grammars; [
+    tree-sitter-bash
+    tree-sitter-c
+    tree-sitter-cpp
+    tree-sitter-css
+    tree-sitter-html
+    tree-sitter-javascript
+    tree-sitter-json
+    tree-sitter-python
+    tree-sitter-rust
+    tree-sitter-tsx
+    tree-sitter-typescript
+    tree-sitter-nix
+    inputs.nix-qml-support.packages.${pkgs.stdenv.system}.tree-sitter-qmljs
+  ];
+
   devTools = with pkgs; [
     clang-tools
     rust-analyzer
@@ -17,20 +33,55 @@ let
     nodePackages.bash-language-server
     inputs.quickshell
     nodePackages.vscode-langservers-extracted
+    qt6.qtdeclarative
   ];
+
+  custom-emacs = with pkgs;
+    ((emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
+      use-package
+      format-all
+      all-the-icons
+      nix-mode
+      dashboard
+      elscreen
+      flycheck
+      workgroups2
+      rainbow-mode
+      multiple-cursors
+      company
+      neotree
+      minimap
+      org
+      org-bullets
+      org-modern
+      org-present
+      ox-reveal
+      htmlize
+      lsp-mode
+      lsp-ui
+      lsp-pyright
+      which-key
+      company-box
+      markdown-mode
+      markdown-preview-mode
+      markdown-toc
+
+      (treesit-grammars.with-grammars (grammars: tree-sitter-parsers grammars))
+      inputs.nix-qml-support.packages.${pkgs.stdenv.system}.qml-ts-mode
+    ]));
+
   emacsWrapped = pkgs.symlinkJoin {
     name = "emacs-wrapped";
-    paths = [ pkgs.emacs ];
+    paths = [ custom-emacs ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/emacs \
         --suffix PATH : "${lib.makeBinPath devTools}"
     '';
-    meta = pkgs.emacs.meta // {
+    meta = custom-emacs.meta // {
       description = "Emacs wrapped with language server tools";
     };
   };
-
 in
 {
   imports = [
@@ -40,46 +91,13 @@ in
     programs.emacs = {
       enable = true;
       package = emacsWrapped;
-      extraPackages = epkgs: with epkgs; [
-        use-package
-        format-all
-        all-the-icons
-        nix-mode
-        dashboard
-        elscreen
-        flycheck
-        workgroups2
-        rainbow-mode
-        multiple-cursors
-        company
-        qml-mode
-        neotree
-        minimap
-        all-the-icons
-        org
-        org-bullets
-        org-modern
-        org-present
-        ox-reveal
-        htmlize
-        lsp-mode
-        lsp-ui
-        lsp-pyright
-        which-key
-        company-box
-        markdown-mode
-        markdown-preview-mode
-        markdown-toc
-      ];
     };
-
     home.activation.tangleEmacsConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       echo "Tangling Emacs config.org..."
       ${emacsWrapped}/bin/emacs --batch \
         --eval "(require 'org)" \
         --eval "(org-babel-tangle-file \"$HOME/.config/emacs/config.org\")"
     '';
-
     home.file = {
       ".config/emacs/config.org".source = ./config.org;
       ".config/emacs/early-init.el".text = ''
@@ -107,8 +125,11 @@ in
 
         (load-file (expand-file-name "config.el" user-emacs-directory))
       '';
+
     };
 
-    #xdg.configFile."emacs/themes/my-kitty-theme.el".source = ./themes/my-kitty-theme.el;
+    home.sessionVariables = {
+      QML2_IMPORT_PATH = "${pkgs.qt6.qtdeclarative}/lib/qt-6/qml";
+    };
   };
 }

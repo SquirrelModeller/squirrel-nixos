@@ -44,6 +44,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-qml-support = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/nix-qml-support";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+
     alejandra.url = "github:kamadorueda/alejandra/4.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };

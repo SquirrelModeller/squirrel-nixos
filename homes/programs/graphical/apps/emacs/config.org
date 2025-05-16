@@ -257,6 +257,22 @@ Tab system for Emacs.
   (elscreen-start))
 #+end_src
 
+** Treesitter
+
+#+begin_src emacs-lisp
+(use-package treesit
+  :config
+  (customize-set-variable 'treesit-font-lock-level 4)
+  (setq major-mode-remap-alist
+        '((c-mode . c-ts-mode)
+          (csharp-mode . csharp-ts-mode)
+          (cmake-mode . cmake-ts-mode)
+          (c++-mode . c++-ts-mode)
+          (css-mode . css-ts-mode)
+          (java-mode . java-ts-mode)
+          (json-mode . json-ts-mode)
+          (python-mode . python-ts-mode))))
+#+end_src
 * LSP Integration
 
 Configuration for Language Server Protocol.
@@ -274,7 +290,11 @@ LSP mode configuration
          (lsp-mode . lsp-enable-which-key-integration))
   :init
   (setq lsp-keymap-prefix "C-c l")
+
   :config
+  (with-eval-after-load 'lsp-mode
+    (define-key lsp-command-map (kbd "f") #'lsp-format-buffer))
+
   ;; Performance optimizations
   (setq gc-cons-threshold 100000000           ;; 100mb
         read-process-output-max (* 1024 1024) ;; 1mb
@@ -425,6 +445,22 @@ For some reason the prior setup did not hook C++/C correctly. I am going nuclear
                            (setq-local company-backends
                                        '(company-capf company-files))))
 #+end_src 
+
+** QML/Quickshell
+
+#+begin_src emacs-lisp
+(use-package qml-ts-mode
+  :after lsp-mode
+  :config
+  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("qmlls" "-E"))
+                    :activation-fn (lsp-activate-on "qml-ts")
+                    :server-id 'qmlls))
+  (add-hook 'qml-ts-mode-hook (lambda ()
+                                (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
+                                (lsp-deferred))))
+#+end_src
 
 ** Format-all
 

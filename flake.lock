@@ -23,6 +23,27 @@
         "type": "github"
       }
     },
+    "emacs-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixpkgs-stable": "nixpkgs-stable"
+      },
+      "locked": {
+        "lastModified": 1747362374,
+        "narHash": "sha256-nHXQ8mq3eYq0aLGkGJudJFmq8NoQ0uCBQ+q2NISmDAY=",
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "rev": "6876891497fa209feda114600f4170d905abde53",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -172,6 +193,26 @@
         "type": "github"
       }
     },
+    "nix-qml-support": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1730724501,
+        "narHash": "sha256-zvNdomPM86fUf0iAwJV1RQC8yAqDCKbCDJKIs4iIPy0=",
+        "ref": "refs/heads/master",
+        "rev": "8f897ffb4a1575252c536c63db8be72f22b6a494",
+        "revCount": 1,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/nix-qml-support"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/nix-qml-support"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1737469691,
@@ -184,6 +225,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1747209494,
+        "narHash": "sha256-fLise+ys+bpyjuUUkbwqo5W/UyIELvRz9lPBPoB0fbM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5d736263df906c5da72ab0f372427814de2f52f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -227,9 +284,11 @@
     "root": {
       "inputs": {
         "alejandra": "alejandra",
+        "emacs-overlay": "emacs-overlay",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "hyprpicker": "hyprpicker",
+        "nix-qml-support": "nix-qml-support",
         "nixpkgs": "nixpkgs_2",
         "quickshell": "quickshell",
         "systems": "systems_2"
