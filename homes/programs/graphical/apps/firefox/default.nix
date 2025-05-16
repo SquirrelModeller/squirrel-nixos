@@ -52,9 +52,12 @@ in
             "browser.startup.page" = 3;
             "browser.toolbars.bookmarks.visibility" = "never";
             "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+            "browser.tabs.allow_transparent_browser" = true;
+            "browser.display.background_color" = colors.background;
           };
         };
       };
+
 
       policies = {
         DisableTelemetry = true;

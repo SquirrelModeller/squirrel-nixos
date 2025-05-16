@@ -1,8 +1,12 @@
 :root {
-  --sfwindow: #3b3b3b;
+  --sfwindow: base99;
   --sfsecondary: base99;
   --tab-text: base02;
   --tab-text-focus: base00;
+
+  --background-transparent: rgba(255, 255, 255, 0.2);
+
+  --sub-text: white;
 }
 
 :root {
@@ -14,27 +18,63 @@
   --toolbarbutton-icon-fill: var(--tab-text) !important;
   --toolbar-color: var(--tab-text-focus) !important;
 
-  /* Has something to do with background color. Can be used for transparency*/
-  /*--toolbar-field-focus-border-color*/
-
   --toolbox-bgcolor: var(--sfsecondary) !important;
   --toolbox-bgcolor-inactive: var(--sfsecondary) !important;
 
   --toolbar-field-focus-border-color: var(--sfsecondary) !important;
   --toolbar-field-background-color: var(--sfsecondary) !important;
-  --urlbar-box-focus-bgcolor: var(--sfsecondary) !important;  
+  --urlbar-box-focus-bgcolor: var(--sfsecondary) !important;
+
+  --button-text-color-ghost: var(--sub-text) !important;
+  --button-text-color: var(--sub-text) !important;
+  --toolbar-field-focus-color: var(--sub-text) !important;
+
+  --toolbox-textcolor: var(--sub-text) !important;
+
+  --urlbar-box-bgcolor: var(--sfsecondary) !important;
+
+  /* Tab preview bottom text */
+  --text-color-deemphasized: var(--tab-text) !important;
+
+  --toolbar-field-focus-background-color: var(--sfsecondary) !important;
+
+  /* Back button for SVG and some text apparently */
+  --arrowpanel-color: var(--sub-text) !important;
+
+
+  /* Tab selected highlight */
+  --toolbar-bgcolor: var(--background-transparent) !important;
 }
 
 * {
   box-shadow: 0 0 0 0 !important;
 }
+
+
+/* Autofill form */
+#PopupAutoComplete > richlistbox > richlistitem {
+  > .two-line-wrapper {
+    > .labels-wrapper {
+      > .label-row {
+	color: var(--sub-text);
+      }
+    }    
+  }
+}
+.ac-title-text,
+.ac-separator-text,
+.ac-url-text,
+.ac-text-overflow-container {
+  color: var(--sub-text);
+}
+
 
 .sidebar-splitter {
   border: none !important;
 }
 
-* {
-  box-shadow: 0 0 0 0 !important;
+.findbar-textbox {
+  --input-border-color: none !important;
 }
 
 .sidebar-splitter {
@@ -47,20 +87,77 @@
   border: none !important;
 }
 
+findbar {
+  border-top: none !important;
+}
 
-.browser-toolbox-background {
-  background-color: var(--sfsecondary) !important;
+#urlbar-zoom-button {
+  background-color: var(--sfwindow) !important;
 }
 
 
-#tabbrowser-tabs,
+/* Allow transparency */
+/* browser.tabs.allow_transparent_browser */
+
+
+/* Background of browser */
+/* Browser spacer */
+.titlebar-spacer,
+/* Browser URL (top) */
+.browser-toolbox-background,
+/* Tabs */
+#tabbrowser-tabs
+{
+  background-color: var(--sfwindow) !important;
+}
+
+/* Controls all website backgrounds */
+/* .browserSidebarContainer { */
+/*   background-color: var(--sfwindow) !important; */
+/* } */
+
+/* Removes background for new tabs */
+/* #tabbrowser-tabpanels { */
+/*   background-color: var(--sfwindow) !important; */
+/* } */
+
+/* Disable browser outline between URL/NAV and the browser contents */
+#tabbrowser-tabbox {
+  outline: none !important;    
+}
+
+/* Attempt to make the URL bar have blur. It only works for about: pages. */
+#urlbar-background {
+  background-color: var(--sfwindow) !important;
+  /* backdrop-filter: blur(2px) !important; */
+  border: none !important;
+}
+
+menu,
+menuitem,
+menupopup {
+  color: var(--sub-text) !important;
+}
+
+tooltip {
+  color: var(--sub-text) !important;
+}
+
+.tab-preview-title {
+  color: var(--sub-text) !important;
+}
+
+.panel-header,
+.panel-subview-header,
+.panel-header > label,
+.panel-subview-header > label {
+  color: var(--sub-text) !important;
+}
+
 #sidebar-box,
 #urlbar-input-container,
-#urlbar-background,
 .toolbar-items,
 .sidebar-placesTree,
-.browserSidebarContainer,
-.titlebar-spacer,
 .titlebar-buttonbox-container,
 .panel-subview-body {
   background-color: var(--sfsecondary) !important;
@@ -78,14 +175,14 @@
 }
 
 .tab-labeld {
-  color: #f9f3e0;
+  color: var(--tab-text-focus) !important;
 }
 
 tab {
   color: var(--tab-text) !important;
 }
 tab:where([visuallyselected="true"]) {
-  color: #FFE6D4 !important;
+  color: var(--sub-text) !important;
 }
 
 menupopup,

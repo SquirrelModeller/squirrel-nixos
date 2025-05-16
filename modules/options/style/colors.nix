@@ -7,6 +7,9 @@ in
     colorScheme = {
       colors = mkOption {
         type = lib.types.attrsOf lib.types.str;
+
+        # Colors and their meanings
+        # https://github.com/chriskempson/base16/blob/main/styling.md
         default = {
           base00 = "#f9f3e0";
           baseA0 = "#D35151";
@@ -21,10 +24,9 @@ in
           base05 = "#b16286";
           base0D = "#d3869b";
           base06 = "#FFCF95";
-          base0E = "#8ec07c"; ##eab964
+          base0E = "#8ec07c";
           base07 = "#ada498";
           base0F = "#928374";
-
           background = "#1f1f1f";
         };
       };
