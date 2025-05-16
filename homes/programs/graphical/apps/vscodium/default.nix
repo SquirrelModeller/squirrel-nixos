@@ -24,13 +24,8 @@ in
         extensions = with pkgs.vscode-extensions; [
           bbenoist.nix
           kamadorueda.alejandra
-          catppuccin.catppuccin-vsc
         ];
         userSettings = {
-          "workbench.colorTheme" = "Catppuccin Mocha";
-          "workbench.preferredDarkColorTheme" = "Catppuccin Mocha";
-          "catppuccin.accentColor" = "mauve";
-
           "window.titleBarStyle" = "native";
           "telemetry.telemetryLevel" = "off";
           "update.showReleaseNotes" = false;
