@@ -29,6 +29,7 @@
     nixpkgs-fmt
     vlc
     playerctl
+    pandoc
   ];
 
   home.stateVersion = "24.11";

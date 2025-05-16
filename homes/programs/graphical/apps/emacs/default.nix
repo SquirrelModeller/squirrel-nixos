@@ -67,6 +67,9 @@ in
         lsp-pyright
         which-key
         company-box
+        markdown-mode
+        markdown-preview-mode
+        markdown-toc
       ];
     };
 

@@ -19,9 +19,18 @@ Basic Emacs settings.
 
 ;;; Code:
 
-;; Disable backup and auto-save files
+;; Redirect auto save files to tmp
+(setq auto-save-file-name-transforms
+      `((".*" , (concat temporary-file-directory "\\1") t)))
+
+;; It is disabled, but we will redirect anyway
 (setq make-backup-files nil)
-(setq auto-save-default nil)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+
+;; This prevents two emacs editors from editing the same file at the same time
+;; I don't need it on my setup, so we disble it
+(setq create-lockfiles nil)
 
 ;; Set up XDG directory
 (setq user-emacs-directory "~/.config/emacs/")
@@ -488,6 +497,67 @@ For now this setup works, so I'll leave it be.
 ;; Overwrite org-return-indent, as it prevents evil
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-j") 'next-line))
+#+end_src
+
+* Markdown Support
+
+Configuration for editing and previewing Markdown files.
+Useful guide: https://jblevins.org/projects/markdown-mode/
+
+** Markdown Mode
+
+Basic markdown editing capabilities with syntax highlighting.
+
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init
+  (setq markdown-command "pandoc")
+  :config
+
+  (setq markdown-fontify-code-blocks-natively t
+        markdown-header-scaling t
+        markdown-hide-markup nil)
+
+  ;; Use visual-line-mode for better line wrapping
+  (add-hook 'markdown-mode-hook 'visual-line-mode)
+
+  ;; Variable-pitch fonts for text, like in org-mode
+  (add-hook 'markdown-mode-hook 'variable-pitch-mode)
+
+  (custom-theme-set-faces
+   'user
+   '(markdown-code-face ((t (:inherit fixed-pitch))))
+   '(markdown-table-face ((t (:inherit fixed-pitch)))))
+
+  :bind (:map markdown-mode-map
+              ("C-c C-s p" . markdown-preview)
+              ("C-c C-s l" . markdown-live-preview-mode)))
+#+end_src
+
+** Markdown Preview
+
+Live preview capability for markdown documents.
+
+#+begin_src emacs-lisp
+(use-package markdown-preview-mode
+  :after markdown-mode
+  :config
+  (setq markdown-split-window-direction 'right)
+  (setq markdown-live-preview-delete-export 'delete-on-export))
+#+end_src
+
+** Markdown TOC
+
+Generate table of contents for markdown documents.
+
+#+begin_src emacs-lisp
+(use-package markdown-toc
+  :after markdown-mode
+  :bind (:map markdown-mode-map
+              ("C-c C-s t" . markdown-toc-generate-or-refresh-toc)))
 #+end_src
 
 * Custom Keybindings
