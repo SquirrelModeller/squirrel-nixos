@@ -284,6 +284,9 @@ LSP mode configuration
         lsp-prefer-flymake nil
         lsp-enable-file-watchers nil)
 
+  ;; Stop nix from evaluating packages
+  (setq lsp-nix-nil-flake-auto-eval nil)
+
   ;; UI customizations
   (setq lsp-lens-enable t
         lsp-headerline-breadcrumb-enable t
