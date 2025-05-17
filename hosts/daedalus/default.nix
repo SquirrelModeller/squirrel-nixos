@@ -26,12 +26,9 @@ in
 
   boot = {
     initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
-    kernelModules =
-      [ "kvm-amd" ] ++
-      (if config.modules.system.virtualisation.enable then
-        [ "vfio_pci" ]
-      else
-        [ "amdgpu" ]);
+    kernelModules = (if config.modules.system.virtualisation.enable then
+      config.modules.system.virtualisation.enable [ "kvm-gpu" "vfio_pci" ] else
+      [ "amdgpu " ]);
 
     kernelParams = [
       "amd_iommu=on"
@@ -48,6 +45,8 @@ in
 
     extraModulePackages = [ ];
   };
+
+
 
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
