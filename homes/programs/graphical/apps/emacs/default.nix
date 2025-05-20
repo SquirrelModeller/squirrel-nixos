@@ -128,8 +128,9 @@ in
 
     };
 
-    home.sessionVariables = {
-      QML2_IMPORT_PATH = "${pkgs.qt6.qtdeclarative}/lib/qt-6/qml";
-    };
+
+    # home.sessionVariables = {
+    #   QML2_IMPORT_PATH = "${pkgs.qt6.qtdeclarative}/lib/qt-6/qml";
+    # };
   };
 }

@@ -249,12 +249,13 @@ Window configuration management.
 ** Elscreen
 
 Tab system for Emacs.
+I am disabling this for now, as I did not use it, and it overwrote my sticky header.
 
 #+begin_src emacs-lisp
 ;; Elscreen - tab system for Emacs
-(use-package elscreen
-  :config
-  (elscreen-start))
+;; (use-package elscreen
+;;   :config
+;;   (elscreen-start))
 #+end_src
 
 ** Treesitter
@@ -459,7 +460,8 @@ For some reason the prior setup did not hook C++/C correctly. I am going nuclear
                     :server-id 'qmlls))
   (add-hook 'qml-ts-mode-hook (lambda ()
                                 (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
-                                (lsp-deferred))))
+                                (lsp-deferred)
+                                (add-hook 'before-save-hook #'lsp-format-buffer nil t))))
 #+end_src
 
 ** Format-all
