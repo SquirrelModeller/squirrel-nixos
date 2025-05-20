@@ -4,30 +4,42 @@ import Quickshell.Hyprland
 import "./visual/Theme.js" as Theme
 import QtQuick.Controls.Basic
 import QtQml
-import QtQuick.LocalStorage
-import Quickshell.Io
-Button {
-    id: workspaceIndicator
-    property int workspaceIndex: 0
-    property var jp: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    property var workspace: Hyprland.workspaces.values.find(ws => parseInt(ws.name) === workspaceIndex)
-    text: jp[workspaceIndex - 1]
-    font.pixelSize: Theme.textSizeWorkspaceIndicator
 
-    contentItem: Text {
-        text: workspaceIndicator.text
-	font: workspaceIndicator.font
-        color: workspace ? (workspace === Hyprland.focusedMonitor.activeWorkspace ? Theme.focusedWorkspace : Theme.unfocusedWorkspace) : Theme.notWorkspace
-	anchors.margins: 2
-	elide: Text.ElideRight
+Rectangle {
+    id: workspace
+    width: childrenRect.width
+    height: childrenRect.height
+
+    color: Theme.transparentBackground
+    radius: 100
+
+    Row {
+        Repeater {
+            id: workspacerepeater
+            model: 10
+            delegate: Button {
+                id: workspaceIndicator
+                property int workspaceIndex: index + 1
+                property var jp: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+                property var workspace: Hyprland.workspaces.values.find(ws => parseInt(ws.name) === workspaceIndex)
+                text: jp[workspaceIndex - 1]
+                font.pixelSize: Theme.textSizeWorkspaceIndicator
+
+                contentItem: Text {
+                    text: workspaceIndicator.text
+                    font: workspaceIndicator.font
+                    color: workspaceIndicator.workspace ? (workspaceIndicator.workspace === Hyprland.focusedMonitor.activeWorkspace ? Theme.focusedWorkspace : Theme.unfocusedWorkspace) : Theme.notWorkspace
+                    anchors.margins: 2
+                    elide: Text.ElideRight
+                }
+
+                background: Rectangle {
+                    color: workspaceIndicator.hovered ? Qt.rgba(0, 0, 0, 0.4) : "transparent"
+                    radius: 100
+                }
+
+                onClicked: Hyprland.dispatch("workspace " + workspaceIndex)
+            }
+        }
     }
-
-    background: Rectangle {
-	color: workspaceIndicator.hovered ? Qt.rgba(0, 0, 0, 0.4) : "transparent"
-	radius: 100
-    }
-
-    onClicked: Hyprland.dispatch("workspace " + workspaceIndex)
-
-
 }

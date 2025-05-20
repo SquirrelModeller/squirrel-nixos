@@ -1,64 +1,81 @@
-import QtQuick 2.15
-import Quickshell
-import Quickshell.Hyprland
+import QtQuick
 import QtQuick.Layouts
-import "./visual/Theme.js" as Theme
+import Quickshell
+import Quickshell.Wayland
+import "Widgets/Music"
 
+Scope {
+    Variants {
+        model: Quickshell.screens
+        delegate: WlrLayershell {
+            id: root
 
-ShellRoot {
-    PanelWindow {
-	id: root
-	anchors {
-	    top: true
-	    left: true
-	    right: true
-	}
-        color: "transparent"
-        height: 70
-	
+            required property ShellScreen modelData
 
-        RowLayout {
-            anchors.fill: parent
-	    uniformCellSizes: true
-	    Layout.margins: 20
+            layer: WlrLayer.Top
+            screen: modelData
 
-            Rectangle {
-		Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-		Layout.preferredWidth: childrenRect.width
-		Layout.preferredHeight: childrenRect.height
-		Layout.margins: parent.Layout.margins
-		color: Theme.transparentBackground
-                radius: 100
-                Row {
-                    Repeater {
-                        model: 10
-                        delegate: WorkspaceIndicator {
-                            workspaceIndex: model.index + 1
-                        }
-                    }
+            implicitHeight: 60
+
+            anchors {
+                top: true
+                left: true
+                right: true
+            }
+
+            color: "transparent"
+
+            RowLayout {
+                id: workspacePicker
+                anchors {
+                    leftMargin: 20
+                    topMargin: 10
                 }
+                spacing: 0
+                layoutDirection: Qt.LeftToRight
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+
+                WorkspaceIndicator {}
             }
 
-            WindowName {
-		Layout.alignment: Qt.AlignHCenter
-		Layout.preferredWidth: childrenRect.width
-            }
+            RowLayout {
+                id: sysTray
 
-	    SysTray {
-		Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-		Layout.margins: parent.Layout.margins 
-	    }
+                anchors {
+                    rightMargin: 20
+                    topMargin: 10
+                }
+                spacing: 0
+                layoutDirection: Qt.RightToLeft
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+
+                SysTray {}
+            }
         }
     }
 
-    function dub(x: int): int {
-        for (var i = 0; i < 10; i+=1) {
-            console.log("hi");
+    PanelWindow {
+        exclusionMode: ExclusionMode.Ignore
+        anchors {
+            top: true
         }
-        return x * 2;
+
+        implicitWidth: 400
+        implicitHeight: 240
+
+        color: "transparent"
+
+        MusicController {}
     }
 
-    function testSysTray() {
-	
-    }
+    // function dub(x: int): int {
+    //     for (var i = 0; i < 10; i += 1) {
+    //         console.log("hi");
+    //     }
+    //     return x * 2;
+    // }
 }

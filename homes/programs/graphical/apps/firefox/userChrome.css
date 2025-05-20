@@ -77,6 +77,10 @@
   --input-border-color: none !important;
 }
 
+.browserContainer > findbar {
+  background-color: var(--sfwindow) !important;
+}
+
 .sidebar-splitter {
   border: none !important;
 }

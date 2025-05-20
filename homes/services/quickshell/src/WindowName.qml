@@ -6,30 +6,29 @@ Rectangle {
     color: "transparent"
     width: textElement.implicitWidth
     height: textElement.height
-    
+
     Text {
-	id: textElement
-	property string lastEventText: ""
+        id: textElement
+        property string lastEventText: ""
 
-	anchors.centerIn: parent
-	text: lastEventText
-	color: "white"
-	font.pixelSize: Theme.textSizeNormal
-	font.bold: true
+        anchors.centerIn: parent
+        text: lastEventText
+        color: "white"
+        font.pixelSize: Theme.textSizeNormal
+        font.bold: true
 
-	function updateEventText(newText) {
-            lastEventText = newText
-	}
+        function updateEventText(newText) {
+            lastEventText = newText;
+        }
 
-	Connections {
+        Connections {
             target: Hyprland
 
             function onRawEvent(event) {
-		if (event.name.toString() === "activewindow") {
+                if (event.name.toString() === "activewindow") {
                     textElement.updateEventText(event.data.toString().replace(/^[^,]*,/, ""));
-		}
+                }
             }
-	}
+        }
     }
-
 }
