@@ -1,10 +1,15 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   inherit (lib) mkEnableOption mkOption types;
-in {
+in
+{
   options.modules.usrEnv.programs.apps = {
     vscodium.enable = mkEnableOption "VSCode";
     kitty.enable = mkEnableOption "Kitty Terminal Emulator";
     firefox.enable = mkEnableOption "Firefox Browser";
     emacs.enable = mkEnableOption "Emacs";
+  };
+  options.modules.usrEnv.programs.tools = {
+    direnv.enable = mkEnableOption "direnv";
   };
 }

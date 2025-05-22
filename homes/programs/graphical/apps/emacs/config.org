@@ -639,6 +639,13 @@ System-specific integrations.
 (setq interprogram-cut-function 'wl-copy)
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package direnv
+  :config
+  (direnv-mode))
+#+end_src
+
+
 * NixOS Specific Settings
 
 Settings specific to NixOS.

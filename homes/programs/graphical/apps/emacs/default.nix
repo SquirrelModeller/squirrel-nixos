@@ -65,7 +65,7 @@ let
       markdown-mode
       markdown-preview-mode
       markdown-toc
-
+      direnv
       (treesit-grammars.with-grammars (grammars: tree-sitter-parsers grammars))
       inputs.nix-qml-support.packages.${pkgs.stdenv.system}.qml-ts-mode
     ]));
