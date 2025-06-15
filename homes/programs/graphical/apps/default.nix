@@ -5,5 +5,6 @@
     ./vscodium
     ./kitty
     ./obs
+    ./blender
   ];
 }

@@ -8,6 +8,7 @@ in
     kitty.enable = mkEnableOption "Kitty Terminal Emulator";
     firefox.enable = mkEnableOption "Firefox Browser";
     emacs.enable = mkEnableOption "Emacs";
+    blender.enable = mkEnableOption "Blender";
   };
   options.modules.usrEnv.programs.tools = {
     direnv.enable = mkEnableOption "direnv";

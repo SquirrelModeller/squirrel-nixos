@@ -6,6 +6,7 @@
   modules.usrEnv.programs.apps.kitty.enable = true;
   modules.usrEnv.programs.apps.firefox.enable = true;
   modules.usrEnv.programs.apps.emacs.enable = true;
+  modules.usrEnv.programs.apps.blender.enable = true;
 
   modules.usrEnv.programs.tools.direnv.enable = true;
 
