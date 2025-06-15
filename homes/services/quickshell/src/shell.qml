@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import "Widgets/Music"
+import "Widgets/Simulation"
 
 Scope {
     Variants {
@@ -69,8 +70,19 @@ Scope {
 
         color: "transparent"
 
-        MusicController {}
+        //MusicController {}
     }
+
+    // PanelWindow {
+    //     implicitHeight: 600
+    //     implicitWidth: 600
+    //     anchors {
+    //         bottom: true
+    //         right: true
+    //     }
+
+    //     Simulation {}
+    // }
 
     // function dub(x: int): int {
     //     for (var i = 0; i < 10; i += 1) {
