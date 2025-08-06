@@ -1,7 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   wayland.windowManager.hyprland.settings = {
     "$MOD" = "SUPER";
@@ -56,6 +55,7 @@
     binde = [
       ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
       ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ",mouse:277, exec, echo \"unique stardewvally keyHold 46 100 sleep 100 keyPress 54 keyPress 111 keyPress 19 sleep 80 keyRelease 54 keyRelease 111 keyRelease 19\" > /tmp/domacro"
     ];
     bindl = [
       ",XF86AudioPlay, exec, playerctl play-pause"
