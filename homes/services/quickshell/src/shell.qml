@@ -59,19 +59,19 @@ Scope {
         }
     }
 
-    PanelWindow {
-        exclusionMode: ExclusionMode.Ignore
-        anchors {
-            top: true
-        }
+    // PanelWindow {
+    //     exclusionMode: ExclusionMode.Ignore
+    //     anchors {
+    //         top: true
+    //     }
 
-        implicitWidth: 400
-        implicitHeight: 240
+    //     implicitWidth: 400
+    //     implicitHeight: 240
 
-        color: "transparent"
+    //     color: "transparent"
 
-        //MusicController {}
-    }
+    //     //MusicController {}
+    // }
 
     // PanelWindow {
     //     implicitHeight: 600
