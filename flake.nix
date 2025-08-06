@@ -3,51 +3,69 @@
 
   outputs = { self, nixpkgs, systems, ... }@inputs:
     let
-      system = "x86_64-linux";
+      hostEntries = builtins.readDir ./hosts;
+      hostNames = builtins.filter
+        (h: builtins.pathExists (./hosts + "/${h}") &&
+          builtins.readFileType (./hosts + "/${h}") == "directory")
+        (builtins.attrNames hostEntries);
+
+      hostModules = builtins.listToAttrs (map
+        (hn: {
+          name = hn;
+          value = ./hosts + "/${hn}/configuration.nix";
+        })
+        hostNames);
+
+      makeNixosConfiguration = hostName: configPath:
+        let
+          hostPath = ./hosts + "/${hostName}";
+          systemFile = hostPath + "/system";
+          system =
+            if builtins.pathExists systemFile
+            then builtins.readFile systemFile
+            else "x86_64-linux";
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./modules/options
+            ./modules/core
+            ./packages.nix
+            ./users/squirrel.nix
+            ./hosts
+            configPath
+          ];
+        };
     in
     {
-      nixosConfigurations.modeller = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./modules/options
-          ./settings.nix
-          ./modules/core
-          ./system.nix
-          ./packages.nix
-          ./users/squirrel.nix
-          ./hosts
-        ];
-      };
+      nixosConfigurations = builtins.mapAttrs makeNixosConfiguration hostModules;
     };
 
   inputs = {
     systems.url = "github:nix-systems/default-linux";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     hyprpicker.url = "github:hyprwm/hyprpicker";
-
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nix-qml-support = {
       url = "git+https://git.outfoxxed.me/outfoxxed/nix-qml-support";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    alejandra.url = "github:kamadorueda/alejandra/4.0.0";
-    alejandra.inputs.nixpkgs.follows = "nixpkgs";
+    alejandra = {
+      url = "github:kamadorueda/alejandra/4.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
+
 }
