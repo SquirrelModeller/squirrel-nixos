@@ -17,8 +17,11 @@ in
     (modulesPath + "/installer/scan/not-detected.nix")
     ./networking.nix
     ./fs
+    ../../modules/core
     inputs.home-manager.nixosModules.home-manager
   ];
+
+  squirrelOS.users.enabled = [ "squirrel" ];
 
   modules.usrEnv.services.bar = "quickshell";
 
@@ -106,4 +109,4 @@ in
     extraSpecialArgs = { inherit inputs; };
   };
 }
-
+  

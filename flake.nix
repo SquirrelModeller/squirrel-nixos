@@ -1,6 +1,5 @@
 {
   description = "Squirrel OS";
-
   outputs = { self, nixpkgs, systems, ... }@inputs:
     let
       hostEntries = builtins.readDir ./hosts;
@@ -8,13 +7,23 @@
         (h: builtins.pathExists (./hosts + "/${h}") &&
           builtins.readFileType (./hosts + "/${h}") == "directory")
         (builtins.attrNames hostEntries);
-
       hostModules = builtins.listToAttrs (map
         (hn: {
           name = hn;
           value = ./hosts + "/${hn}/configuration.nix";
         })
         hostNames);
+
+      userEntries = builtins.readDir ./users;
+      userNames = builtins.filter
+        (u: builtins.pathExists (./users + "/${u}") &&
+          builtins.readFileType (./users + "/${u}") == "directory" &&
+          builtins.pathExists (./users + "/${u}/programs/default.nix"))
+        (builtins.attrNames userEntries);
+
+      getUserPrograms = pkgs: username:
+        let programsFile = ./users + "/${username}/programs/default.nix";
+        in import programsFile { inherit pkgs; };
 
       makeNixosConfiguration = hostName: configPath:
         let
@@ -27,12 +36,15 @@
         in
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs;
+            availableUsers = userNames;
+            inherit getUserPrograms;
+          };
           modules = [
             ./modules/options
-            ./modules/core
+            ./modules/users.nix
             ./packages.nix
-            ./users/squirrel.nix
             ./hosts
             configPath
           ];
@@ -41,7 +53,6 @@
     {
       nixosConfigurations = builtins.mapAttrs makeNixosConfiguration hostModules;
     };
-
   inputs = {
     systems.url = "github:nix-systems/default-linux";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -67,5 +78,4 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
 }
