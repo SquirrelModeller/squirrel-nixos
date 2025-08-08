@@ -21,9 +21,9 @@
           builtins.pathExists (./users + "/${u}/programs/default.nix"))
         (builtins.attrNames userEntries);
 
-      getUserPrograms = pkgs: username:
+      getUserPrograms = pkgs: inputs: username:
         let programsFile = ./users + "/${username}/programs/default.nix";
-        in import programsFile { inherit pkgs; };
+        in import programsFile { inherit pkgs inputs; };
 
       makeNixosConfiguration = hostName: configPath:
         let
@@ -47,6 +47,7 @@
             ./packages.nix
             ./hosts
             configPath
+            inputs.hjem.nixosModules.default
           ];
         };
     in
@@ -75,6 +76,10 @@
     };
     alejandra = {
       url = "github:kamadorueda/alejandra/4.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hjem = {
+      url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -17,20 +17,5 @@
     ./themes/gtk.nix
   ];
 
-  home.packages = with pkgs; [
-    hyprpaper
-    htop
-    grim
-    slurp
-    wl-clipboard
-    fastfetch
-    socat
-    inputs.alejandra.defaultPackage.${pkgs.system}
-    nixpkgs-fmt
-    vlc
-    playerctl
-    pandoc
-  ];
-
   home.stateVersion = "24.11";
 }
