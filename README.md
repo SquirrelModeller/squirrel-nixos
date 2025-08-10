@@ -1,18 +1,26 @@
 # Squirrel NixOS Config
+*This README is still WIP. Likewise the entire Nix config is heavily in WIP*
 
-My personal config. *It just works on my machine™*. I do not recommend even attempting to deploy this config as is on a machine. It is held toogether with duct tape, hopes and dreams.
 
+My person NixOS configuration.
 
 ## Cool things
 
-If you are a fan of eww there could be a few useful scripts for you in `homes/services/eww/source/scripts`.
+Hosts are auto-discovered from hosts/* and turned into nixosConfigurations.\<host\>.
 
-I attempted to make things "modular" by using services to spawn bars. `lib/services/uiDaemon.nix`. So that might be worth looking into.
+Users are auto-discovered from users/*. Each host can set which users are active:
+```
+# hosts/<host>/configuration.nix
+{
+  squirrelOS.users.enabled = [ "squirrel" "guest" ]
+}
+```
 
+There are declarative per-user services from users/\<name\>/services.nix.
 
 
 ## Credits
-This config is heavily based on [Nyx](https://github.com/NotAShelf/nyx). This is my first time making a Nix config, so the folder structure has been mirrored along with file placement.
+Greek naming convention taken from [Nyx](https://github.com/NotAShelf/nyx).
 
 Thanks to the entire Hyprland community for helping me!
 
