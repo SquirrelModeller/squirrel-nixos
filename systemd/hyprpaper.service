@@ -1,0 +1,14 @@
+[Unit]
+Description=Hyprpaper wallpaper daemon
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/etc/profiles/per-user/squirrel/bin/hyprpaper
+Restart=always
+RestartSec=10
+Environment=PATH=/etc/profiles/per-user/squirrel/bin:/run/current-system/sw/bin:/run/wrappers/bin
+
+[Install]
+WantedBy=graphical-session.target

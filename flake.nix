@@ -23,11 +23,11 @@
 
       getUserPrograms = pkgs: inputs: username:
         let programsFile = ./users + "/${username}/programs/default.nix";
-        in import programsFile { inherit pkgs inputs; };
+        in import programsFile { inherit pkgs inputs; lib = pkgs.lib; };
 
       makeNixosConfiguration = hostName: configPath:
         let
-          hostPath = ./hosts + "/${hostName}";
+          hostPath = ./hosts/${hostName};
           systemFile = hostPath + "/system";
           system =
             if builtins.pathExists systemFile
@@ -44,7 +44,6 @@
           modules = [
             ./modules/options
             ./modules/users.nix
-            ./packages.nix
             ./hosts
             configPath
             inputs.hjem.nixosModules.default
@@ -57,10 +56,6 @@
   inputs = {
     systems.url = "github:nix-systems/default-linux";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     hyprpicker.url = "github:hyprwm/hyprpicker";
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";

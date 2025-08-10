@@ -12,7 +12,7 @@ in
         # https://github.com/chriskempson/base16/blob/main/styling.md
         default = {
           base00 = "#f9f3e0";
-          baseA0 = "#D35151";
+          base08 = "#D35151";
           base01 = "#D35151";
           base09 = "#fb4934";
           base02 = "#FCCD94";

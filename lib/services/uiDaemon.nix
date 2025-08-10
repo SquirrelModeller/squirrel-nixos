@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.usrEnv.services.uiDaemon;
-in {
+in
+{
   options.modules.usrEnv.services.uiDaemon = {
     enable = mkEnableOption "Enable a user-level UI daemon";
     package = mkOption {
@@ -34,7 +34,7 @@ in {
     };
     dependencies = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
       description = "Additional packages to be available in the PATH for the service";
     };
   };
@@ -44,9 +44,9 @@ in {
         Description = "User UI Daemon";
         # TODO: Generalize session target!
         # I have not gotten around to generalize this for multiple WMS
-        After = (optional cfg.afterGraphical "graphical-session.target") ++ ["hyprland-session.target"];
-        PartOf = (optional cfg.afterGraphical "graphical-session.target") ++ ["hyprland-session.target"];
-        Requires = ["hyprland-session.target"];
+        After = (optional cfg.afterGraphical "graphical-session.target") ++ [ "hyprland-session.target" ];
+        PartOf = (optional cfg.afterGraphical "graphical-session.target") ++ [ "hyprland-session.target" ];
+        Requires = [ "hyprland-session.target" ];
       };
       Service = {
         ExecStart = "${cfg.package}/bin/${cfg.command}";
@@ -68,7 +68,7 @@ in {
         ];
       };
       Install = {
-        WantedBy = ["hyprland-session.target"];
+        WantedBy = [ "hyprland-session.target" ];
       };
     };
   };
