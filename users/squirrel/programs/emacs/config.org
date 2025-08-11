@@ -35,6 +35,12 @@ Basic Emacs settings.
 ;; Set up XDG directory
 ;;(setq user-emacs-directory ".")
 
+(defvar my-xdg-cache (or (getenv "XDG_CACHE_HOME") (expand-file-name "~/.cache/")))
+(defvar my-xdg-state (or (getenv "XDG_STATE_HOME") (expand-file-name "~/.local/state/")))
+(defvar my-xdg-config (or (getenv "XDG_CONFIG_HOME") (expand-file-name "~/.config/")))
+
+
+
 ;; Automatic bracket pairing
 (electric-pair-mode 1)
 

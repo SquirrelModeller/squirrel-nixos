@@ -86,7 +86,7 @@ let
        cp ${emacsThemFile} $out/themes/my-kitty-theme.el
     '';
   };
-
+  #temo
   emacsWrapped = pkgs.symlinkJoin {
     name = "emacs-wrapped";
     paths = [ customEmacs ];
@@ -100,6 +100,12 @@ let
       description = "Emacs wrapped with language servers and init directory";
     };
   };
+
+
+
+
+
+
 in
 with pkgs; [
   # TODO: Fix emacs temp file folder source
