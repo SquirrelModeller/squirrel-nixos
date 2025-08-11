@@ -23,11 +23,13 @@ in
     ../../modules/graphical/wms/hyprland.nix
     ../../modules/packages
     ../../modules/graphical/apps
+    ../../modules/graphical/apps/quickshell.nix
   ];
 
   squirrelOS.users.enabled = [ "squirrel" ];
 
   modules.usrEnv.programs.apps.firefox.enable = true;
+  modules.usrEnv.programs.apps.quickshell.enable = true;
 
   modules.system.virtualisation.enable = false;
   modules.system.virtualisation.qemu.enable = false;
