@@ -43,7 +43,8 @@
 (setq create-lockfiles nil)
 
 ;; Themes & config from immutable store:
-(add-to-list 'custom-theme-load-path (file-name-concat sq/store-init-dir "themes"))
+(add-to-list 'custom-theme-load-path
+             (expand-file-name "theme/emacs" sq/xdg-cache))
 (when (file-exists-p custom-file) (load custom-file nil t))
 (setq package-enable-at-startup nil)
 

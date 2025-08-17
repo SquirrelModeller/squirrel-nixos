@@ -24,6 +24,7 @@ in
     ../../modules/packages
     ../../modules/graphical/apps
     ../../modules/graphical/apps/quickshell.nix
+    ../../modules/graphical/theme/wallust-colorscheme.nix
   ];
 
   squirrelOS.users.enabled = [ "squirrel" ];

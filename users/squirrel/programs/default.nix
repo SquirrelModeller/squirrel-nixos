@@ -1,11 +1,5 @@
 { pkgs, inputs, lib, colors, ... }:
 let
-
-  # This is temporary. I finally got this shit working.
-  # Moving this to a seperate file later. Eventually...
-  emacsThemeText = import ./emacs/themes/generate-theme.nix { inherit lib colors; };
-  emacsThemFile = pkgs.writeText "my-kitty-theme.el" emacsThemeText;
-
   treeSitterParsers = grammars: with grammars; [
     tree-sitter-bash
     tree-sitter-c
@@ -21,6 +15,7 @@ let
     tree-sitter-nix
     inputs.nix-qml-support.packages.${pkgs.stdenv.system}.tree-sitter-qmljs
   ];
+
 
   devTools = with pkgs; [
     clang-tools
@@ -74,16 +69,13 @@ let
     nativeBuildInputs = [ customEmacs pkgs.coreutils ];
 
     installPhase = ''
-       mkdir -p $out
-       cp -r ./* $out/
+      mkdir -p $out
+      cp -r ./* $out/
 
-       # Tangle config.org -> config.el inside $out
-       ${customEmacs}/bin/emacs --batch \
-         --eval "(require 'org)" \
-         --eval "(org-babel-tangle-file \"$out/config.org\" \"$out/config.el\")"
-
-      mkdir -p $out/themes
-       cp ${emacsThemFile} $out/themes/my-kitty-theme.el
+      # Tangle config.org -> config.el inside $out
+      ${customEmacs}/bin/emacs --batch \
+        --eval "(require 'org)" \
+        --eval "(org-babel-tangle-file \"$out/config.org\" \"$out/config.el\")"
     '';
   };
   #temo
@@ -129,6 +121,7 @@ with pkgs; [
   tofi
   tree
   ranger
+  wallust
 
   (wrapOBS {
     plugins = with obs-studio-plugins; [

@@ -4,10 +4,6 @@ let
   quickshell = inputs.quickshell.packages.${pkgs.system}.default;
 in
 {
-
-  # TODO: Fix quickshell service
-  # For some reason this does not work
-
   "ui-quickshell-${username}" = {
     description = "Quickshell for ${username}";
     after = [ "graphical-session.target" "hyprland-session.target" ];

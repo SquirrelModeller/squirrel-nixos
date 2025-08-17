@@ -1,0 +1,7 @@
+backend = "fastresize"
+color_space = "labmixed"
+palette = "dark"
+
+[templates]
+theme_colors = { template = 'kitty.conf', target = '~/.cache/theme/kitty/colors.conf' }
+emacs = { template = 'emacs.el', target = '~/.cache/theme/emacs/my-kitty-theme.el' }
