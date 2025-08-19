@@ -40,6 +40,7 @@
             inherit inputs;
             availableUsers = userNames;
             inherit getUserPrograms;
+            inherit self;
           };
           modules = [
             ./modules/options

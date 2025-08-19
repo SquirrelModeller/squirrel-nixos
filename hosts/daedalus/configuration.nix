@@ -3,6 +3,7 @@
 , pkgs
 , inputs
 , modulesPath
+, self
 , ...
 }:
 
@@ -12,19 +13,20 @@ let
     "1002:ab30"
   ];
 
-  systeminfo = pkgs.callPackage ../../modules/terminal/systeminfo { };
+  systeminfo = pkgs.callPackage "${self}/modules/terminal/systeminfo" { };
 in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./networking.nix
     ./fs
-    ../../modules/core
-    ../../modules/graphical/wms/hyprland.nix
-    ../../modules/packages
-    ../../modules/graphical/apps
-    ../../modules/graphical/apps/quickshell.nix
-    ../../modules/graphical/theme/wallust-colorscheme.nix
+    "${self}/modules/core"
+    "${self}/modules/graphical/wms/hyprland.nix"
+    "${self}/modules/packages"
+    "${self}/modules/graphical/apps"
+    "${self}/modules/graphical/apps/quickshell.nix"
+    "${self}/modules/graphical/theme/wallust-colorscheme.nix"
+    "${self}/modules/terminal/security.nix"
   ];
 
   squirrelOS.users.enabled = [ "squirrel" ];
