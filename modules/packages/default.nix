@@ -1,12 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 # This is the common packages most systems need.
 # TODO: Make pkg groups
 {
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-    wget
-  ];
+  environment.systemPackages = lib.attrValues {
+    inherit (pkgs)
+      git
+      vim
+      wget;
+  };
 
   programs = {
     direnv = {

@@ -13,12 +13,13 @@ in
     pinentryPackage = pkgs.pinentry-tty;
   };
 
-  environment.systemPackages = with pkgs; [
-    openssh
-    gnupg
-    libfido2
-    yubikey-manager
-  ];
+  environment.systemPackages = lib.attrValues {
+    inherit (pkgs)
+      openssh
+      gnupg
+      libfido2
+      yubikey-manager;
+  };
 
   security.pam.u2f = {
     enable = true;

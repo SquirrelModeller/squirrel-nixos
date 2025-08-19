@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   fonts = {
     enableDefaultPackages = false;
     fontconfig = {
@@ -27,14 +27,14 @@
       enable = true;
       decompressFonts = true;
     };
-    packages = with pkgs; [
-      jetbrains-mono
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-emoji
-      noto-fonts-extra
-      unifont
-      nerd-fonts.hack
-    ];
+    packages = lib.attrValues {
+      inherit (pkgs)
+        jetbrains-mono
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-emoji
+        noto-fonts-extra
+        unifont;
+    };
   };
 }

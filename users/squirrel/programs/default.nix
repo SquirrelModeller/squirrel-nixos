@@ -1,84 +1,81 @@
 { pkgs, inputs, lib, colors, ... }:
 let
-  treeSitterParsers = grammars: with grammars; [
-    tree-sitter-bash
-    tree-sitter-c
-    tree-sitter-cpp
-    tree-sitter-css
-    tree-sitter-html
-    tree-sitter-javascript
-    tree-sitter-json
-    tree-sitter-python
-    tree-sitter-rust
-    tree-sitter-tsx
-    tree-sitter-typescript
-    tree-sitter-nix
+  treeSitterParsers = grammars: [
+    grammars."tree-sitter-bash"
+    grammars."tree-sitter-c"
+    grammars."tree-sitter-cpp"
+    grammars."tree-sitter-css"
+    grammars."tree-sitter-html"
+    grammars."tree-sitter-javascript"
+    grammars."tree-sitter-json"
+    grammars."tree-sitter-python"
+    grammars."tree-sitter-rust"
+    grammars."tree-sitter-tsx"
+    grammars."tree-sitter-typescript"
+    grammars."tree-sitter-nix"
     inputs.nix-qml-support.packages.${pkgs.stdenv.system}.tree-sitter-qmljs
   ];
 
-
-  devTools = with pkgs; [
-    clang-tools
-    rust-analyzer
-    nil
-    nodePackages.typescript-language-server
-    nodePackages.bash-language-server
-    nodePackages.vscode-langservers-extracted
-    qt6.qtdeclarative
+  devTools = [
+    pkgs.clang-tools
+    pkgs.rust-analyzer
+    pkgs.nil
+    pkgs.nodePackages.typescript-language-server
+    pkgs.nodePackages.bash-language-server
+    pkgs.nodePackages.vscode-langservers-extracted
+    pkgs.qt6.qtdeclarative
   ];
 
   customEmacs =
-    (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs: with epkgs; [
-      use-package
-      format-all
-      all-the-icons
-      nix-mode
-      dashboard
-      elscreen
-      flycheck
-      workgroups2
-      rainbow-mode
-      multiple-cursors
-      company
-      neotree
-      minimap
-      org
-      org-bullets
-      org-modern
-      org-present
-      ox-reveal
-      htmlize
-      lsp-mode
-      lsp-ui
-      lsp-pyright
-      which-key
-      company-box
-      markdown-mode
-      markdown-preview-mode
-      markdown-toc
-      direnv
-      (treesit-grammars.with-grammars (grammars: treeSitterParsers grammars))
-      inputs.nix-qml-support.packages.${pkgs.stdenv.system}.qml-ts-mode
-    ]);
+    (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs:
+      let p = epkgs; in [
+        p."use-package"
+        p."format-all"
+        p."all-the-icons"
+        p."nix-mode"
+        p.dashboard
+        p.elscreen
+        p.flycheck
+        p.workgroups2
+        p."rainbow-mode"
+        p."multiple-cursors"
+        p.company
+        p.neotree
+        p.minimap
+        p.org
+        p."org-bullets"
+        p."org-modern"
+        p."org-present"
+        p."ox-reveal"
+        p.htmlize
+        p."lsp-mode"
+        p."lsp-ui"
+        p."lsp-pyright"
+        p."which-key"
+        p."company-box"
+        p."markdown-mode"
+        p."markdown-preview-mode"
+        p."markdown-toc"
+        p.direnv
+        (p.treesit-grammars.with-grammars (grammars: treeSitterParsers grammars))
+        inputs.nix-qml-support.packages.${pkgs.stdenv.system}."qml-ts-mode"
+      ]
+    );
 
   emacsInitDir = pkgs.stdenv.mkDerivation {
     pname = "emacs-init-squirrel";
     version = "1";
     src = ./emacs;
-
     nativeBuildInputs = [ customEmacs pkgs.coreutils ];
-
     installPhase = ''
       mkdir -p $out
       cp -r ./* $out/
-
-      # Tangle config.org -> config.el inside $out
       ${customEmacs}/bin/emacs --batch \
         --eval "(require 'org)" \
         --eval "(org-babel-tangle-file \"$out/config.org\" \"$out/config.el\")"
     '';
   };
-  #temo
+
   emacsWrapped = pkgs.symlinkJoin {
     name = "emacs-wrapped";
     paths = [ customEmacs ];
@@ -92,43 +89,37 @@ let
       description = "Emacs wrapped with language servers and init directory";
     };
   };
-
-
-
-
-
-
 in
-with pkgs; [
+[
   # TODO: Fix emacs temp file folder source
   emacsWrapped
-  hyprpaper
-  htop
-  grim
-  slurp
-  wl-clipboard
-  fastfetch
-  socat
-  nixpkgs-fmt
-  vlc
-  playerctl
-  pandoc
-  kitty
+  pkgs.hyprpaper
+  pkgs.htop
+  pkgs.grim
+  pkgs.slurp
+  pkgs.wl-clipboard
+  pkgs.fastfetch
+  pkgs.socat
+  pkgs.nixpkgs-fmt
+  pkgs.vlc
+  pkgs.playerctl
+  pkgs.pandoc
+  pkgs.kitty
   inputs.quickshell.packages.${pkgs.system}.default
   inputs.alejandra.defaultPackage.${pkgs.system}
-  hyprpaper
-  blender-hip
-  tofi
-  tree
-  ranger
-  wallust
+  pkgs.hyprpaper
+  pkgs.blender-hip
+  pkgs.tofi
+  pkgs.tree
+  pkgs.ranger
+  pkgs.wallust
 
-  (wrapOBS {
-    plugins = with obs-studio-plugins; [
-      wlrobs
-      obs-gstreamer
-      obs-pipewire-audio-capture
-      obs-vkcapture
+  (pkgs.wrapOBS {
+    plugins = [
+      pkgs.obs-studio-plugins.wlrobs
+      pkgs.obs-studio-plugins."obs-gstreamer"
+      pkgs.obs-studio-plugins."obs-pipewire-audio-capture"
+      pkgs.obs-studio-plugins."obs-vkcapture"
     ];
   })
 ]

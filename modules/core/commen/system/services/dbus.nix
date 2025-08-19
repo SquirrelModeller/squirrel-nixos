@@ -1,6 +1,6 @@
-{pkgs, ...}: {
+{ pkgs, lib, ... }: {
   services.dbus = {
     enable = true;
-    packages = with pkgs; [dconf];
+    packages = lib.attrValues { inherit (pkgs) dconf; };
   };
 }

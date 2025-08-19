@@ -77,7 +77,7 @@ in
     graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [ mesa ];
+      extraPackages = lib.attrValues { inherit (pkgs) mesa; };
     };
   };
 
@@ -86,16 +86,18 @@ in
     VISUAL = "vim";
   };
 
-  environment.systemPackages = lib.mkIf (!config.modules.system.virtualisation.enable) (with pkgs; [
-    vulkan-tools
-    vulkan-loader
-    vulkan-validation-layers
-    libva
-    vaapiVdpau
-    libvdpau-va-gl
-    #Temporary place, I just need it gone from HM
-    systeminfo
-  ]);
+  environment.systemPackages = lib.mkIf (!config.modules.system.virtualisation.enable)
+    (lib.attrValues {
+      inherit (pkgs)
+        vulkan-tools
+        vulkan-loader
+        vulkan-validation-layers
+        libva
+        vaapiVdpau
+        libvdpau-va-gl;
+      inherit systeminfo;
+    });
+
 
 }
   

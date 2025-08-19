@@ -4,12 +4,13 @@ let
 in
 {
   config = mkIf config.modules.system.virtualisation.enable {
-    environment.systemPackages = with pkgs; [
-      virt-manager
-      virt-viewer
-      qemu_kvm
-      qemu
-    ];
+    environment.systemPackages = lib.attrValues {
+      inherit (pkgs)
+        virt-manager
+        virt-viewer
+        qemu_kvm
+        qemu;
+    };
 
     virtualisation = {
       libvirtd = {
