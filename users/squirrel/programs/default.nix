@@ -113,6 +113,7 @@ in
   pkgs.tree
   pkgs.ranger
   pkgs.wallust
+  pkgs.comma
 
   (pkgs.wrapOBS {
     plugins = [
