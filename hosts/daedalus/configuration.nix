@@ -1,103 +1,46 @@
-{ config
-, lib
-, pkgs
-, inputs
-, modulesPath
-, self
-, ...
-}:
-
+{ lib, pkgs, modulesPath, self, ... }:
 let
-  gpuIds = [
-    "1002:744c"
-    "1002:ab30"
-  ];
-
   systeminfo = pkgs.callPackage "${self}/modules/terminal/systeminfo" { };
 in
 {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    ./networking.nix
     ./fs
+    (modulesPath + "/installer/scan/not-detected.nix")
     "${self}/modules/core"
-    "${self}/modules/graphical/wms/hyprland.nix"
-    "${self}/modules/packages"
+    "${self}/modules/hardware/cpu/amd.nix"
+    "${self}/modules/hardware/gpu/amd.nix"
     "${self}/modules/graphical/apps"
     "${self}/modules/graphical/apps/quickshell.nix"
     "${self}/modules/graphical/theme/wallust-colorscheme.nix"
+    "${self}/modules/graphical/wms/hyprland.nix"
+    "${self}/modules/packages"
     "${self}/modules/terminal/security.nix"
   ];
 
-  squirrelOS.users.enabled = [ "squirrel" ];
-
-  modules.usrEnv.programs.apps.firefox.enable = true;
-  modules.usrEnv.programs.apps.quickshell.enable = true;
-
-  modules.system.virtualisation.enable = false;
-  modules.system.virtualisation.qemu.enable = false;
-
-  modules.system.programs.gaming.steam.enable = true;
-
-  networking.hostName = "daedalus";
-  time.timeZone = "Europe/Copenhagen";
-  console.keyMap = "dk";
-
-  nixpkgs = {
-    hostPlatform = lib.mkDefault "x86_64-linux";
-  };
-
   boot = {
     initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
-    kernelModules = (if config.modules.system.virtualisation.enable then
-      config.modules.system.virtualisation.enable [ "kvm-gpu" "vfio_pci" ] else
-      [ "amdgpu " ]);
-
-    kernelParams = [
-      "amd_iommu=on"
-      "iommu=pt"
-    ] ++ lib.optionals config.modules.system.virtualisation.enable [
-      "vfio-pci.ids=${lib.concatStringsSep "," gpuIds}"
-      "video=efifb:off"
-    ];
-
-    extraModprobeConfig = lib.mkIf config.modules.system.virtualisation.enable ''
-      options vfio-pci ids=${lib.concatStringsSep "," gpuIds}
-      options vfio_iommu_type1 allow_unsafe_interrupts=1
-    '';
-
-    extraModulePackages = [ ];
-  };
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
-  ];
-
-  hardware = {
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = lib.attrValues { inherit (pkgs) mesa; };
-    };
   };
 
   environment.variables = {
+    systemPackages = [ systeminfo ];
     EDITOR = "vim";
     VISUAL = "vim";
   };
 
-  environment.systemPackages = lib.mkIf (!config.modules.system.virtualisation.enable)
-    (lib.attrValues {
-      inherit (pkgs)
-        vulkan-tools
-        vulkan-loader
-        vulkan-validation-layers
-        libva
-        vaapiVdpau
-        libvdpau-va-gl;
-      inherit systeminfo;
-    });
+  modules = {
+    usrEnv.programs.apps.firefox.enable = true;
+    usrEnv.programs.apps.quickshell.enable = true;
+    system.programs.gaming.steam.enable = true;
+  };
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
+  networking.hostName = "daedalus";
+
+  squirrelOS.users.enabled = [ "squirrel" ];
+
+  system.stateVersion = "24.11";
+
+  time.timeZone = "Europe/Copenhagen";
+  console.keyMap = "dk";
 }
-  
