@@ -18,13 +18,13 @@ in
     pinentryPackage = pkgs.pinentry-tty;
   };
 
-  environment.systemPackages = lib.attrValues {
-    inherit (pkgs)
-      openssh
-      gnupg
-      libfido2
-      yubikey-manager;
-  };
+  environment.systemPackages = with pkgs; [
+    openssh
+    gnupg
+    libfido2
+    yubikey-manager
+    yubikey-personalization
+  ];
 
   security.pam.u2f = {
     enable = true;
@@ -43,5 +43,8 @@ in
     group = "root";
   };
 
-  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.udev.packages = [
+    pkgs.yubikey-personalization
+    pkgs.yubikey-manager
+  ];
 }

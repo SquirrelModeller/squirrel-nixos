@@ -1,3 +1,12 @@
 [user]
     name = Squirrel Modeller
     email = squirrelmodeller@gmail.com
+    signingkey = A61A6DDAAE2526E0DDF8AB4BEE6427BC35FDCAD7
+[gpg]
+    format = openpgp
+
+[commit]
+    gpgsign = true
+
+[tag]
+    gpgsign = true
