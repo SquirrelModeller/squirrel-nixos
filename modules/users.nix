@@ -49,7 +49,7 @@ in
             value = {
               isNormalUser = true;
               home = "/home/${username}";
-              shell = pkgs.bash;
+              shell = pkgs.zsh;
               extraGroups = [ "wheel" ];
               packages =
                 let programsFile = ../users + "/${username}/programs/default.nix";

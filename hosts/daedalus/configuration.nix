@@ -15,6 +15,7 @@ in
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/packages"
     "${self}/modules/terminal/security.nix"
+    "${self}/modules/terminal/zsh"
   ];
 
   boot = {
