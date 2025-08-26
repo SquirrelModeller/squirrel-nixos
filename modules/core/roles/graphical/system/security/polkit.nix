@@ -11,9 +11,9 @@
 
   systemd.user.services.hyprpolkitagent = {
     description = "Hyprland Polkit Authentication Agent";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    wants = [ "hyprland-session.target" ];
+    after = [ "hyprland-session.target" "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
