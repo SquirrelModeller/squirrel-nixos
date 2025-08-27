@@ -27,11 +27,6 @@ let
       src = "${pkgs.zsh-fzf-history-search}/share/zsh-fzf-history-search";
       file = "zsh-fzf-history-search.plugin.zsh";
     };
-    zsh-autosuggestions = {
-      src = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
-      file = "zsh-autosuggestions.zsh";
-    };
-
     zsh-history-substring-search = {
       src = "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search";
       file = "zsh-history-substring-search.zsh";
