@@ -37,10 +37,11 @@
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs;
+            inherit inputs self;
             availableUsers = userNames;
-            inherit getUserPrograms;
-            inherit self;
+            getUserPrograms = getUserPrograms;
+            hostName = hostName;
+            hostSystem = system;
           };
           modules = [
             ./modules/options

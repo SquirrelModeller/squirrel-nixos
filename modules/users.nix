@@ -1,18 +1,56 @@
-{ config, lib, pkgs, availableUsers, inputs, ... }:
+{ config
+, lib
+, pkgs
+, inputs
+, self
+, availableUsers
+, hostName ? null
+, hostSystem ? pkgs.system
+, ...
+}:
+
 let
+  inherit (lib) mkIf mkMerge listToAttrs map;
+
   findFiles = import ../lib/findFiles.nix { inherit lib; };
+
+  ctx = {
+    host = if hostName != null then hostName else (config.networking.hostName or "unknown");
+    system = hostSystem;
+
+    platform = {
+      isLinux = pkgs.stdenv.isLinux;
+      isDarwin = pkgs.stdenv.isDarwin;
+    };
+
+    roles = config.squirrelOS.host.roles or [ ];
+    tags = config.squirrelOS.host.tags  or [ ];
+    capabilities = config.squirrelOS.host.capabilities or {
+      graphical = false;
+      wayland = false;
+      battery = false;
+    };
+
+    userFeatures = config.squirrelOS.userFeatures or { };
+    colors = (config.modules.style.colorScheme.colors or { });
+  };
 
   getUserDotfiles = username:
     let dotfilesDir = ../users + "/${username}/dotfiles";
     in if builtins.pathExists dotfilesDir then findFiles dotfilesDir else { };
 
   getUserServices = username:
-    let servicesFile = ../users + "/${username}/services.nix";
-    in if builtins.pathExists servicesFile
-    then import servicesFile { inherit pkgs lib username inputs; }
-    else { };
+    let f = "${self}/users/${username}/services.nix";
+    in if builtins.pathExists f then import f { inherit pkgs lib inputs username ctx; } else { };
 
-  inherit (lib) mkIf;
+  getUserHjem = username:
+    let f = "${self}/users/${username}/hjem.nix";
+    in if builtins.pathExists f then import f { inherit pkgs lib inputs ctx; inherit (config) modules; } else { };
+
+  getUserPrograms = username:
+    let f = "${self}/users/${username}/programs/default.nix";
+    in import f { inherit pkgs lib inputs ctx; };
+
 in
 {
   options = {
@@ -34,16 +72,17 @@ in
     let
       enabledUsers = config.squirrelOS.users.enabled;
       invalidUsers = lib.filter (u: !(lib.elem u availableUsers)) enabledUsers;
-      assertion = {
-        assertion = lib.length invalidUsers == 0;
-        message = "Unknown user profiles: ${lib.toString invalidUsers}. Available: ${lib.toString availableUsers}";
-      };
     in
-    lib.mkMerge [
-      (mkIf (lib.length enabledUsers > 0) {
-        assertions = [ assertion ];
+    mkMerge [
+      (mkIf (enabledUsers != [ ]) {
+        assertions = [{
+          assertion = lib.length invalidUsers == 0;
+          message =
+            "Unknown user profiles: ${lib.toString invalidUsers}. "
+            + "Available: ${lib.toString availableUsers}";
+        }];
 
-        users.users = lib.listToAttrs (lib.map
+        users.users = listToAttrs (map
           (username: {
             name = username;
             value = {
@@ -51,28 +90,24 @@ in
               home = "/home/${username}";
               shell = pkgs.zsh;
               extraGroups = [ "wheel" ];
-              packages =
-                let programsFile = ../users + "/${username}/programs/default.nix";
-                in import programsFile {
-                  inherit pkgs inputs lib;
-                  colors = config.modules.style.colorScheme.colors;
-                };
+              packages = getUserPrograms username;
             };
           })
           enabledUsers);
 
-        systemd.user.services =
-          lib.mkMerge (lib.map (username: getUserServices username) enabledUsers);
+        systemd.user.services = mkMerge (map getUserServices enabledUsers);
 
-        hjem.users = lib.listToAttrs (lib.map
+        hjem.users = listToAttrs (map
           (username: {
             name = username;
-            value = {
-              enable = true;
-              user = username;
-              directory = config.users.users.${username}.home;
-              files = getUserDotfiles username;
-            };
+            value =
+              {
+                enable = true;
+                user = username;
+                directory = config.users.users.${username}.home;
+                files = getUserDotfiles username;
+              }
+              // (getUserHjem username);
           })
           enabledUsers);
       })

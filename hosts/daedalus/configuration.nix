@@ -6,6 +6,7 @@ in
   imports = [
     ./fs
     (modulesPath + "/installer/scan/not-detected.nix")
+    "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
     "${self}/modules/hardware/cpu/amd.nix"
     "${self}/modules/hardware/gpu/amd.nix"
@@ -32,6 +33,11 @@ in
     usrEnv.programs.apps.firefox.enable = true;
     usrEnv.programs.apps.quickshell.enable = true;
     system.programs.gaming.steam.enable = true;
+  };
+
+  squirrelOS = {
+    host.roles = [ "workstation" ];
+    host.capabilities = { graphical = true; };
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
