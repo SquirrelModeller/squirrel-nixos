@@ -6,7 +6,7 @@ in
   "ui-hyprpaper-${username}" = {
     description = "Hyprpaper for ${username}";
     after = [ "graphical-session.target" ];
-    wantedBy = [ "hyprland-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
     unitConfig.ConditionUser = username;
     path = [ hyprpaper ];
     serviceConfig = {
