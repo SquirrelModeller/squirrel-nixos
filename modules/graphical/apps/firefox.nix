@@ -1,4 +1,3 @@
-# modules/graphical/apps/firefox.nix
 { config, lib, pkgs, ... }:
 let
   inherit (lib) mkIf mkMerge;
@@ -44,7 +43,6 @@ let
 in
 {
   config = mkIf env.programs.apps.firefox.enable {
-
     programs.firefox = {
       enable = true;
 
@@ -69,6 +67,8 @@ in
         Preferences = {
           "browser.newtabpage.activity-stream.feeds.telemetry" = { Value = false; Status = "locked"; };
           "browser.newtabpage.activity-stream.telemetry" = { Value = false; Status = "locked"; };
+          "reader.parse-on-load.enabled" = { Value = false; };
+          "media.webspeech.synth.enabled" = { Value = false; };
         };
       };
 
