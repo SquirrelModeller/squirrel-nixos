@@ -41,6 +41,11 @@ in
     host.capabilities = { graphical = true; };
   };
 
+  services.openssh.enable = true;
+  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.KbdInteractiveAuthentication = false;
+  networking.firewall.allowedTCPPorts = [ 22 ];
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   networking.hostName = "daedalus";

@@ -43,9 +43,9 @@ let
     let f = "${self}/users/${username}/services.nix";
     in if builtins.pathExists f then import f { inherit pkgs lib inputs username ctx; } else { };
 
-  getUserHjem = username:
-    let f = "${self}/users/${username}/hjem.nix";
-    in if builtins.pathExists f then import f { inherit pkgs lib inputs ctx; inherit (config) modules; } else { };
+  getUserMisc = username:
+    let f = "${self}/users/${username}/misc.nix";
+    in if builtins.pathExists f then import f { } else { };
 
   getUserPrograms = username:
     let f = "${self}/users/${username}/programs/default.nix";
@@ -91,7 +91,8 @@ in
               shell = pkgs.zsh;
               extraGroups = [ "wheel" ];
               packages = getUserPrograms username;
-            };
+            }
+            // (getUserMisc username);
           })
           enabledUsers);
 
@@ -106,8 +107,7 @@ in
                 user = username;
                 directory = config.users.users.${username}.home;
                 files = getUserDotfiles username;
-              }
-              // (getUserHjem username);
+              };
           })
           enabledUsers);
       })
