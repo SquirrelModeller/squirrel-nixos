@@ -1,6 +1,7 @@
 { lib, modulesPath, self, ... }:
 {
   imports = [
+    ./fs
     (modulesPath + "/installer/scan/not-detected.nix")
     "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
@@ -8,6 +9,7 @@
   ];
 
   boot = {
+    supportedFilesystems = [ "zfs" ];
     initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
   };
 
@@ -30,6 +32,7 @@
     };
   };
   networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.hostId = "0e0a5617";
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
@@ -37,7 +40,7 @@
 
   squirrelOS.users.enabled = [ "squirrel" ];
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 
   time.timeZone = "Europe/Copenhagen";
   console.keyMap = "dk";
