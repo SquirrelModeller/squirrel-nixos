@@ -1,7 +1,8 @@
-{ config, pkgs, lib, self }:
+{ config, pkgs, lib, self, ... }:
 {
   imports = [
     ./fs
+    "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
@@ -17,6 +18,15 @@
   squirrelOS = {
     host.roles = [ "server" ];
     host.capabilities = { graphical = false; };
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "prohibit-password";
+    };
   };
 
   networking.useDHCP = false;
@@ -134,10 +144,6 @@
       };
     };
   };
-
-
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
