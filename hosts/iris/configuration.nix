@@ -29,7 +29,16 @@
     };
   };
 
-  networking.useDHCP = false;
+  networking = {
+    useDHCP = false;
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  };
+
+  environment.etc."gai.conf".text = ''
+    (temp until I know what is going on)
+    precedence ::ffff:0:0/96  100
+  '';
+
   networking.interfaces.ens3.ipv4.addresses = [
     { address = "159.195.8.188"; prefixLength = 22; }
   ];
