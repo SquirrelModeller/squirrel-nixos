@@ -89,7 +89,7 @@ in
               isNormalUser = true;
               home = "/home/${username}";
               shell = pkgs.zsh;
-              extraGroups = [ "wheel" ];
+              extraGroups = [ "wheel" "media" ];
               packages = getUserPrograms username;
             }
             // (getUserMisc username);

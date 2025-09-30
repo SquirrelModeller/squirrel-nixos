@@ -22,6 +22,7 @@ in
 
   boot = {
     initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
+    supportedFilesystems = [ "cifs" ];
   };
 
   environment.variables = {
@@ -50,6 +51,12 @@ in
     };
   };
   networking.firewall.allowedTCPPorts = [ 22 ];
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

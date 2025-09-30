@@ -6,7 +6,8 @@
     inherit (pkgs)
       git
       vim
-      wget;
+      wget
+      cifs-utils;
   };
 
   programs = {
