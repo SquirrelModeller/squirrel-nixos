@@ -1,4 +1,4 @@
-{ config, pkgs, lib, self, ... }:
+{ lib, self, ... }:
 {
   imports = [
     ./fs
@@ -35,133 +35,61 @@
 
   networking = {
     nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    hostName = "iris";
+
+    interfaces.ens3.ipv4.addresses = [
+      { address = "159.195.8.188"; prefixLength = 22; }
+    ];
+    defaultGateway = "159.195.8.1";
+
+    enableIPv6 = false;
   };
-
-  networking.useDHCP = false;
-  networking.interfaces.ens3.ipv4.addresses = [
-    { address = "159.195.8.188"; prefixLength = 22; }
-  ];
-
-  networking.defaultGateway = "159.195.8.1";
-
-  networking.interfaces.ens3.ipv6.addresses = [
-    { address = "2a0a:4cc0:ff:a44::1"; prefixLength = 64; }
-  ];
-  networking.defaultGateway6 = {
-    address = "fe80::1";
-    interface = "ens3";
-  };
-
 
   networking.firewall = {
     enable = true;
     allowPing = true;
     allowedTCPPorts = [ 22 80 443 ];
-    allowedUDPPorts = [ 443 51820 ];
+    allowedUDPPorts = [ 51820 ];
   };
-
 
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.0.0.1/24" ];
     listenPort = 51820;
-    privateKeyFile = "/etc/wireguard/wg0.key";
+    privateKeyFile = "/etc/wireguard/vps.key";
     peers = [
       {
-        publicKey = "Lq3Ko7nioCu2/2t7l+bMMiIz7jahkxKvYq1PZgMkMS0=";
+        publicKey = "PdoaldW68gI55hL+8Xr888YG+FDaNAFrfH11r0ooE3s=";
         allowedIPs = [ "10.0.0.2/32" ];
         persistentKeepalive = 25;
       }
     ];
   };
 
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "squirrelmodeller@protonmail.com";
-  };
-
-  services.nginx = {
+  services.caddy = {
     enable = true;
-    recommendedTlsSettings = true;
-    recommendedProxySettings = true;
-    recommendedGzipSettings = true;
+    email = "squirrelmodeller@protonmail.com";
 
-    virtualHosts = {
-      "talosvault.net" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/".return = "301 https://files.talosvault.net$request_uri";
-      };
-      "www.talosvault.net" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/".return = "301 https://files.talosvault.net$request_uri";
-      };
+    virtualHosts."watch.talosvault.net".extraConfig = ''
+      reverse_proxy 10.0.0.2:8096
+    '';
 
-      "music.talosvault.net" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://10.0.0.2:4533/";
-          extraConfig = ''
-            proxy_http_version 1.1;
-            proxy_request_buffering off;
-            proxy_buffering off;
-            proxy_read_timeout 3600;
-          '';
-        };
-      };
+    virtualHosts."files.talosvault.net".extraConfig = ''
+      @carddav  path /.well-known/carddav
+      @caldav   path /.well-known/caldav
+      redir @carddav /remote.php/dav/ 301
+      redir @caldav  /remote.php/dav/ 301
 
-      "watch.talosvault.net" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://10.0.0.2:8096/";
-          proxyWebsockets = true;
-          extraConfig = ''
-            proxy_http_version 1.1;
-            proxy_read_timeout 3600;
-            proxy_send_timeout 3600;
-          '';
-        };
-      };
+      reverse_proxy 10.0.0.2:8080
+    '';
+    virtualHosts."music.talosvault.net".extraConfig = ''
+      reverse_proxy 10.0.0.2:4533
+    '';
 
-      "files.talosvault.net" = {
-        enableACME = true;
-        forceSSL = true;
-
-        extraConfig = ''
-          add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-        '';
-
-        locations."=/.well-known/carddav".return = "301 /remote.php/dav/";
-        locations."=/.well-known/caldav".return = "301 /remote.php/dav/";
-
-        locations."/" = {
-          proxyPass = "http://10.0.0.2:8080";
-          extraConfig = ''
-            client_max_body_size 10240M;
-            proxy_http_version 1.1;
-            proxy_request_buffering off;
-            proxy_buffering off;
-            proxy_read_timeout 3600;
-            proxy_set_header X-Forwarded-Proto https;
-            proxy_set_header X-Forwarded-Port 443;
-          '';
-        };
-      };
-    };
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  networking.hostName = "iris";
-
   squirrelOS.users.enabled = [ "squirrel" ];
 
   system.stateVersion = "25.05";
-
-  time.timeZone = "Europe/Copenhagen";
-  # console.keyMap = "dk";
-
 }

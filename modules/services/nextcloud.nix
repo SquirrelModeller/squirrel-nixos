@@ -4,8 +4,6 @@ let
   wgIP = "10.0.0.2";
 in
 {
-  services.nginx.enable = true;
-
   # I use this to control what is visible for users/nextcloud
   # To allow nextcloud access, you'd have to run:
   # sudo chown -R <user>:smbnextcloud /talos/users/<user>
@@ -50,6 +48,7 @@ in
     };
   };
 
+  services.nginx.enable = true;
   services.nginx.virtualHosts."${config.services.nextcloud.hostName}".listen = [
     { addr = lanIP; port = 8080; ssl = false; }
     { addr = wgIP; port = 8080; ssl = false; }

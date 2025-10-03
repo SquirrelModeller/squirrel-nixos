@@ -6,7 +6,7 @@ in
 {
 
   users.groups.navidrome = { };
-  users.groups.media = lib.mkDefault { };
+  users.groups.media = { };
 
   users.users.navidrome = {
     isSystemUser = true;
@@ -16,7 +16,7 @@ in
 
   services.navidrome = {
     enable = true;
-
+    openFirewall = false;
     user = "navidrome";
     group = "navidrome";
 
