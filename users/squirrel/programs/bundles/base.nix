@@ -3,7 +3,7 @@
   pkgs.htop
   pkgs.fastfetch
   pkgs.tree
-  pkgs.ranger
+  pkgs.yazi
   pkgs.nixpkgs-fmt
   pkgs.kitty
   pkgs.wallust
