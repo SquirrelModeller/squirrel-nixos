@@ -63,10 +63,6 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-qml-support = {
       url = "git+https://git.outfoxxed.me/outfoxxed/nix-qml-support";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -89,7 +89,7 @@ in
               isNormalUser = true;
               home = "/home/${username}";
               shell = pkgs.zsh;
-              extraGroups = [ "wheel" "media" "smbusers" ];
+              extraGroups = [ "wheel" "media" "smbusers" "networkmanager" ];
               packages = getUserPrograms username;
             }
             // (getUserMisc username);

@@ -18,23 +18,23 @@ in
     "d ${cacheDir} 0750 jellyfin jellyfin - -"
   ];
 
-  systemd.services.jellyfin.serviceConfig = {
-    TemporaryFileSystem = "/:ro";
+  # systemd.services.jellyfin.serviceConfig = {
+  #   TemporaryFileSystem = "/:ro";
 
-    BindReadOnlyPaths = [
-      "/nix/store"
-      "/etc/resolv.conf"
-      "/etc/hosts"
-      "/etc/nsswitch.conf"
-      "/etc/ssl"
-      mediaDir
-    ];
+  #   BindReadOnlyPaths = [
+  #     "/nix/store"
+  #     "/etc/resolv.conf"
+  #     "/etc/hosts"
+  #     "/etc/nsswitch.conf"
+  #     "/etc/ssl"
+  #     mediaDir
+  #   ];
 
-    PrivateTmp = true;
-    ProtectHome = true;
+  #   PrivateTmp = true;
+  #   ProtectHome = true;
 
-    DevicePolicy = "closed";
-    DeviceAllow = [ "/dev/dri/renderD128 rwm" ];
-    BindPaths = [ "/dev/dri" dataDir cacheDir ];
-  };
+  #   DevicePolicy = "closed";
+  #   DeviceAllow = [ "/dev/dri/renderD128 rwm" ];
+  #   BindPaths = [ "/dev/dri" dataDir cacheDir ];
+  # };
 }
