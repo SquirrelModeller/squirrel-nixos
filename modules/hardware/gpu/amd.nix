@@ -10,7 +10,7 @@
       vulkan-loader
       radeontop
       libva
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
 
