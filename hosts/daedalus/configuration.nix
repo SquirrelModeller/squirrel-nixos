@@ -42,6 +42,46 @@ in
     host.capabilities = { graphical = true; };
   };
 
+  specialisation.gpu-passthrough.configuration = {
+    system.nixos.tags = [ "gpu-passthrough" ];
+    boot.kernelParams = [
+      "amd_iommu=on"
+      "iommu=pt"
+      "vfio-pci.ids=1002:744c,1002:ab30"
+      "video=efifb:off"
+    ];
+    boot.initrd.kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
+
+    virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu = {
+          package = pkgs.qemu_kvm;
+          runAsRoot = false;
+          swtpm.enable = true;
+        };
+      };
+    };
+    environment.systemPackages = with pkgs; [
+      virt-manager
+      virt-viewer
+      looking-glass-client
+      swtpm
+    ];
+    security.pam.loginLimits = [
+      { domain = "@libvirtd"; item = "memlock"; type = "hard"; value = "unlimited"; }
+      { domain = "@libvirtd"; item = "memlock"; type = "soft"; value = "unlimited"; }
+    ];
+
+    services.udev.extraRules = ''
+      SUBSYSTEM=="vfio", OWNER="root", GROUP="libvirtd", MODE="0660"
+
+      # I give access to all USB devices here
+      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0660", GROUP="libvirtd"
+      KERNEL=="event*", SUBSYSTEM=="input", MODE="0660", GROUP="libvirtd"
+    '';
+  };
+
   services.openssh = {
     enable = true;
     settings = {
