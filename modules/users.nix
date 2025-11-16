@@ -5,7 +5,7 @@
 , self
 , availableUsers
 , hostName ? null
-, hostSystem ? pkgs.system
+, hostSystem ? pkgs.hostPlatform
 , ...
 }:
 

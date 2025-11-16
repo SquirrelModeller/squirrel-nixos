@@ -4,5 +4,5 @@
   pkgs.pandoc
   pkgs.blender-hip
   pkgs.tofi
-  inputs.alejandra.defaultPackage.${pkgs.system}
+  inputs.alejandra.defaultPackage.${pkgs.stdenv.hostPlatform.system}
 ]
