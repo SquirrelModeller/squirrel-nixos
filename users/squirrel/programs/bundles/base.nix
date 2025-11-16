@@ -8,5 +8,6 @@
   pkgs.kitty
   pkgs.wallust
   pkgs.comma
+  pkgs.sshfs
 ]
 
