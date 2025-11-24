@@ -25,6 +25,10 @@ in
     supportedFilesystems = [ "cifs" ];
   };
 
+  environment.systemPackages = with pkgs; [
+    btrfs-progs
+  ];
+
   environment.variables = {
     systemPackages = [ systeminfo ];
     EDITOR = "vim";
