@@ -11,6 +11,9 @@
     "${self}/modules/services/nextcloud.nix"
     "${self}/modules/services/navidrome.nix"
     "${self}/modules/services/samba.nix"
+    "${self}/modules/services/gotify.nix"
+    "${self}/modules/notifications/gotify-rebuild-notify.nix"
+    "${self}/modules/notifications/zfs-gotify-notifications.nix"
   ];
 
   boot = {
@@ -72,23 +75,45 @@
     }];
   };
 
+  services.zfs.autoScrub = {
+    enable = true;
+    pools = [ "talos" ];
+    interval = "monthly";
+  };
+
+  services.gotify = {
+    enable = true;
+    environment.GOTIFY_SERVER_PORT = 8090;
+  };
+
+  squirrelOS.notifications.gotify = {
+    enable = true;
+    serverUrl = "http://localhost:8090";
+  };
+
+  squirrelOS.notifications.zfs = {
+    enableHealthCheck = true;
+    enableScrubNotifications = true;
+    sendOkNotification = false;
+  };
+
   networking.firewall = {
     enable = true;
 
     interfaces."enp3s0" = {
-      allowedTCPPorts = [ 22 8080 4533 8096 445 ];
+      allowedTCPPorts = [ 22 8080 4533 8096 445 8090 ];
       allowedUDPPorts = [ 137 138 5353 ];
     };
 
     interfaces.wg0 = {
-      allowedTCPPorts = [ 8080 4533 8096 ];
+      allowedTCPPorts = [ 8080 4533 8096 8090 ];
       allowedUDPPorts = [ ];
     };
 
     extraCommands = ''
       iptables -I FORWARD -i wg0 -d 192.168.0.0/16 -j DROP
       iptables -I FORWARD -o wg0 -s 192.168.0.0/16 -j DROP
-    
+
       iptables -I FORWARD -i wg0 -d 10.0.0.0/8 -j DROP
       iptables -I FORWARD -i wg0 -d 172.16.0.0/12 -j DROP
     '';

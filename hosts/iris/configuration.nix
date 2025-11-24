@@ -6,6 +6,7 @@
     "${self}/modules/core"
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
+    "${self}/modules/notifications/gotify-rebuild-notify.nix"
   ];
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
@@ -18,6 +19,11 @@
   squirrelOS = {
     host.roles = [ "server" ];
     host.capabilities = { graphical = false; };
+  };
+
+  squirrelOS.notifications.gotify = {
+    enable = true;
+    serverUrl = "https://notify.talosvault.net";
   };
 
   services.openssh = {
@@ -85,6 +91,9 @@
       reverse_proxy 10.0.0.2:4533
     '';
 
+    virtualHosts."notify.talosvault.net".extraConfig = ''
+      reverse_proxy 10.0.0.2:8090
+    '';
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
