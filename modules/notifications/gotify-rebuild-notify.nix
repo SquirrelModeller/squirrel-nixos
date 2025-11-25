@@ -1,7 +1,5 @@
 { config, lib, pkgs, ... }:
 
-with lib;
-
 let
   cfg = config.squirrelOS.notifications.gotify;
 
@@ -32,22 +30,22 @@ let
 in
 {
   options.squirrelOS.notifications.gotify = {
-    enable = mkEnableOption "Gotify rebuild notifications";
+    enable = lib.mkEnableOption "Gotify rebuild notifications";
 
-    serverUrl = mkOption {
-      type = types.str;
+    serverUrl = lib.mkOption {
+      type = lib.types.str;
       default = "http://localhost:8090";
       description = "Gotify server URL";
     };
 
-    tokenFile = mkOption {
-      type = types.path;
+    tokenFile = lib.mkOption {
+      type = lib.types.path;
       default = "/var/lib/gotify/app-token";
       description = "Path to file containing Gotify application token";
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.kIf cfg.enable {
     system.activationScripts.gotifyNotify = {
       text = ''
         ${notifyScript} || true

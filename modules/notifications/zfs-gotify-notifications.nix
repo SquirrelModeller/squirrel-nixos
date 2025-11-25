@@ -1,7 +1,5 @@
 { config, lib, pkgs, ... }:
 
-with lib;
-
 let
   gotifyCfg = config.squirrelOS.notifications.gotify;
   zfsCfg = config.squirrelOS.notifications.zfs;
@@ -216,33 +214,33 @@ let
 in
 {
   options.squirrelOS.notifications.zfs = {
-    enableHealthCheck = mkOption {
-      type = types.bool;
+    enableHealthCheck = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable periodic ZFS health checks with Gotify notifications";
     };
 
-    healthCheckInterval = mkOption {
-      type = types.str;
+    healthCheckInterval = lib.mkOption {
+      type = lib.types.str;
       default = "hourly";
       description = "How often to check ZFS health (systemd timer format)";
     };
 
-    enableScrubNotifications = mkOption {
-      type = types.bool;
+    enableScrubNotifications = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable notifications when ZFS scrubs complete";
     };
 
-    sendOkNotification = mkOption {
-      type = types.bool;
+    sendOkNotification = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "If true, send a Gotify notification when all ZFS pools are healthy and no issues are detected";
     };
   };
 
-  config = mkMerge [
-    (mkIf (gotifyCfg.enable && zfsCfg.enableHealthCheck) {
+  config = lib.mkMerge [
+    (lib.mkIf (gotifyCfg.enable && zfsCfg.enableHealthCheck) {
       systemd.services.zfs-health-check = {
         description = "Check ZFS pool health and notify via Gotify";
         serviceConfig = {
@@ -261,7 +259,7 @@ in
       };
     })
 
-    (mkIf (gotifyCfg.enable && zfsCfg.enableScrubNotifications) {
+    (lib.mkIf (gotifyCfg.enable && zfsCfg.enableScrubNotifications) {
       services.zfs.zed.settings = {
         ZED_DEBUG_LOG = "/var/log/zed.debug.log";
         ZED_EMAIL_ADDR = [ "root" ];
