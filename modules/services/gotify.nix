@@ -1,18 +1,17 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
   cfg = config.services.gotify;
 in
 {
   options.services.gotify = {
-    stateDir = mkOption {
-      type = types.path;
+    stateDir = lib.mkOption {
+      type = lib.types.path;
       default = "/var/lib/gotify";
       description = "Directory to store Gotify data";
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     systemd.services.gotify = {
       description = "Gotify notification server";
       wantedBy = [ "multi-user.target" ];
@@ -20,7 +19,7 @@ in
       serviceConfig = {
         Type = "simple";
         User = "gotify";
-        Group = "gotify";
+        Group = "gotfiy";
         StateDirectory = "gotify";
         WorkingDirectory = cfg.stateDir;
         ExecStart = "${pkgs.gotify-server}/bin/server"; # Changed from gotify-server to server
@@ -47,7 +46,7 @@ in
 
     users.groups.gotify = { };
 
-    networking.firewall.interfaces."enp3s0".allowedTCPPorts = mkIf cfg.enable [ cfg.port ];
-    networking.firewall.interfaces.wg0.allowedTCPPorts = mkIf cfg.enable [ cfg.port ];
+    networking.firewall.interfaces."enp3s0".allowedTCPPorts = lib.mkIf cfg.enable [ cfg.port ];
+    networking.firewall.interfaces.wg0.allowedTCPPorts = lib.mkIf cfg.enable [ cfg.port ];
   };
 }
