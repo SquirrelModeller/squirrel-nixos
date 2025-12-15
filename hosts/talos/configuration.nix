@@ -11,7 +11,6 @@
     "${self}/modules/services/nextcloud.nix"
     "${self}/modules/services/navidrome.nix"
     "${self}/modules/services/samba.nix"
-    "${self}/modules/services/gotify.nix"
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
     "${self}/modules/notifications/zfs-gotify-notifications.nix"
   ];
