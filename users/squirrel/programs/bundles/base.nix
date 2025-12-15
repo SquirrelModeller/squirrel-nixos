@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 [
   pkgs.htop
   pkgs.fastfetch
@@ -9,5 +9,6 @@
   pkgs.wallust
   pkgs.comma
   pkgs.sshfs
+  inputs.domacro.packages.${pkgs.stdenv.hostPlatform.system}.default
 ]
 
