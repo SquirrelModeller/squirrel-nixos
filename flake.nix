@@ -75,5 +75,9 @@
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    domacro = {
+      url = "github:SquirrelModeller/domacroc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

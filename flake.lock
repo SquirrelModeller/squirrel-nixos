@@ -23,6 +23,26 @@
         "type": "github"
       }
     },
+    "domacro": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764499350,
+        "narHash": "sha256-N/G4zg9dkQt/PziunTu//zVBR/SI5ye5h5UITyuW75M=",
+        "owner": "SquirrelModeller",
+        "repo": "domacroc",
+        "rev": "0e36b382c76da1d16cc8f234637a4dbc1726720a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "domacroc",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -228,6 +248,7 @@
     "root": {
       "inputs": {
         "alejandra": "alejandra",
+        "domacro": "domacro",
         "hjem": "hjem",
         "hyprpicker": "hyprpicker",
         "nix-qml-support": "nix-qml-support",
