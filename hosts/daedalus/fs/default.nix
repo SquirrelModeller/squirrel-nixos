@@ -22,8 +22,32 @@
     ];
   };
 
+
+  fileSystems."/work" = {
+    device = "/dev/disk/by-uuid/711c4a87-574e-4d60-b6a0-3aaa162f1b4a";
+    fsType = "btrfs";
+    options = [
+      "subvol=work"
+      "compress=zstd"
+      "noatime"
+    ];
+  };
+
+  fileSystems."/games" = {
+    device = "/dev/disk/by-uuid/711c4a87-574e-4d60-b6a0-3aaa162f1b4a";
+    fsType = "btrfs";
+    options = [
+      "subvol=games"
+      "compress=zstd"
+      "noatime"
+    ];
+  };
+
+
   systemd.tmpfiles.rules = [
     "d /vmdata 0755 squirrel users -"
+    "d /work 0755 squirrel users -"
+    "d /games 0755 squirrel users -"
   ];
 
 
