@@ -100,8 +100,8 @@
     enable = true;
 
     interfaces."enp3s0" = {
-      allowedTCPPorts = [ 22 8080 4533 8096 445 8090 ];
-      allowedUDPPorts = [ 137 138 5353 ];
+      allowedTCPPorts = [ 22 8080 4533 8096 445 8090 5357 ];
+      allowedUDPPorts = [ 137 138 5353 3702 ];
     };
 
     interfaces.wg0 = {
