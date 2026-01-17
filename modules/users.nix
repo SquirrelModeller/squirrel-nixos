@@ -8,21 +8,16 @@
 , hostSystem ? pkgs.hostPlatform
 , ...
 }:
-
 let
   inherit (lib) mkIf mkMerge listToAttrs map;
-
   findFiles = import ../lib/findFiles.nix { inherit lib; };
-
   ctx = {
     host = if hostName != null then hostName else (config.networking.hostName or "unknown");
     system = hostSystem;
-
     platform = {
       isLinux = pkgs.stdenv.isLinux;
       isDarwin = pkgs.stdenv.isDarwin;
     };
-
     roles = config.squirrelOS.host.roles or [ ];
     tags = config.squirrelOS.host.tags  or [ ];
     capabilities = config.squirrelOS.host.capabilities or {
@@ -30,27 +25,18 @@ let
       wayland = false;
       battery = false;
     };
-
     userFeatures = config.squirrelOS.userFeatures or { };
     colors = (config.modules.style.colorScheme.colors or { });
   };
-
   getUserDotfiles = username:
     let dotfilesDir = ../users + "/${username}/dotfiles";
     in if builtins.pathExists dotfilesDir then findFiles dotfilesDir else { };
-
-  getUserServices = username:
-    let f = "${self}/users/${username}/services.nix";
-    in if builtins.pathExists f then import f { inherit pkgs lib inputs username ctx; } else { };
-
   getUserMisc = username:
     let f = "${self}/users/${username}/misc.nix";
     in if builtins.pathExists f then import f { } else { };
-
   getUserPrograms = username:
     let f = "${self}/users/${username}/programs/default.nix";
     in import f { inherit pkgs lib inputs ctx; };
-
 in
 {
   options = {
@@ -67,6 +53,15 @@ in
       description = "All available user profiles (auto-discovered)";
     };
   };
+  imports =
+    let
+      enabledUsers = availableUsers;
+      getUserServicesImport = username:
+        let f = "${self}/users/${username}/services.nix";
+        in if builtins.pathExists f then f else null;
+      serviceImports = map getUserServicesImport enabledUsers;
+    in
+    lib.filter (x: x != null) serviceImports;
 
   config =
     let
@@ -81,7 +76,6 @@ in
             "Unknown user profiles: ${lib.toString invalidUsers}. "
             + "Available: ${lib.toString availableUsers}";
         }];
-
         users.users = listToAttrs (map
           (username: {
             name = username;
@@ -95,9 +89,6 @@ in
             // (getUserMisc username);
           })
           enabledUsers);
-
-        systemd.user.services = mkMerge (map getUserServices enabledUsers);
-
         hjem.users = listToAttrs (map
           (username: {
             name = username;
@@ -110,6 +101,7 @@ in
               };
           })
           enabledUsers);
+        hjem.clobberByDefault = true;
       })
     ];
 }
