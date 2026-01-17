@@ -54,4 +54,9 @@ in
     { addr = wgIP; port = 8080; ssl = false; }
   ];
 
+  networking.firewall = {
+    interfaces."enp4s0".allowedTCPPorts = [ 8080 ];
+    interfaces.wg0.allowedTCPPorts = [ 8080 ];
+  };
+
 }

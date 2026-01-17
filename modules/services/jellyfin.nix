@@ -1,7 +1,7 @@
+{ pkgs, ... }:
 let
   dataDir = "/talos/services/jellyfin";
   cacheDir = "/talos/services/jellyfin/cache";
-  mediaDir = "/talos/media";
 in
 {
   services.jellyfin = {
@@ -11,30 +11,39 @@ in
     cacheDir = cacheDir;
   };
 
-  users.users.jellyfin.extraGroups = [ "media" ];
+  environment.systemPackages = with pkgs; [
+    jellyfin
+    jellyfin-web
+    jellyfin-ffmpeg
+  ];
+
+
+  users.users.jellyfin.extraGroups = [ "media" "render" "video" ];
+
+  systemd.services.jellyfin.serviceConfig = {
+    DeviceAllow = [
+      "/dev/dri/renderD128 rw"
+      "/dev/nvidia0 rw"
+      "/dev/nvidiactl rw"
+      "/dev/nvidia-modeset rw"
+      "/dev/nvidia-uvm rw"
+      "/dev/nvidia-uvm-tools rw"
+    ];
+    PrivateDevices = false;
+  };
+
+  systemd.services.jellyfin.environment = {
+    LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+  };
+
 
   systemd.tmpfiles.rules = [
     "d ${dataDir}  0750 jellyfin jellyfin - -"
     "d ${cacheDir} 0750 jellyfin jellyfin - -"
   ];
 
-  # systemd.services.jellyfin.serviceConfig = {
-  #   TemporaryFileSystem = "/:ro";
-
-  #   BindReadOnlyPaths = [
-  #     "/nix/store"
-  #     "/etc/resolv.conf"
-  #     "/etc/hosts"
-  #     "/etc/nsswitch.conf"
-  #     "/etc/ssl"
-  #     mediaDir
-  #   ];
-
-  #   PrivateTmp = true;
-  #   ProtectHome = true;
-
-  #   DevicePolicy = "closed";
-  #   DeviceAllow = [ "/dev/dri/renderD128 rwm" ];
-  #   BindPaths = [ "/dev/dri" dataDir cacheDir ];
-  # };
-}
+  networking.firewall = {
+    interfaces."enp4s0".allowedTCPPorts = [ 8096 ];
+    interfaces.wg0.allowedTCPPorts = [ 8096 ];
+  };
+} 

@@ -5,6 +5,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
+    "${self}/modules/hardware/gpu/nvidia.nix"
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
     "${self}/modules/services/jellyfin.nix"
@@ -20,6 +21,7 @@
     initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
     zfs.extraPools = [ "talos" ];
     zfs.requestEncryptionCredentials = false;
+    kernelModules = [ "nvidia_uvm" ];
   };
 
   environment.variables = {
@@ -50,18 +52,6 @@
 
   networking.hostId = "0e0a5617";
   networking.networkmanager.enable = true;
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = false;
-    publish = {
-      enable = true;
-      addresses = true;
-      workstation = true;
-      hinfo = true;
-    };
-  };
 
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.0.0.2/24" ];
@@ -99,13 +89,13 @@
   networking.firewall = {
     enable = true;
 
-    interfaces."enp3s0" = {
-      allowedTCPPorts = [ 22 8080 4533 8096 445 8090 5357 ];
-      allowedUDPPorts = [ 137 138 5353 3702 ];
+    interfaces."enp4s0" = {
+      allowedTCPPorts = [ 22 5357 8090 ];
+      allowedUDPPorts = [ 5353 3702 ];
     };
 
     interfaces.wg0 = {
-      allowedTCPPorts = [ 8080 4533 8096 8090 ];
+      allowedTCPPorts = [ 8090 ];
       allowedUDPPorts = [ ];
     };
 

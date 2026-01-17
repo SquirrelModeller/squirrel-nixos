@@ -1,10 +1,9 @@
-{ lib, ... }:
+{ ... }:
 let
   musicDir = "/talos/media/music";
   dataDir = "/var/lib/navidrome";
 in
 {
-
   users.groups.navidrome = { };
   users.groups.media = { };
 
@@ -32,5 +31,10 @@ in
       TranscodingCacheSize = "1GB";
       EnableCoverAnimation = true;
     };
+  };
+
+  networking.firewall = {
+    interfaces."enp4s0".allowedTCPPorts = [ 4533 ];
+    interfaces.wg0.allowedTCPPorts = [ 4533 ];
   };
 }
