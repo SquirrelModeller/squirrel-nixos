@@ -2,7 +2,7 @@
 [
   pkgs.socat
   pkgs.pandoc
-  pkgs.blender-hip
+  pkgs.pkgsRocm.blender
   pkgs.tofi
   inputs.alejandra.defaultPackage.${pkgs.stdenv.hostPlatform.system}
 ]
