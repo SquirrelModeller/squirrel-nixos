@@ -1,6 +1,6 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, inputs, ... }:
 let
-  inherit (lib) mkIf mkMerge;
+  inherit (lib) mkMerge;
 
   enabledUsers = config.squirrelOS.users.enabled;
 
@@ -17,19 +17,12 @@ let
 
 in
 {
-  options.modules.usrEnv.programs.apps.quickshell.enable =
-    lib.mkEnableOption " Quickshell ";
-
-  config = mkIf config.modules.usrEnv.programs.apps.quickshell.enable {
-    hjem.users = mkMerge (map
-      (u:
-        let src = srcFor u;
-        in if src == null then { } else {
-          ${u}.files.".config/quickshell".source = src;
-        }
-      )
-      enabledUsers);
-  };
+  hjem.users = mkMerge (map
+    (u:
+      let src = srcFor u;
+      in if src == null then { } else {
+        ${u}.files.".config/quickshell".source = src;
+      }
+    )
+    enabledUsers);
 }
-
-

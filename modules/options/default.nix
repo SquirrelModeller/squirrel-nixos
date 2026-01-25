@@ -1,7 +1,5 @@
 {
   imports = [
-    ./programs
     ./style
-    ./system
   ];
 }

@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) mkIf mkMerge;
-  env = config.modules.usrEnv;
+  inherit (lib) mkMerge;
   colors = config.modules.style.colorScheme.colors;
 
   renderCss = cssTemplate:
@@ -42,39 +41,37 @@ let
   enabledUsers = config.squirrelOS.users.enabled;
 in
 {
-  config = mkIf env.programs.apps.firefox.enable {
-    programs.firefox = {
-      enable = true;
 
-      policies = {
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DontCheckDefaultBrowser = true;
-        LegacyProfiles = true;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
+  programs.firefox = {
+    enable = true;
 
-        SearchEngines = {
-          Default = "DuckDuckGo";
-          Order = [ "DuckDuckGo" "Google" ];
-        };
-
-        Preferences = {
-          "browser.newtabpage.activity-stream.feeds.telemetry" = { Value = false; Status = "locked"; };
-          "browser.newtabpage.activity-stream.telemetry" = { Value = false; Status = "locked"; };
-          "reader.parse-on-load.enabled" = { Value = false; };
-          "media.webspeech.synth.enabled" = { Value = false; };
-        };
+    policies = {
+      DisableTelemetry = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DontCheckDefaultBrowser = true;
+      LegacyProfiles = true;
+      EnableTrackingProtection = {
+        Value = true;
+        Locked = true;
+        Cryptomining = true;
+        Fingerprinting = true;
       };
 
+      SearchEngines = {
+        Default = "DuckDuckGo";
+        Order = [ "DuckDuckGo" "Google" ];
+      };
+
+      Preferences = {
+        "browser.newtabpage.activity-stream.feeds.telemetry" = { Value = false; Status = "locked"; };
+        "browser.newtabpage.activity-stream.telemetry" = { Value = false; Status = "locked"; };
+        "reader.parse-on-load.enabled" = { Value = false; };
+        "media.webspeech.synth.enabled" = { Value = false; };
+      };
     };
 
-    hjem.users = mkMerge (map (u: { ${u}.files = mkPerUserFiles u; }) enabledUsers);
   };
-}
 
+  hjem.users = mkMerge (map (u: { ${u}.files = mkPerUserFiles u; }) enabledUsers);
+}

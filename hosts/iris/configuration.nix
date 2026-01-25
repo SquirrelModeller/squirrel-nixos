@@ -11,11 +11,6 @@
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
 
-  environment.variables = {
-    EDITOR = "vim";
-    VISUAL = "vim";
-  };
-
   squirrelOS = {
     host.roles = [ "server" ];
     host.capabilities = { graphical = false; };

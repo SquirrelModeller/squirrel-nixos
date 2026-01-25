@@ -5,6 +5,11 @@
 
   networking.useDHCP = lib.mkDefault true;
 
+  environment.variables = {
+    EDITOR = "vim";
+    VISUAL = "vim";
+  };
+
   documentation = {
     doc.enable = false;
     info.enable = false;

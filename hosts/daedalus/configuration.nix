@@ -12,6 +12,7 @@ in
     "${self}/modules/hardware/gpu/amd.nix"
     "${self}/modules/graphical/apps"
     "${self}/modules/graphical/apps/quickshell.nix"
+    "${self}/modules/graphical/apps/steam.nix"
     "${self}/modules/graphical/theme/wallust-colorscheme.nix"
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/graphical/dms/greetd.nix"
@@ -31,14 +32,6 @@ in
 
   environment.variables = {
     systemPackages = [ systeminfo ];
-    EDITOR = "vim";
-    VISUAL = "vim";
-  };
-
-  modules = {
-    usrEnv.programs.apps.firefox.enable = true;
-    usrEnv.programs.apps.quickshell.enable = true;
-    system.programs.gaming.steam.enable = true;
   };
 
   squirrelOS = {
