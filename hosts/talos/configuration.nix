@@ -24,11 +24,6 @@
     kernelModules = [ "nvidia_uvm" ];
   };
 
-  environment.variables = {
-    EDITOR = "vim";
-    VISUAL = "vim";
-  };
-
   squirrelOS = {
     host.roles = [ "server" ];
     host.capabilities = { graphical = false; };
