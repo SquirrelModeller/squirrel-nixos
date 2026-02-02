@@ -29,6 +29,7 @@
 
       usernamehw.errorlens
 
+      tomoki1207.pdf
     ];
   };
 
