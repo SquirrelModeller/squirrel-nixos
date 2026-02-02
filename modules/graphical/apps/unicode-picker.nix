@@ -24,7 +24,7 @@
                   > "$DB.tmp" && mv "$DB.tmp" "$DB"
                 fi
         
-            choice="$(tofi --prompt-text "Unicode" < "$DB")" || exit 0
+            choice="$(tofi --prompt-text "Unicode " < "$DB")" || exit 0
             char="''${choice%%$'\t'*}"
             printf "%s" "$char" | wl-copy
       '';
