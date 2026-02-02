@@ -6,7 +6,6 @@ padding-left = 35%
 padding-top = 35%
 result-spacing = 25
 num-results = 5
-drun-disable-cache = true
 font = monospace
 selection-color = #FFB97C
 background-color = #000A

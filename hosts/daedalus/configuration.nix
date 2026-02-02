@@ -14,6 +14,7 @@ in
     "${self}/modules/graphical/apps/quickshell.nix"
     "${self}/modules/graphical/apps/steam.nix"
     "${self}/modules/graphical/apps/vscodium.nix"
+    "${self}/modules/graphical/apps/unicode-picker.nix"
     "${self}/modules/graphical/theme/wallust-colorscheme.nix"
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/graphical/dms/greetd.nix"
