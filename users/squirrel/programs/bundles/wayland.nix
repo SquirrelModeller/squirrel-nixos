@@ -9,4 +9,6 @@
   pkgs.playerctl
   pkgs.capitaine-cursors
   inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
+  pkgs.vesktop
+  pkgs.keepassxc
 ]
