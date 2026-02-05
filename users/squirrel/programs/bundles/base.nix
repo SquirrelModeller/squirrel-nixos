@@ -1,4 +1,7 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, inputs, ctx, ... }:
+let
+  isLinux = ctx.platform.isLinux or false;
+in
 [
   pkgs.htop
   pkgs.fastfetch
@@ -9,6 +12,7 @@
   pkgs.wallust
   pkgs.comma
   pkgs.sshfs
+] ++ lib.optionals isLinux [
   inputs.domacro.packages.${pkgs.stdenv.hostPlatform.system}.default
 ]
 

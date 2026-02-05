@@ -1,5 +1,8 @@
-{ pkgs, inputs, lib, ... }:
+{ pkgs, inputs, lib, ctx, ... }:
+
 let
+  isLinux = ctx.platform.isLinux or false;
+
   treeSitterParsers = grammars: [
     grammars."tree-sitter-bash"
     grammars."tree-sitter-c"
@@ -13,6 +16,7 @@ let
     grammars."tree-sitter-tsx"
     grammars."tree-sitter-typescript"
     grammars."tree-sitter-nix"
+  ]  ++ lib.optionals isLinux [
     inputs.nix-qml-support.packages.${pkgs.stdenv.system}.tree-sitter-qmljs
   ];
 
@@ -58,6 +62,7 @@ let
         p."markdown-toc"
         p.direnv
         (p.treesit-grammars.with-grammars (grammars: treeSitterParsers grammars))
+      ] ++ lib.optionals isLinux [
         inputs.nix-qml-support.packages.${pkgs.stdenv.system}."qml-ts-mode"
       ]
     );

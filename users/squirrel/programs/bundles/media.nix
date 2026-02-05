@@ -1,6 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, ctx, ... }:
+let
+  isLinux = ctx.platform.isLinux or false;
+in
 [
-  pkgs.vlc
+] ++ lib.optionals isLinux [
   (pkgs.wrapOBS {
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs
@@ -9,4 +12,5 @@
       obs-vkcapture
     ];
   })
+  pkgs.vlc
 ]
