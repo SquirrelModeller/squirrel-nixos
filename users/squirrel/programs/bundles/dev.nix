@@ -1,8 +1,14 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, inputs, ctx, ... }:
+let
+  isLinux = ctx.platform.isLinux or false;
+in
 [
   pkgs.socat
   pkgs.pandoc
-  pkgs.pkgsRocm.blender
+  pkgs.nixpkgs-fmt
+  pkgs.nixfmt
+] ++ lib.optionals isLinux [
+  pkgs.blender
   pkgs.tofi
   inputs.alejandra.defaultPackage.${pkgs.stdenv.hostPlatform.system}
 ]

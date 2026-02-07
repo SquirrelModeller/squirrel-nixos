@@ -19,7 +19,7 @@ in
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/graphical/dms/greetd.nix"
     "${self}/modules/packages"
-    "${self}/modules/terminal/security.nix"
+    "${self}/modules/terminal/security/nixos.nix"
     "${self}/modules/terminal/zsh"
   ];
 

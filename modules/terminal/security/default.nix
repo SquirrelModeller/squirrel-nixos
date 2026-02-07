@@ -6,18 +6,11 @@ let
       "91wYxEuarNfRfzxL0wz73aaIniVmpJ5gP6LToWvQiKQ7+rElk5VcuK3W4YufIhzTx83kEYoJQJISEqsiEBXxiA==,wDI1zibPz39ilFcNKqOdYtn76gvj/suZF8Y+dxu9wUMCa+kF8WWWPdsuN5gQ7vPRQ0EuUoKB6/9k2XLLrLTX6A==,es256,+presence"
     ];
   };
+
   mkLine = user: creds: "${user}:" + lib.concatStringsSep ":" creds;
   u2fLines = lib.attrValues (lib.mapAttrs mkLine u2fCreds);
 in
 {
-  services.pcscd.enable = true;
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-tty;
-  };
-
   environment.systemPackages = with pkgs; [
     openssh
     gnupg
@@ -26,25 +19,10 @@ in
     yubikey-personalization
   ];
 
-  security.pam.u2f = {
+  programs.gnupg.agent = {
     enable = true;
-    settings = {
-      cue = true;
-      authfile = "/etc/yubico/u2f_keys";
-    };
+    enableSSHSupport = true;
   };
 
-  security.pam.services.sudo.u2fAuth = true;
-
-  environment.etc."yubico/u2f_keys" = {
-    text = lib.concatStringsSep "\n" u2fLines + "\n";
-    mode = "0400";
-    user = "root";
-    group = "root";
-  };
-
-  services.udev.packages = [
-    pkgs.yubikey-personalization
-    pkgs.yubikey-manager
-  ];
+  environment.etc."yubico/u2f_keys".text = lib.concatStringsSep "\n" u2fLines + "\n";
 }
