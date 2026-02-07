@@ -1,11 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  self,
-  availableUsers,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, self
+, availableUsers
+, ...
 }:
 let
   inherit (lib)
@@ -14,12 +13,12 @@ let
     listToAttrs
     map
     ;
-  findFiles = import ../lib/findFiles.nix { inherit lib; };
+  findFiles = import ../../lib/findFiles.nix { inherit lib; };
 
   getUserDotfiles =
     username:
     let
-      dotfilesDir = ../users + "/${username}/dotfiles";
+      dotfilesDir = ../../users + "/${username}/dotfiles";
     in
     if builtins.pathExists dotfilesDir then findFiles dotfilesDir else { };
 
@@ -73,15 +72,17 @@ in
       ];
 
       hjem.users = listToAttrs (
-        map (username: {
-          name = username;
-          value = {
-            enable = true;
-            user = username;
-            directory = config.users.users.${username}.home;
-            files = getUserDotfiles username;
-          };
-        }) enabledUsers
+        map
+          (username: {
+            name = username;
+            value = {
+              enable = true;
+              user = username;
+              directory = config.users.users.${username}.home;
+              files = getUserDotfiles username;
+            };
+          })
+          enabledUsers
       );
 
       hjem.clobberByDefault = true;

@@ -1,11 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  getUserProgramsPath,
-  getUserMisc,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, getUserProgramsPath
+, getUserMisc
+, ...
 }:
 let
   inherit (lib) mkIf listToAttrs map;
@@ -36,22 +35,24 @@ in
 
   config = mkIf (enabledUsers != [ ]) {
     users.users = listToAttrs (
-      map (username: {
-        name = username;
-        value = {
-          home = "/Users/${username}";
-          shell = pkgs.zsh;
-          packages = import (getUserProgramsPath username) {
-            inherit
-              pkgs
-              lib
-              inputs
-              ctx
-              ;
-          };
-        }
-        // (getUserMisc username);
-      }) enabledUsers
+      map
+        (username: {
+          name = username;
+          value = {
+            home = "/Users/${username}";
+            shell = pkgs.zsh;
+            packages = import (getUserProgramsPath username) {
+              inherit
+                pkgs
+                lib
+                inputs
+                ctx
+                ;
+            };
+          }
+          // (getUserMisc username);
+        })
+        enabledUsers
     );
   };
 }

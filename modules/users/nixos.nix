@@ -1,13 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  self,
-  availableUsers,
-  getUserProgramsPath,
-  getUserMisc,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, self
+, availableUsers
+, getUserProgramsPath
+, getUserMisc
+, ...
 }:
 let
   inherit (lib) mkIf listToAttrs map;
@@ -48,31 +47,33 @@ in
 
   config = mkIf (enabledUsers != [ ]) {
     users.users = listToAttrs (
-      map (username: {
-        name = username;
-        value = {
-          isNormalUser = true;
-          home = "/home/${username}";
-          shell = pkgs.zsh;
-          extraGroups = [
-            "wheel"
-            "media"
-            "smbusers"
-            "networkmanager"
-            "libvirt"
-            "libvirtd"
-          ];
-          packages = import (getUserProgramsPath username) {
-            inherit
-              pkgs
-              lib
-              inputs
-              ctx
-              ;
-          };
-        }
-        // (getUserMisc username);
-      }) enabledUsers
+      map
+        (username: {
+          name = username;
+          value = {
+            isNormalUser = true;
+            home = "/home/${username}";
+            shell = pkgs.zsh;
+            extraGroups = [
+              "wheel"
+              "media"
+              "smbusers"
+              "networkmanager"
+              "libvirt"
+              "libvirtd"
+            ];
+            packages = import (getUserProgramsPath username) {
+              inherit
+                pkgs
+                lib
+                inputs
+                ctx
+                ;
+            };
+          }
+          // (getUserMisc username);
+        })
+        enabledUsers
     );
   };
 }
