@@ -19,7 +19,7 @@ in
     "${self}/modules/graphical/apps/vscodium.nix"
   ];
 
-  environment.systemPackages = [ pkgs.vim ];
+  environment.systemPackages = [ pkgs.vim pkgs.firefox ];
 
   programs.direnv.enable = true;
 

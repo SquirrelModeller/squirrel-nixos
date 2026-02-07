@@ -12,6 +12,7 @@ in
   pkgs.wallust
   pkgs.comma
   pkgs.sshfs
+  pkgs.vesktop
 ] ++ lib.optionals isLinux [
   inputs.domacro.packages.${pkgs.stdenv.hostPlatform.system}.default
 ]
