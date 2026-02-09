@@ -24,14 +24,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Format
-          nix run nixpkgs#alejandra -- .
-
           # Fix antipatterns
           nix run nixpkgs#statix -- fix
 
           # Remove unused code
           nix run nixpkgs#deadnix -- --edit
+
+          # Format
+          nix run nixpkgs#alejandra -- .
 
       - name: Create formatting PR
         uses: peter-evans/create-pull-request@v6
