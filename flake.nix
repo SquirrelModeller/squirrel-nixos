@@ -5,10 +5,9 @@
     self,
     nixpkgs,
     nix-darwin,
-    systems,
     ...
   } @ inputs: let
-    lib = nixpkgs.lib;
+    inherit (nixpkgs) lib;
 
     hostEntries = builtins.readDir ./hosts;
     hostNames = builtins.filter (
@@ -29,7 +28,7 @@
     in
       import programsFile {
         inherit pkgs inputs;
-        lib = pkgs.lib;
+        inherit (pkgs) lib;
       };
 
     getHostSystem = hostName: let

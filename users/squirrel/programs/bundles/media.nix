@@ -6,9 +6,7 @@
 }: let
   isLinux = ctx.platform.isLinux or false;
 in
-  [
-  ]
-  ++ lib.optionals isLinux [
+  lib.optionals isLinux [
     (pkgs.wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs

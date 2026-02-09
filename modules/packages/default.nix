@@ -1,10 +1,7 @@
 {
   pkgs,
-  lib,
   ...
-}: let
-  #isLinux = ctx.platform.isLinux or false;
-in {
+}: {
   environment.systemPackages = with pkgs; [
     git
     vim
