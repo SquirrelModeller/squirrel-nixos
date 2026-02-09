@@ -2,13 +2,15 @@ _: let
   musicDir = "/talos/media/music";
   dataDir = "/var/lib/navidrome";
 in {
-  users.groups.navidrome = {};
-  users.groups.media = {};
+  users = {
+    groups.navidrome = {};
+    groups.media = {};
 
-  users.users.navidrome = {
-    isSystemUser = true;
-    group = "navidrome";
-    extraGroups = ["media"];
+    users.navidrome = {
+      isSystemUser = true;
+      group = "navidrome";
+      extraGroups = ["media"];
+    };
   };
 
   services.navidrome = {

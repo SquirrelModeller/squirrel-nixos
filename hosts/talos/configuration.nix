@@ -53,32 +53,35 @@
       ];
     }
   ];
+  networking = {
+    hostId = "0e0a5617";
+    networkmanager.enable = true;
 
-  networking.hostId = "0e0a5617";
-  networking.networkmanager.enable = true;
-
-  networking.wireguard.interfaces.wg0 = {
-    ips = ["10.0.0.2/24"];
-    privateKeyFile = "/var/lib/wireguard/talos.key";
-    peers = [
-      {
-        publicKey = "S6uxm1oXW7qKXt2ubxylqgnKfsYBXh876++aySY+2zI=";
-        endpoint = "159.195.8.188:51820";
-        allowedIPs = ["10.0.0.1/32"];
-        persistentKeepalive = 25;
-      }
-    ];
+    wireguard.interfaces.wg0 = {
+      ips = ["10.0.0.2/24"];
+      privateKeyFile = "/var/lib/wireguard/talos.key";
+      peers = [
+        {
+          publicKey = "S6uxm1oXW7qKXt2ubxylqgnKfsYBXh876++aySY+2zI=";
+          endpoint = "159.195.8.188:51820";
+          allowedIPs = ["10.0.0.1/32"];
+          persistentKeepalive = 25;
+        }
+      ];
+    };
   };
 
-  services.zfs.autoScrub = {
-    enable = true;
-    pools = ["talos"];
-    interval = "monthly";
-  };
+  services = {
+    zfs.autoScrub = {
+      enable = true;
+      pools = ["talos"];
+      interval = "monthly";
+    };
 
-  services.gotify = {
-    enable = true;
-    environment.GOTIFY_SERVER_PORT = 8090;
+    gotify = {
+      enable = true;
+      environment.GOTIFY_SERVER_PORT = 8090;
+    };
   };
 
   squirrelOS.notifications.gotify = {

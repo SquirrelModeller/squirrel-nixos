@@ -76,25 +76,28 @@
     enable = true;
     email = "squirrelmodeller@protonmail.com";
 
-    virtualHosts."watch.talosvault.net".extraConfig = ''
-      reverse_proxy 10.0.0.2:8096
-    '';
+    virtualHosts = {
+      "watch.talosvault.net".extraConfig = ''
+        reverse_proxy 10.0.0.2:8096
+      '';
 
-    virtualHosts."files.talosvault.net".extraConfig = ''
-      @carddav  path /.well-known/carddav
-      @caldav   path /.well-known/caldav
-      redir @carddav /remote.php/dav/ 301
-      redir @caldav  /remote.php/dav/ 301
+      "files.talosvault.net".extraConfig = ''
+        @carddav  path /.well-known/carddav
+        @caldav   path /.well-known/caldav
+        redir @carddav /remote.php/dav/ 301
+        redir @caldav  /remote.php/dav/ 301
 
-      reverse_proxy 10.0.0.2:8080
-    '';
-    virtualHosts."music.talosvault.net".extraConfig = ''
-      reverse_proxy 10.0.0.2:4533
-    '';
+        reverse_proxy 10.0.0.2:8080
+      '';
 
-    virtualHosts."notify.talosvault.net".extraConfig = ''
-      reverse_proxy 10.0.0.2:8090
-    '';
+      "music.talosvault.net".extraConfig = ''
+        reverse_proxy 10.0.0.2:4533
+      '';
+
+      "notify.talosvault.net".extraConfig = ''
+        reverse_proxy 10.0.0.2:8090
+      '';
+    };
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

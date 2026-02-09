@@ -40,22 +40,24 @@ in {
     computerName = "hermes";
   };
 
-  system.defaults = {
-    CustomUserPreferences = {
-      "com.apple.WindowManager" = {
-        EnableStandardClickToShowDesktop = false;
+  system = {
+    defaults = {
+      CustomUserPreferences = {
+        "com.apple.WindowManager" = {
+          EnableStandardClickToShowDesktop = false;
+        };
       };
     };
-  };
 
-  system.defaults.NSGlobalDomain = {
-    "com.apple.swipescrolldirection" = false;
-    InitialKeyRepeat = 15;
-    KeyRepeat = 2;
+    defaults.NSGlobalDomain = {
+      "com.apple.swipescrolldirection" = false;
+      InitialKeyRepeat = 15;
+      KeyRepeat = 2;
+    };
+    configurationRevision = self.rev or self.dirtyRev or null;
+
+    stateVersion = 6;
   };
 
   nix.settings.experimental-features = "nix-command flakes";
-  system.configurationRevision = self.rev or self.dirtyRev or null;
-
-  system.stateVersion = 6;
 }

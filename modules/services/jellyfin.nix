@@ -16,27 +16,28 @@ in {
   ];
 
   users.users.jellyfin.extraGroups = ["media" "render" "video"];
+  systemd = {
+    services.jellyfin.serviceConfig = {
+      DeviceAllow = [
+        "/dev/dri/renderD128 rw"
+        "/dev/nvidia0 rw"
+        "/dev/nvidiactl rw"
+        "/dev/nvidia-modeset rw"
+        "/dev/nvidia-uvm rw"
+        "/dev/nvidia-uvm-tools rw"
+      ];
+      PrivateDevices = false;
+    };
 
-  systemd.services.jellyfin.serviceConfig = {
-    DeviceAllow = [
-      "/dev/dri/renderD128 rw"
-      "/dev/nvidia0 rw"
-      "/dev/nvidiactl rw"
-      "/dev/nvidia-modeset rw"
-      "/dev/nvidia-uvm rw"
-      "/dev/nvidia-uvm-tools rw"
+    services.jellyfin.environment = {
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+    };
+
+    tmpfiles.rules = [
+      "d ${dataDir}  0750 jellyfin jellyfin - -"
+      "d ${cacheDir} 0750 jellyfin jellyfin - -"
     ];
-    PrivateDevices = false;
   };
-
-  systemd.services.jellyfin.environment = {
-    LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
-  };
-
-  systemd.tmpfiles.rules = [
-    "d ${dataDir}  0750 jellyfin jellyfin - -"
-    "d ${cacheDir} 0750 jellyfin jellyfin - -"
-  ];
 
   networking.firewall = {
     interfaces."enp4s0".allowedTCPPorts = [8096];

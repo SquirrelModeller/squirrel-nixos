@@ -1,11 +1,4 @@
 {pkgs, ...}: {
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-
   environment.systemPackages = with pkgs; [
     nil
     nixpkgs-fmt
@@ -30,6 +23,15 @@
     })
   ];
 
-  programs.bash.enable = true;
-  programs.zsh.enable = true;
+  programs = {
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+
+    bash.enable = true;
+    zsh.enable = true;
+  };
 }
