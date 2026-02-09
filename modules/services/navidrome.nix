@@ -1,4 +1,4 @@
-{...}: let
+_: let
   musicDir = "/talos/media/music";
   dataDir = "/var/lib/navidrome";
 in {

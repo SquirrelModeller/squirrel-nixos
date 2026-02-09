@@ -1,40 +1,36 @@
-{ config
-, lib
-, pkgs
-, getUserDotfiles
-, ...
-}:
-let
+{
+  config,
+  lib,
+  pkgs,
+  getUserDotfiles,
+  ...
+}: let
   inherit (lib) mkIf mkMerge;
 
   enabledUsers = config.squirrelOS.users.enabled;
-  isDarwin = pkgs.stdenv.isDarwin;
+  inherit (pkgs.stdenv) isDarwin;
 
   getVSCodiumConfigPath = username:
     if isDarwin
     then "/Users/${username}/Library/Application Support/VSCodium/User"
     else ".config/VSCodium/User";
 
-  getVSCodiumSettings = username:
-    let
-      dotfiles = getUserDotfiles username;
-      settingsPath = ".config/VSCodium/User/settings.json";
-    in
-      if builtins.hasAttr settingsPath dotfiles
-      then dotfiles.${settingsPath}
-      else null;
+  getVSCodiumSettings = username: let
+    dotfiles = getUserDotfiles username;
+    settingsPath = ".config/VSCodium/User/settings.json";
+  in
+    if builtins.hasAttr settingsPath dotfiles
+    then dotfiles.${settingsPath}
+    else null;
 
-  mkDarwinVSCodiumConfig = username:
-    let
-      settings = getVSCodiumSettings username;
-      configPath = getVSCodiumConfigPath username;
-    in
-      mkIf (isDarwin && settings != null) {
-        hjem.users.${username}.files."${configPath}/settings.json" = settings;
-      };
-
-in
-{
+  mkDarwinVSCodiumConfig = username: let
+    settings = getVSCodiumSettings username;
+    configPath = getVSCodiumConfigPath username;
+  in
+    mkIf (isDarwin && settings != null) {
+      hjem.users.${username}.files."${configPath}/settings.json" = settings;
+    };
+in {
   config = mkMerge [
     {
       programs.direnv = {

@@ -5,8 +5,8 @@ in {
   services.jellyfin = {
     enable = true;
     openFirewall = false;
-    dataDir = dataDir;
-    cacheDir = cacheDir;
+    inherit dataDir;
+    inherit cacheDir;
   };
 
   environment.systemPackages = with pkgs; [

@@ -16,7 +16,7 @@
     if hasSettings
     then {
       "Library/Application Support/VSCodium/User/settings.json" = {
-        source = dotfiles.${settingsPath}.source;
+        inherit (dotfiles.${settingsPath}) source;
       };
     }
     else {};
