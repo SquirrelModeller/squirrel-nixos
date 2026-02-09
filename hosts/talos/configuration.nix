@@ -1,5 +1,10 @@
-{ lib, pkgs, modulesPath, self, ... }:
 {
+  lib,
+  pkgs,
+  modulesPath,
+  self,
+  ...
+}: {
   imports = [
     ./fs
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -17,16 +22,16 @@
   ];
 
   boot = {
-    supportedFilesystems = [ "zfs" ];
-    initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
-    zfs.extraPools = [ "talos" ];
+    supportedFilesystems = ["zfs"];
+    initrd.availableKernelModules = ["nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod"];
+    zfs.extraPools = ["talos"];
     zfs.requestEncryptionCredentials = false;
-    kernelModules = [ "nvidia_uvm" ];
+    kernelModules = ["nvidia_uvm"];
   };
 
   squirrelOS = {
-    host.roles = [ "server" ];
-    host.capabilities = { graphical = false; };
+    host.roles = ["server"];
+    host.capabilities = {graphical = false;};
   };
 
   services.openssh = {
@@ -38,30 +43,37 @@
     };
   };
 
-  security.sudo.extraRules = [{
-    users = [ "squirrel" ];
-    commands = [
-      { command = "/run/current-system/sw/bin/nixos-rebuild"; options = [ "NOPASSWD" ]; }
-    ];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = ["squirrel"];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
 
   networking.hostId = "0e0a5617";
   networking.networkmanager.enable = true;
 
   networking.wireguard.interfaces.wg0 = {
-    ips = [ "10.0.0.2/24" ];
+    ips = ["10.0.0.2/24"];
     privateKeyFile = "/var/lib/wireguard/talos.key";
-    peers = [{
-      publicKey = "S6uxm1oXW7qKXt2ubxylqgnKfsYBXh876++aySY+2zI=";
-      endpoint = "159.195.8.188:51820";
-      allowedIPs = [ "10.0.0.1/32" ];
-      persistentKeepalive = 25;
-    }];
+    peers = [
+      {
+        publicKey = "S6uxm1oXW7qKXt2ubxylqgnKfsYBXh876++aySY+2zI=";
+        endpoint = "159.195.8.188:51820";
+        allowedIPs = ["10.0.0.1/32"];
+        persistentKeepalive = 25;
+      }
+    ];
   };
 
   services.zfs.autoScrub = {
     enable = true;
-    pools = [ "talos" ];
+    pools = ["talos"];
     interval = "monthly";
   };
 
@@ -85,13 +97,13 @@
     enable = true;
 
     interfaces."enp4s0" = {
-      allowedTCPPorts = [ 22 5357 8090 ];
-      allowedUDPPorts = [ 5353 3702 ];
+      allowedTCPPorts = [22 5357 8090];
+      allowedUDPPorts = [5353 3702];
     };
 
     interfaces.wg0 = {
-      allowedTCPPorts = [ 8090 ];
-      allowedUDPPorts = [ ];
+      allowedTCPPorts = [8090];
+      allowedUDPPorts = [];
     };
 
     extraCommands = ''
@@ -107,7 +119,7 @@
 
   networking.hostName = "talos";
 
-  squirrelOS.users.enabled = [ "squirrel" ];
+  squirrelOS.users.enabled = ["squirrel"];
 
   system.stateVersion = "25.05";
 

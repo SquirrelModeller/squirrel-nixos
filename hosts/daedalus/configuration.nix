@@ -1,8 +1,12 @@
-{ lib, pkgs, modulesPath, self, ... }:
-let
-  systeminfo = pkgs.callPackage "${self}/modules/terminal/systeminfo" { };
-in
 {
+  lib,
+  pkgs,
+  modulesPath,
+  self,
+  ...
+}: let
+  systeminfo = pkgs.callPackage "${self}/modules/terminal/systeminfo" {};
+in {
   imports = [
     ./fs
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -24,8 +28,8 @@ in
   ];
 
   boot = {
-    initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod" ];
-    supportedFilesystems = [ "cifs" ];
+    initrd.availableKernelModules = ["nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod"];
+    supportedFilesystems = ["cifs"];
   };
 
   environment.systemPackages = with pkgs; [
@@ -33,23 +37,23 @@ in
   ];
 
   environment.variables = {
-    systemPackages = [ systeminfo ];
+    systemPackages = [systeminfo];
   };
 
   squirrelOS = {
-    host.roles = [ "workstation" ];
-    host.capabilities = { graphical = true; };
+    host.roles = ["workstation"];
+    host.capabilities = {graphical = true;};
   };
 
   specialisation.gpu-passthrough.configuration = {
-    system.nixos.tags = [ "gpu-passthrough" ];
+    system.nixos.tags = ["gpu-passthrough"];
     boot.kernelParams = [
       "amd_iommu=on"
       "iommu=pt"
       "vfio-pci.ids=1002:744c,1002:ab30"
       "video=efifb:off"
     ];
-    boot.initrd.kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
+    boot.initrd.kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1"];
 
     virtualisation = {
       libvirtd = {
@@ -68,8 +72,18 @@ in
       swtpm
     ];
     security.pam.loginLimits = [
-      { domain = "@libvirtd"; item = "memlock"; type = "hard"; value = "unlimited"; }
-      { domain = "@libvirtd"; item = "memlock"; type = "soft"; value = "unlimited"; }
+      {
+        domain = "@libvirtd";
+        item = "memlock";
+        type = "hard";
+        value = "unlimited";
+      }
+      {
+        domain = "@libvirtd";
+        item = "memlock";
+        type = "soft";
+        value = "unlimited";
+      }
     ];
 
     services.udev.extraRules = ''
@@ -89,7 +103,7 @@ in
       PermitRootLogin = "prohibit-password";
     };
   };
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [22];
 
   services.avahi = {
     enable = true;
@@ -101,7 +115,7 @@ in
 
   networking.hostName = "daedalus";
 
-  squirrelOS.users.enabled = [ "squirrel" ];
+  squirrelOS.users.enabled = ["squirrel"];
 
   system.stateVersion = "24.11";
 

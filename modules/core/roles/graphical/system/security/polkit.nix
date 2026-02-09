@@ -1,19 +1,22 @@
-{ pkgs
-, lib
-, ...
+{
+  pkgs,
+  lib,
+  ...
 }: {
   security.polkit.enable = true;
 
   environment.systemPackages = lib.attrValues {
-    inherit (pkgs)
-      hyprpolkitagent;
+    inherit
+      (pkgs)
+      hyprpolkitagent
+      ;
   };
 
   systemd.user.services.hyprpolkitagent = {
     description = "Hyprland Polkit Authentication Agent";
-    partOf = [ "graphical-session.target" ];
-    wants = [ "hyprland-session.target" ];
-    after = [ "hyprland-session.target" "graphical-session.target" ];
+    partOf = ["graphical-session.target"];
+    wants = ["hyprland-session.target"];
+    after = ["hyprland-session.target" "graphical-session.target"];
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";

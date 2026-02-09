@@ -1,40 +1,40 @@
-{ config
-, lib
-, pkgs
-, inputs
-, self
-, availableUsers
-, ...
-}:
-let
-  inherit (lib)
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  self,
+  availableUsers,
+  ...
+}: let
+  inherit
+    (lib)
     mkIf
     mkMerge
     listToAttrs
     map
     ;
-  findFiles = import ../../lib/findFiles.nix { inherit lib; };
+  findFiles = import ../../lib/findFiles.nix {inherit lib;};
 
-  getUserDotfiles =
-    username:
-    let
-      dotfilesDir = ../../users + "/${username}/dotfiles";
-    in
-    if builtins.pathExists dotfilesDir then findFiles dotfilesDir else { };
+  getUserDotfiles = username: let
+    dotfilesDir = ../../users + "/${username}/dotfiles";
+  in
+    if builtins.pathExists dotfilesDir
+    then findFiles dotfilesDir
+    else {};
 
-  getUserMisc =
-    username:
-    let
-      f = "${self}/users/${username}/misc.nix";
-    in
-    if builtins.pathExists f then import f { } else { };
+  getUserMisc = username: let
+    f = "${self}/users/${username}/misc.nix";
+  in
+    if builtins.pathExists f
+    then import f {}
+    else {};
 
   getUserProgramsPath = username: "${self}/users/${username}/programs/default.nix";
 
   enabledUsers = config.squirrelOS.users.enabled;
   invalidUsers = lib.filter (u: !(lib.elem u availableUsers)) enabledUsers;
-in
-{
+in {
   options = {
     squirrelOS.users.enabled = lib.mkOption {
       type = lib.types.listOf lib.types.str;
@@ -61,7 +61,7 @@ in
       };
     }
 
-    (mkIf (enabledUsers != [ ]) {
+    (mkIf (enabledUsers != []) {
       assertions = [
         {
           assertion = lib.length invalidUsers == 0;
@@ -73,16 +73,16 @@ in
 
       hjem.users = listToAttrs (
         map
-          (username: {
-            name = username;
-            value = {
-              enable = true;
-              user = username;
-              directory = config.users.users.${username}.home;
-              files = getUserDotfiles username;
-            };
-          })
-          enabledUsers
+        (username: {
+          name = username;
+          value = {
+            enable = true;
+            user = username;
+            directory = config.users.users.${username}.home;
+            files = getUserDotfiles username;
+          };
+        })
+        enabledUsers
       );
 
       hjem.clobberByDefault = true;

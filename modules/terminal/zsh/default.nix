@@ -1,5 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: let
   inherit (lib) mkMerge mapAttrsToList optionalString hasAttr concatStringsSep filter;
   enabledUsers = config.squirrelOS.users.enabled;
 
@@ -36,9 +41,11 @@ let
   mkPlugins = plugins:
     concatStringsSep "\n" (
       mapAttrsToList
-        (_: value:
-          let hasFile = hasAttr "file" value;
-          in concatStringsSep "\n" (filter (s: s != "") [
+      (
+        _: value: let
+          hasFile = hasAttr "file" value;
+        in
+          concatStringsSep "\n" (filter (s: s != "") [
             (optionalString (!hasFile) ''fpath+=${value.src}'')
             (optionalString (hasFile && value.file != null) ''
               if [[ -f "${value.src}/${value.file}" ]]; then
@@ -46,15 +53,17 @@ let
               fi
             '')
           ])
-        )
-        plugins
+      )
+      plugins
     );
 
-  userZshOrEmpty = u:
-    let p = "${inputs.self}/users/${u}/zsh";
-    in if builtins.pathExists p then builtins.readFile p else "";
-in
-{
+  userZshOrEmpty = u: let
+    p = "${inputs.self}/users/${u}/zsh";
+  in
+    if builtins.pathExists p
+    then builtins.readFile p
+    else "";
+in {
   config = {
     programs.zsh.enable = true;
     environment.systemPackages = with pkgs; [

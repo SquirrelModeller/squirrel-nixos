@@ -4,12 +4,9 @@
   pkgs,
   self,
   ...
-}:
-
-let
-  allUsers = [ "squirrel" ];
-in
-{
+}: let
+  allUsers = ["squirrel"];
+in {
   squirrelOS.users.enabled = allUsers;
 
   imports = [
@@ -20,7 +17,7 @@ in
     "${self}/modules/graphical/apps/firefox/darwin.nix"
   ];
 
-  environment.systemPackages = [ pkgs.vim ];
+  environment.systemPackages = [pkgs.vim];
 
   programs.direnv.enable = true;
 
@@ -33,8 +30,8 @@ in
 
   system.defaults.dock = {
     autohide = true;
-    persistent-apps = [ ];
-    persistent-others = [ ];
+    persistent-apps = [];
+    persistent-others = [];
     tilesize = 50;
   };
 

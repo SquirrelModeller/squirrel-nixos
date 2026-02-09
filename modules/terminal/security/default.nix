@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   u2fCreds = {
     squirrel = [
       "vtjRC1Qun6lE/+su1eOT0DpMEP33/kt34tS+vFMrQ5ytPSoCTisV6xbKUrj2KxV4wVm9ygspmuI3n3TYwSLI5g==,NKloYTARrswjUQg2h0oqdObwyqCHOGXRmqTsRrhKR/5vZMW7Dsf+4PTiZ3qil68hXDlwXvD9WUCZrPaUExHHFg==,es256,+presence"
@@ -9,8 +12,7 @@ let
 
   mkLine = user: creds: "${user}:" + lib.concatStringsSep ":" creds;
   u2fLines = lib.attrValues (lib.mapAttrs mkLine u2fCreds);
-in
-{
+in {
   environment.systemPackages = with pkgs; [
     openssh
     gnupg

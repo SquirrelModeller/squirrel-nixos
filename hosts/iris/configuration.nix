@@ -1,5 +1,8 @@
-{ lib, self, ... }:
 {
+  lib,
+  self,
+  ...
+}: {
   imports = [
     ./fs
     "${self}/modules/options/host-context.nix"
@@ -9,11 +12,11 @@
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
   ];
 
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
 
   squirrelOS = {
-    host.roles = [ "server" ];
-    host.capabilities = { graphical = false; };
+    host.roles = ["server"];
+    host.capabilities = {graphical = false;};
   };
 
   squirrelOS.notifications.gotify = {
@@ -35,11 +38,14 @@
   '';
 
   networking = {
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    nameservers = ["1.1.1.1" "8.8.8.8"];
     hostName = "iris";
 
     interfaces.ens3.ipv4.addresses = [
-      { address = "159.195.8.188"; prefixLength = 22; }
+      {
+        address = "159.195.8.188";
+        prefixLength = 22;
+      }
     ];
     defaultGateway = "159.195.8.1";
 
@@ -49,18 +55,18 @@
   networking.firewall = {
     enable = true;
     allowPing = true;
-    allowedTCPPorts = [ 22 80 443 ];
-    allowedUDPPorts = [ 51820 ];
+    allowedTCPPorts = [22 80 443];
+    allowedUDPPorts = [51820];
   };
 
   networking.wireguard.interfaces.wg0 = {
-    ips = [ "10.0.0.1/24" ];
+    ips = ["10.0.0.1/24"];
     listenPort = 51820;
     privateKeyFile = "/etc/wireguard/vps.key";
     peers = [
       {
         publicKey = "PdoaldW68gI55hL+8Xr888YG+FDaNAFrfH11r0ooE3s=";
-        allowedIPs = [ "10.0.0.2/32" ];
+        allowedIPs = ["10.0.0.2/32"];
         persistentKeepalive = 25;
       }
     ];
@@ -93,7 +99,7 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  squirrelOS.users.enabled = [ "squirrel" ];
+  squirrelOS.users.enabled = ["squirrel"];
 
   system.stateVersion = "25.05";
 }

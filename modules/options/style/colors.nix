@@ -1,8 +1,6 @@
-{ lib, ... }:
-let
+{lib, ...}: let
   inherit (lib.options) mkOption;
-in
-{
+in {
   options.modules.style = {
     colorScheme = {
       colors = mkOption {

@@ -1,14 +1,11 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   d = path: mode: user: group: "d ${path} ${mode} ${user} ${group} - -";
-in
-{
+in {
   users.groups = {
-    media = { };
+    media = {};
   };
 
-  environment.systemPackages = [ pkgs.acl ];
+  environment.systemPackages = [pkgs.acl];
 
   systemd.tmpfiles.rules = [
     (d "/talos" "0755" "root" "root")

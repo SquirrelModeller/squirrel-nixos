@@ -1,11 +1,10 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     open = false;
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics = {
     enable = true;
   };

@@ -1,9 +1,7 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   dataDir = "/talos/services/jellyfin";
   cacheDir = "/talos/services/jellyfin/cache";
-in
-{
+in {
   services.jellyfin = {
     enable = true;
     openFirewall = false;
@@ -17,8 +15,7 @@ in
     jellyfin-ffmpeg
   ];
 
-
-  users.users.jellyfin.extraGroups = [ "media" "render" "video" ];
+  users.users.jellyfin.extraGroups = ["media" "render" "video"];
 
   systemd.services.jellyfin.serviceConfig = {
     DeviceAllow = [
@@ -36,14 +33,13 @@ in
     LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
   };
 
-
   systemd.tmpfiles.rules = [
     "d ${dataDir}  0750 jellyfin jellyfin - -"
     "d ${cacheDir} 0750 jellyfin jellyfin - -"
   ];
 
   networking.firewall = {
-    interfaces."enp4s0".allowedTCPPorts = [ 8096 ];
-    interfaces.wg0.allowedTCPPorts = [ 8096 ];
+    interfaces."enp4s0".allowedTCPPorts = [8096];
+    interfaces.wg0.allowedTCPPorts = [8096];
   };
-} 
+}

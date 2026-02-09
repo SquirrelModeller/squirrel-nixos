@@ -4,26 +4,24 @@
 #################
 # Auto-detect and return a link-ready attrset of files
 # It will link them in the same format in which they are created
-{ lib, ... }:
-let
+{lib, ...}: let
   inherit (builtins) toString;
   inherit (lib.attrsets) listToAttrs;
   inherit (lib.filesystem) listFilesRecursive;
   inherit (lib.lists) map;
   inherit (lib.strings) removePrefix;
-  findFiles = directory:
-    let
-      directoryPrefix = (toString directory) + "/";
-    in
+  findFiles = directory: let
+    directoryPrefix = (toString directory) + "/";
+  in
     if builtins.pathExists directory
     then
       listToAttrs
-        (map
-          (filepath: {
-            name = removePrefix directoryPrefix (toString filepath);
-            value.source = filepath;
-          })
-          (listFilesRecursive directory))
-    else { };
+      (map
+        (filepath: {
+          name = removePrefix directoryPrefix (toString filepath);
+          value.source = filepath;
+        })
+        (listFilesRecursive directory))
+    else {};
 in
-findFiles
+  findFiles

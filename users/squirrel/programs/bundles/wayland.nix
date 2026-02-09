@@ -1,5 +1,9 @@
-{ pkgs, lib, inputs, ... }:
-[
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: [
   pkgs.hyprpaper
   pkgs.hypridle
   pkgs.hyprlock
