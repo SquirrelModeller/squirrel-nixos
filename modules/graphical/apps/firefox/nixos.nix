@@ -1,7 +1,4 @@
-{
-  firefoxShared,
-  ...
-}: let
+{firefoxShared, ...}: let
   inherit (firefoxShared) mkMerge mkCssFile mkProfilesIni enabledUsers colors;
 
   mkPerUserFiles = username: let
