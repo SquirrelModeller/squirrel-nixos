@@ -69,7 +69,7 @@
         p."markdown-preview-mode"
         p."markdown-toc"
         p.direnv
-        (p.treesit-grammars.with-grammars (grammars: treeSitterParsers grammars))
+        (p.treesit-grammars.with-grammars treeSitterParsers)
       ]
       ++ lib.optionals isLinux [
         inputs.nix-qml-support.packages.${pkgs.stdenv.system}."qml-ts-mode"

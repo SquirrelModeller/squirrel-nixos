@@ -5,7 +5,7 @@
   ...
 }: let
   inherit (lib) mkMerge;
-  colors = config.modules.style.colorScheme.colors;
+  inherit (config.modules.style.colorScheme) colors;
 
   renderCss = cssTemplate:
     lib.strings.replaceStrings
