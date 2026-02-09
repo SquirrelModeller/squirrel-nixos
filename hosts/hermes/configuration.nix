@@ -38,8 +38,24 @@ in
     tilesize = 50;
   };
 
+  networking = {
+    hostName = "hermes";
+    localHostName = "hermes";
+    computerName = "hermes";
+  };
+
+  system.defaults = {
+    CustomUserPreferences = {
+      "com.apple.WindowManager" = {
+        EnableStandardClickToShowDesktop = false;
+      };
+    };
+  };
+
   system.defaults.NSGlobalDomain = {
     "com.apple.swipescrolldirection" = false;
+    InitialKeyRepeat = 15;
+    KeyRepeat = 2;
   };
 
   nix.settings.experimental-features = "nix-command flakes";
