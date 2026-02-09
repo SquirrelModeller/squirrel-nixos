@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   lanIf = "enp4s0";
   smbZfsEnsureMounted = pkgs.writeShellScriptBin "smb-zfs-ensure-mounted" ''
     set -eu
@@ -18,9 +17,8 @@ let
       ${pkgs.zfs}/bin/zfs mount "$ds" || exit 1
     fi
   '';
-in
-{
-  users.groups.shared = { };
+in {
+  users.groups.shared = {};
   services.samba = {
     enable = true;
     openFirewall = false;
@@ -65,8 +63,8 @@ in
         browseable = false;
         "read only" = false;
         "guest ok" = false;
-        "valid users" = [ "%S" ];
-        "invalid users" = [ "nobody" ];
+        "valid users" = ["%S"];
+        "invalid users" = ["nobody"];
         "root preexec" = "${smbZfsEnsureMounted}/bin/smb-zfs-ensure-mounted %S";
         "root preexec close" = "yes";
       };
@@ -75,7 +73,7 @@ in
         browseable = true;
         "read only" = false;
         "guest ok" = false;
-        "valid users" = [ "@smbusers" ];
+        "valid users" = ["@smbusers"];
         "create mask" = "0664";
         "directory mask" = "0775";
         "force group" = "smbusers";
@@ -85,7 +83,7 @@ in
         path = "/talos/media";
         browseable = true;
         "read only" = false;
-        "valid users" = [ "@media" ];
+        "valid users" = ["@media"];
         "create mask" = "0664";
         "directory mask" = "2775";
         "inherit permissions" = "yes";
@@ -97,7 +95,7 @@ in
         browseable = false;
         "read only" = false;
         "guest ok" = false;
-        "valid users" = [ "@smbusers" ];
+        "valid users" = ["@smbusers"];
         "inherit permissions" = "yes";
         "inherit owner" = "yes";
         "create mask" = "0660";
@@ -150,8 +148,8 @@ in
   };
   networking.firewall = {
     interfaces.${lanIf} = {
-      allowedTCPPorts = [ 445 ];
-      allowedUDPPorts = [ 137 138 ];
+      allowedTCPPorts = [445];
+      allowedUDPPorts = [137 138];
     };
   };
 }

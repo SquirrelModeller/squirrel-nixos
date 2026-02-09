@@ -1,24 +1,30 @@
-{ pkgs, inputs, lib, ctx, ... }:
-
-let
+{
+  pkgs,
+  inputs,
+  lib,
+  ctx,
+  ...
+}: let
   isLinux = ctx.platform.isLinux or false;
 
-  treeSitterParsers = grammars: [
-    grammars."tree-sitter-bash"
-    grammars."tree-sitter-c"
-    grammars."tree-sitter-cpp"
-    grammars."tree-sitter-css"
-    grammars."tree-sitter-html"
-    grammars."tree-sitter-javascript"
-    grammars."tree-sitter-json"
-    grammars."tree-sitter-python"
-    grammars."tree-sitter-rust"
-    grammars."tree-sitter-tsx"
-    grammars."tree-sitter-typescript"
-    grammars."tree-sitter-nix"
-  ]  ++ lib.optionals isLinux [
-    inputs.nix-qml-support.packages.${pkgs.stdenv.system}.tree-sitter-qmljs
-  ];
+  treeSitterParsers = grammars:
+    [
+      grammars."tree-sitter-bash"
+      grammars."tree-sitter-c"
+      grammars."tree-sitter-cpp"
+      grammars."tree-sitter-css"
+      grammars."tree-sitter-html"
+      grammars."tree-sitter-javascript"
+      grammars."tree-sitter-json"
+      grammars."tree-sitter-python"
+      grammars."tree-sitter-rust"
+      grammars."tree-sitter-tsx"
+      grammars."tree-sitter-typescript"
+      grammars."tree-sitter-nix"
+    ]
+    ++ lib.optionals isLinux [
+      inputs.nix-qml-support.packages.${pkgs.stdenv.system}.tree-sitter-qmljs
+    ];
 
   devTools = [
     pkgs.clang-tools
@@ -30,9 +36,11 @@ let
     pkgs.qt6.qtdeclarative
   ];
 
-  customEmacs =
-    (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs:
-      let p = epkgs; in [
+  customEmacs = (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (
+    epkgs: let
+      p = epkgs;
+    in
+      [
         p."use-package"
         p."format-all"
         p."all-the-icons"
@@ -62,16 +70,17 @@ let
         p."markdown-toc"
         p.direnv
         (p.treesit-grammars.with-grammars (grammars: treeSitterParsers grammars))
-      ] ++ lib.optionals isLinux [
+      ]
+      ++ lib.optionals isLinux [
         inputs.nix-qml-support.packages.${pkgs.stdenv.system}."qml-ts-mode"
       ]
-    );
+  );
 
   emacsInitDir = pkgs.stdenv.mkDerivation {
     pname = "emacs-init-squirrel";
     version = "1";
     src = ./emacs;
-    nativeBuildInputs = [ customEmacs pkgs.coreutils ];
+    nativeBuildInputs = [customEmacs pkgs.coreutils];
     installPhase = ''
       mkdir -p $out
       cp -r ./* $out/
@@ -83,18 +92,19 @@ let
 
   emacsWrapped = pkgs.symlinkJoin {
     name = "emacs-wrapped";
-    paths = [ customEmacs ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
+    paths = [customEmacs];
+    nativeBuildInputs = [pkgs.makeWrapper];
     postBuild = ''
       wrapProgram $out/bin/emacs \
         --suffix PATH : "${lib.makeBinPath devTools}" \
         --add-flags "--init-directory ${emacsInitDir}"
     '';
-    meta = customEmacs.meta // {
-      description = "Emacs wrapped with language servers and init directory";
-    };
+    meta =
+      customEmacs.meta
+      // {
+        description = "Emacs wrapped with language servers and init directory";
+      };
   };
-in
-[
+in [
   emacsWrapped
 ]

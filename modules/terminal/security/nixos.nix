@@ -1,6 +1,9 @@
-{ pkgs, lib, ... }:
 {
-  imports = [ ./default.nix ];
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [./default.nix];
 
   programs.gnupg.agent.pinentryPackage = pkgs.pinentry-tty;
 

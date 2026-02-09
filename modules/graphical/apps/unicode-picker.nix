@@ -1,9 +1,8 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   environment.systemPackages = [
     (pkgs.writeShellApplication {
       name = "unicode-picker";
-      runtimeInputs = [ pkgs.python3 pkgs.curl pkgs.tofi pkgs.wl-clipboard ];
+      runtimeInputs = [pkgs.python3 pkgs.curl pkgs.tofi pkgs.wl-clipboard];
       text = ''
         DB="$HOME/.local/share/unicode-data.tsv"
         mkdir -p "$(dirname "$DB")"
@@ -23,7 +22,7 @@
             print(f"{ch}\tU+{code_hex}\t{name}")' \
                   > "$DB.tmp" && mv "$DB.tmp" "$DB"
                 fi
-        
+
             choice="$(tofi --prompt-text "Unicode " < "$DB")" || exit 0
             char="''${choice%%$'\t'*}"
             printf "%s" "$char" | wl-copy

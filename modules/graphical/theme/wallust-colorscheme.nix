@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkMerge;
 
   c = config.modules.style.colorScheme.colors;
@@ -34,8 +38,7 @@ let
   schemeJSON = builtins.toJSON (toPywal c);
 
   users = config.squirrelOS.users.enabled;
-in
-{
+in {
   config = {
     hjem.users = mkMerge (map
       (u: {
@@ -46,7 +49,7 @@ in
       users);
     systemd.user.services.wallust-apply = {
       enable = true;
-      wantedBy = [ "default.target" ];
+      wantedBy = ["default.target"];
       description = "Generates default theme with wallust to cache";
       serviceConfig = {
         Type = "simple";

@@ -1,16 +1,14 @@
-{ ... }:
-let
+{...}: let
   musicDir = "/talos/media/music";
   dataDir = "/var/lib/navidrome";
-in
-{
-  users.groups.navidrome = { };
-  users.groups.media = { };
+in {
+  users.groups.navidrome = {};
+  users.groups.media = {};
 
   users.users.navidrome = {
     isSystemUser = true;
     group = "navidrome";
-    extraGroups = [ "media" ];
+    extraGroups = ["media"];
   };
 
   services.navidrome = {
@@ -34,7 +32,7 @@ in
   };
 
   networking.firewall = {
-    interfaces."enp4s0".allowedTCPPorts = [ 4533 ];
-    interfaces.wg0.allowedTCPPorts = [ 4533 ];
+    interfaces."enp4s0".allowedTCPPorts = [4533];
+    interfaces.wg0.allowedTCPPorts = [4533];
   };
 }

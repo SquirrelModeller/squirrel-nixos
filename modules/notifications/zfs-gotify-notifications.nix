@@ -1,13 +1,20 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   gotifyCfg = config.squirrelOS.notifications.gotify;
   zfsCfg = config.squirrelOS.notifications.zfs;
 
   zfsHealthCheckScript = pkgs.writeShellScript "zfs-health-check" ''
     set -euo pipefail
 
-    SEND_OK=${if zfsCfg.sendOkNotification then "1" else "0"}
+    SEND_OK=${
+      if zfsCfg.sendOkNotification
+      then "1"
+      else "0"
+    }
 
     TOKEN_FILE="${gotifyCfg.tokenFile}"
 
@@ -50,7 +57,7 @@ let
               8
           fi
           ;;
-      
+
         DEGRADED)
           STATUS=$(${pkgs.zfs}/bin/zpool status "$POOL")
           any_issues=1
@@ -59,7 +66,7 @@ let
             "Pool '$POOL' on $HOSTNAME is in DEGRADED state:\n\n$STATUS" \
             8
           ;;
-      
+
         FAULTED)
           STATUS=$(${pkgs.zfs}/bin/zpool status "$POOL")
           any_issues=1
@@ -68,7 +75,7 @@ let
             "CRITICAL: Pool '$POOL' on $HOSTNAME is FAULTED:\n\n$STATUS" \
             10
           ;;
-      
+
         UNAVAIL)
           STATUS=$(${pkgs.zfs}/bin/zpool status "$POOL")
           any_issues=1
@@ -77,7 +84,7 @@ let
             "CRITICAL: Pool '$POOL' on $HOSTNAME is UNAVAILABLE:\n\n$STATUS" \
             10
           ;;
-      
+
         *)
           STATUS=$(${pkgs.zfs}/bin/zpool status "$POOL")
           any_issues=1
@@ -118,19 +125,19 @@ let
 
     [ -n "''${ZEVENT_POOL}" ] || exit 1
     [ -n "''${ZEVENT_SUBCLASS}" ] || exit 1
-    
+
     TOKEN_FILE="${gotifyCfg.tokenFile}"
-    
+
     if [ ! -f "$TOKEN_FILE" ]; then
       exit 0
     fi
-    
+
     TOKEN=$(cat "$TOKEN_FILE")
     HOSTNAME=$(${pkgs.nettools}/bin/hostname)
     TIMESTAMP=$(${pkgs.coreutils}/bin/date '+%Y-%m-%d %H:%M:%S')
-    
+
     zed_log_msg "Sending Gotify notification for scrub start on ''${ZEVENT_POOL}"
-    
+
     ${pkgs.curl}/bin/curl -s -X POST "${gotifyCfg.serverUrl}/message?token=$TOKEN" \
       -F "title=🔍 ZFS Scrub Started" \
       -F "message=ZFS scrub started on pool ''${ZEVENT_POOL} on $HOSTNAME at $TIMESTAMP" \
@@ -210,9 +217,7 @@ let
       -F "priority=7" \
       || exit 0
   '';
-
-in
-{
+in {
   options.squirrelOS.notifications.zfs = {
     enableHealthCheck = lib.mkOption {
       type = lib.types.bool;
@@ -251,7 +256,7 @@ in
 
       systemd.timers.zfs-health-check = {
         description = "Timer for ZFS health checks";
-        wantedBy = [ "timers.target" ];
+        wantedBy = ["timers.target"];
         timerConfig = {
           OnCalendar = zfsCfg.healthCheckInterval;
           Persistent = true;
@@ -262,7 +267,7 @@ in
     (lib.mkIf (gotifyCfg.enable && zfsCfg.enableScrubNotifications) {
       services.zfs.zed.settings = {
         ZED_DEBUG_LOG = "/var/log/zed.debug.log";
-        ZED_EMAIL_ADDR = [ "root" ];
+        ZED_EMAIL_ADDR = ["root"];
         ZED_EMAIL_PROG = "${pkgs.mailutils}/bin/mail";
         ZED_EMAIL_OPTS = "@ADDRESS@";
 

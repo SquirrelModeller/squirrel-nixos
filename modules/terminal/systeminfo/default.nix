@@ -1,11 +1,11 @@
-{ pkgs }:
+{pkgs}:
 pkgs.stdenv.mkDerivation {
   pname = "systeminfo-cpu-ram-stats";
   version = "1.0";
 
   src = ./src;
 
-  nativeBuildInputs = [ pkgs.gcc ];
+  nativeBuildInputs = [pkgs.gcc];
 
   buildPhase = ''
     g++ -o systeminfo-cpu-ram-stats systeminfo.cpp

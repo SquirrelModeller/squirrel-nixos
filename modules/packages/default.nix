@@ -1,14 +1,16 @@
-{ pkgs, lib, ... }:
-let
-  #isLinux = ctx.platform.isLinux or false;
-in
 {
+  pkgs,
+  lib,
+  ...
+}: let
+  #isLinux = ctx.platform.isLinux or false;
+in {
   environment.systemPackages = with pkgs; [
     git
     vim
     wget
   ];
-  #   ++ lib.optionals isLinux[ 
+  #   ++ lib.optionals isLinux[
   #   cifs-utils
   # ];
 
