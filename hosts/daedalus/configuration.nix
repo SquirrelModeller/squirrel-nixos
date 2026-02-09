@@ -17,7 +17,7 @@ in {
     "${self}/modules/graphical/apps/firefox/nixos.nix"
     "${self}/modules/graphical/apps/quickshell.nix"
     "${self}/modules/graphical/apps/steam.nix"
-    "${self}/modules/graphical/apps/vscodium.nix"
+    "${self}/modules/graphical/apps/vscodium/default.nix"
     "${self}/modules/graphical/apps/unicode-picker.nix"
     "${self}/modules/graphical/theme/wallust-colorscheme.nix"
     "${self}/modules/graphical/wms/hyprland.nix"

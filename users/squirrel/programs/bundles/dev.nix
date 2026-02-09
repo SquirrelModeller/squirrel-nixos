@@ -12,9 +12,9 @@ in
     pkgs.pandoc
     pkgs.nixpkgs-fmt
     pkgs.nixfmt
+    pkgs.alejandra
   ]
   ++ lib.optionals isLinux [
     pkgs.blender
     pkgs.tofi
-    inputs.alejandra.defaultPackage.${pkgs.stdenv.hostPlatform.system}
   ]

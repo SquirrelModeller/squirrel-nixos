@@ -13,7 +13,7 @@ in {
     "${self}/modules/options/host-context.nix"
     "${self}/modules/terminal/security/darwin.nix"
     "${self}/modules/packages/default.nix"
-    "${self}/modules/graphical/apps/vscodium.nix"
+    "${self}/modules/graphical/apps/vscodium/darwin.nix"
     "${self}/modules/graphical/apps/firefox/darwin.nix"
   ];
 
