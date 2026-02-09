@@ -11,6 +11,5 @@ with lib; let
 in
   B "base"
   ++ B "dev"
-  ++ B "editors/emacs"
   ++ B "media"
   ++ optionals wantsWayland (B "wayland")
