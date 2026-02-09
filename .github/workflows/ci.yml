@@ -16,6 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Free disk space (runner)
+        run: |
+          set -euxo pipefail
+          df -h
+
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android || true
+
+          sudo docker image prune -af || true
+
+          df -h
+
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
