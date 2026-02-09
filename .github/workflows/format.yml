@@ -36,9 +36,12 @@ jobs:
       - name: Create formatting PR
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "style: alejandra"
-          title: "style: alejandra"
+          commit-message: "chore(nix): format and clean up"
+          title: "chore(nix): format and clean up"
           body: |
-            Automated formatting via alejandra.
+            Automated formatting and cleanup:
+            - Formatted with alejandra
+            - Applied statix fixes
+            - Removed unused code with deadnix
           branch: bot/alejandra
           delete-branch: true
