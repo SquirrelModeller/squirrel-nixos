@@ -1,0 +1,33 @@
+name: Format (alejandra)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+            experimental-features = nix-command flakes
+
+      - name: Run alejandra
+        run: nix run nixpkgs#alejandra -- .
+
+      - name: Create formatting PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "style: alejandra"
+          title: "style: alejandra"
+          body: "Automated formatting via alejandra."
+          branch: bot/alejandra
+          delete-branch: true
