@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+            experimental-features = nix-command flakes
+
+      - name: Format check (alejandra)
+        run: nix run nixpkgs#alejandra -- --check .
+
+      - name: nix flake check
+        run: nix flake check -L
+
+      - name: Build all nixosConfigurations
+        run: |
+          set -euo pipefail
+          hosts="$(nix eval --raw .#nixosConfigurations --apply 'x: builtins.concatStringsSep " " (builtins.attrNames x)')"
+          for h in $hosts; do
+            nix build -L ".#nixosConfigurations.${h}.config.system.build.toplevel"
+          done
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+            experimental-features = nix-command flakes
+
+      - name: Build all darwinConfigurations
+        run: |
+          set -euo pipefail
+          hosts="$(nix eval --raw .#darwinConfigurations --apply 'x: builtins.concatStringsSep " " (builtins.attrNames x)')"
+          for h in $hosts; do
+            nix build -L ".#darwinConfigurations.${h}.system"
+          done
