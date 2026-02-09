@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, master]
   workflow_dispatch:
 
 concurrency:
@@ -16,17 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Free disk space (runner)
-        run: |
-          set -euxo pipefail
-          df -h
-
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android || true
-
-          sudo docker image prune -af || true
-
-          df -h
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
@@ -37,16 +26,14 @@ jobs:
       - name: Format check (alejandra)
         run: nix run nixpkgs#alejandra -- --check .
 
-      - name: nix flake check
-        run: nix flake check -L
+      - name: Check for dead code with deadnix
+        run: nix run nixpkgs#deadnix -- --fail
 
-      - name: Build all nixosConfigurations
-        run: |
-          set -euo pipefail
-          hosts="$(nix eval --raw .#nixosConfigurations --apply 'x: builtins.concatStringsSep " " (builtins.attrNames x)')"
-          for h in $hosts; do
-            nix build -L ".#nixosConfigurations.${h}.config.system.build.toplevel"
-          done
+      - name: Check for antipatterns with statix
+        run: nix run nixpkgs#statix -- check
+
+      - name: nix flake check
+        run: nix flake check -L --no-build
 
   macos:
     runs-on: macos-latest
@@ -59,6 +46,12 @@ jobs:
           extra_nix_config: |
             accept-flake-config = true
             experimental-features = nix-command flakes
+
+      - name: Check for dead code with deadnix
+        run: nix run nixpkgs#deadnix -- --fail
+
+      - name: Check for antipatterns with statix
+        run: nix run nixpkgs#statix -- check
 
       - name: Build all darwinConfigurations
         run: |

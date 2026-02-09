@@ -20,14 +20,25 @@ jobs:
             accept-flake-config = true
             experimental-features = nix-command flakes
 
-      - name: Run alejandra
-        run: nix run nixpkgs#alejandra -- .
+      - name: Run formatters (alejandra + statix + deadnix)
+        run: |
+          set -euo pipefail
+
+          # Format
+          nix run nixpkgs#alejandra -- .
+
+          # Fix antipatterns
+          nix run nixpkgs#statix -- fix
+
+          # Remove unused code
+          nix run nixpkgs#deadnix -- --edit
 
       - name: Create formatting PR
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "style: alejandra"
           title: "style: alejandra"
-          body: "Automated formatting via alejandra."
+          body: |
+            Automated formatting via alejandra.
           branch: bot/alejandra
           delete-branch: true
