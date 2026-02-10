@@ -97,6 +97,14 @@
       "notify.talosvault.net".extraConfig = ''
         reverse_proxy 10.0.0.2:8090
       '';
+
+      "vault.talosvault.net".extraConfig = ''
+        reverse_proxy 10.0.0.2:8000
+
+        reverse_proxy /notifications/hub 10.0.0.2:3012
+
+        reverse_proxy /notifications/hub/negotiate 10.0.0.2:8000
+      '';
     };
   };
 
