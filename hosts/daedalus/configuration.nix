@@ -9,7 +9,6 @@
 in {
   imports = [
     ./fs
-    (modulesPath + "/installer/scan/not-detected.nix")
     "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
     "${self}/modules/hardware/cpu/amd.nix"
@@ -110,6 +109,8 @@ in {
     nssmdns4 = true;
     openFirewall = true;
   };
+
+  hardware.enableRedistributableFirmware = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
