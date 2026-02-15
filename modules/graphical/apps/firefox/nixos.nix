@@ -48,6 +48,16 @@ in {
         "browser.tabs.allow_transparent_browser" = {Value = true;};
         "browser.display.background_color" = {Value = colors.background;};
       };
+
+      "signon.autofillForms" = {
+        Value = false;
+        Status = "locked";
+      };
+
+      "signon.rememberSignons.visibilityToggle" = {
+        Value = false;
+        Status = "locked";
+      };
     };
   };
 

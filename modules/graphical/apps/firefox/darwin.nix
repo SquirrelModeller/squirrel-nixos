@@ -43,6 +43,10 @@
       user_pref("privacy.trackingprotection.enabled", true);
       user_pref("privacy.trackingprotection.fingerprinting.enabled", true);
       user_pref("privacy.trackingprotection.cryptomining.enabled", true);
+
+      // Passwords
+      user_pref("signon.autofillForms", false);
+      user_pref("signon.rememberSignons.visibilityToggle", false);
     '';
   in {
     "Library/Application Support/Firefox/profiles.ini".source = profilesIni;
