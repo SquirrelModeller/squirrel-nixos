@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  lanIf = "enp4s0";
+  lanIf = "enp3s0";
   smbZfsEnsureMounted = pkgs.writeShellScriptBin "smb-zfs-ensure-mounted" ''
     set -eu
     user="''${1:-}"
@@ -152,7 +152,7 @@ in {
   networking.firewall = {
     interfaces.${lanIf} = {
       allowedTCPPorts = [445];
-      allowedUDPPorts = [137 138];
+      allowedUDPPorts = [5353 137 138];
     };
   };
 }

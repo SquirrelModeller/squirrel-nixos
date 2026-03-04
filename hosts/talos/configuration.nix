@@ -9,7 +9,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
-    "${self}/modules/hardware/gpu/nvidia.nix"
+    #"${self}/modules/hardware/gpu/nvidia.nix"
+    "${self}/modules/hardware/gpu/amd.nix"
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
     "${self}/modules/services/jellyfin.nix"
@@ -26,7 +27,7 @@
     initrd.availableKernelModules = ["nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod"];
     zfs.extraPools = ["talos"];
     zfs.requestEncryptionCredentials = false;
-    kernelModules = ["nvidia_uvm"];
+    kernelModules = ["amdgpu"];
   };
 
   squirrelOS = {
@@ -99,7 +100,7 @@
   networking.firewall = {
     enable = true;
 
-    interfaces."enp4s0" = {
+    interfaces."enp3s0" = {
       allowedTCPPorts = [22 5357 8090];
       allowedUDPPorts = [5353 3702];
     };
