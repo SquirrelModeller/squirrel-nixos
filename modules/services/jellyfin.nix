@@ -1,4 +1,4 @@
-{...}: let
+let
   dataDir = "/talos/services/jellyfin";
   cacheDir = "/talos/services/jellyfin/cache";
 in {
