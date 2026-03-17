@@ -1,7 +1,4 @@
-{
-  lib,
-  self,
-}: let
+{lib}: let
   findFiles = import ../../lib/findFiles.nix {inherit lib;};
 
   usersDir = ../../users;
