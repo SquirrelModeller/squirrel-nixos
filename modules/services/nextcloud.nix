@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   lanIP = "192.168.0.227";
   wgIP = "10.0.0.2";
 in {
@@ -32,6 +36,8 @@ in {
       database.createLocally = true;
 
       phpExtraExtensions = ps: [ps.smbclient];
+
+      package = pkgs.nextcloud32;
 
       config = {
         dbtype = "pgsql";
