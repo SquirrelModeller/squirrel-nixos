@@ -30,6 +30,9 @@ in {
       LogLevel = "info";
       TranscodingCacheSize = "1GB";
       EnableCoverAnimation = true;
+
+      EnableSharing = true;
+      DefaultShareExpiration = "168h";
     };
   };
 
