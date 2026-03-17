@@ -18,6 +18,7 @@
     "${self}/modules/services/navidrome.nix"
     "${self}/modules/services/samba.nix"
     "${self}/modules/services/vaultwarden.nix"
+    "${self}/modules/services/factorio.nix"
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
     "${self}/modules/notifications/zfs-gotify-notifications.nix"
   ];
@@ -99,21 +100,17 @@
 
   networking.firewall = {
     enable = true;
-
     interfaces."enp3s0" = {
       allowedTCPPorts = [22 5357 8090];
-      allowedUDPPorts = [5353 3702];
+      allowedUDPPorts = [5353 3702 34197];
     };
-
     interfaces.wg0 = {
       allowedTCPPorts = [8090];
-      allowedUDPPorts = [];
+      allowedUDPPorts = [34197];
     };
-
     extraCommands = ''
       iptables -I FORWARD -i wg0 -d 192.168.0.0/16 -j DROP
       iptables -I FORWARD -o wg0 -s 192.168.0.0/16 -j DROP
-
       iptables -I FORWARD -i wg0 -d 10.0.0.0/8 -j DROP
       iptables -I FORWARD -i wg0 -d 172.16.0.0/12 -j DROP
     '';

@@ -40,7 +40,6 @@
   networking = {
     nameservers = ["1.1.1.1" "8.8.8.8"];
     hostName = "iris";
-
     interfaces.ens3.ipv4.addresses = [
       {
         address = "159.195.8.188";
@@ -48,7 +47,6 @@
       }
     ];
     defaultGateway = "159.195.8.1";
-
     enableIPv6 = false;
   };
 
@@ -56,7 +54,14 @@
     enable = true;
     allowPing = true;
     allowedTCPPorts = [22 80 443];
-    allowedUDPPorts = [51820];
+    allowedUDPPorts = [51820 34197];
+
+    extraCommands = ''
+      # Allow forwarding of UDP traffic to Factorio server
+      iptables -A FORWARD -i ens3 -o wg0 -p udp --dport 34197 -d 10.0.0.2 -j ACCEPT
+      iptables -A FORWARD -i wg0 -o ens3 -p udp --sport 34197 -s 10.0.0.2 -j ACCEPT
+      iptables -t nat -A POSTROUTING -o wg0 -d 10.0.0.2 -p udp --dport 34197 -j MASQUERADE
+    '';
   };
 
   networking.wireguard.interfaces.wg0 = {
@@ -68,6 +73,26 @@
         publicKey = "PdoaldW68gI55hL+8Xr888YG+FDaNAFrfH11r0ooE3s=";
         allowedIPs = ["10.0.0.2/32"];
         persistentKeepalive = 25;
+      }
+    ];
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+  };
+
+  networking.nat = {
+    enable = true;
+    externalInterface = "ens3";
+    internalInterfaces = ["wg0"];
+
+    internalIPs = ["10.0.0.0/24"];
+
+    forwardPorts = [
+      {
+        sourcePort = 34197;
+        proto = "udp";
+        destination = "10.0.0.2:34197";
       }
     ];
   };
@@ -86,7 +111,6 @@
         @caldav   path /.well-known/caldav
         redir @carddav /remote.php/dav/ 301
         redir @caldav  /remote.php/dav/ 301
-
         reverse_proxy 10.0.0.2:8080
       '';
 
@@ -100,10 +124,12 @@
 
       "vault.talosvault.net".extraConfig = ''
         reverse_proxy 10.0.0.2:8000
-
         reverse_proxy /notifications/hub 10.0.0.2:3012
-
         reverse_proxy /notifications/hub/negotiate 10.0.0.2:8000
+      '';
+
+      "sendiron.talosvault.net".extraConfig = ''
+        respond "Factorio server running on UDP port 34197"
       '';
     };
   };
