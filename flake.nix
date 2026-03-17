@@ -94,17 +94,12 @@
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprpicker.url = "github:hyprwm/hyprpicker";
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-qml-support = {
       url = "git+https://git.outfoxxed.me/outfoxxed/nix-qml-support";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    alejandra = {
-      url = "github:kamadorueda/alejandra/4.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hjem = {
