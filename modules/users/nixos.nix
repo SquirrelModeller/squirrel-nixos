@@ -4,12 +4,15 @@
   pkgs,
   inputs,
   self,
-  availableUsers,
   getUserProgramsPath,
   getUserMisc,
   ...
 }: let
   inherit (lib) mkIf listToAttrs map;
+
+  userLib = import ./user-discovery.nix {inherit lib self;};
+  inherit (userLib) availableUsers getUserServicesImport;
+
   enabledUsers = config.squirrelOS.users.enabled;
 
   mkCtx = config: {
@@ -32,16 +35,9 @@
 
   ctx = mkCtx config;
 in {
-  imports = let
-    getUserServicesImport = username: let
-      f = "${self}/users/${username}/services.nix";
-    in
-      if builtins.pathExists f
-      then f
-      else null;
-    serviceImports = map getUserServicesImport availableUsers;
-  in
-    [./default.nix] ++ (lib.filter (x: x != null) serviceImports);
+  imports =
+    [./default.nix]
+    ++ lib.filter (x: x != null) (map getUserServicesImport availableUsers);
 
   config = mkIf (enabledUsers != []) {
     users.users = listToAttrs (

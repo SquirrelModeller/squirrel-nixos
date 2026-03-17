@@ -2,7 +2,6 @@
   config,
   lib,
   self,
-  availableUsers,
   ...
 }: let
   inherit
@@ -12,23 +11,16 @@
     listToAttrs
     map
     ;
-  findFiles = import ../../lib/findFiles.nix {inherit lib;};
 
-  getUserDotfiles = username: let
-    dotfilesDir = ../../users + "/${username}/dotfiles";
-  in
-    if builtins.pathExists dotfilesDir
-    then findFiles dotfilesDir
-    else {};
+  userLib = import ./user-discovery.nix {inherit lib self;};
 
-  getUserMisc = username: let
-    f = "${self}/users/${username}/misc.nix";
-  in
-    if builtins.pathExists f
-    then import f {}
-    else {};
-
-  getUserProgramsPath = username: "${self}/users/${username}/programs/default.nix";
+  inherit
+    (userLib)
+    availableUsers
+    getUserDotfiles
+    getUserMisc
+    getUserProgramsPath
+    ;
 
   enabledUsers = config.squirrelOS.users.enabled;
   invalidUsers = lib.filter (u: !(lib.elem u availableUsers)) enabledUsers;
@@ -55,7 +47,7 @@ in {
   config = mkMerge [
     {
       _module.args = {
-        inherit getUserProgramsPath getUserMisc getUserDotfiles;
+        inherit getUserProgramsPath getUserMisc getUserDotfiles availableUsers;
       };
     }
 

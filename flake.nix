@@ -15,22 +15,6 @@
         builtins.pathExists (./hosts + "/${h}") && builtins.readFileType (./hosts + "/${h}") == "directory"
     ) (builtins.attrNames hostEntries);
 
-    userEntries = builtins.readDir ./users;
-    userNames = builtins.filter (
-      u:
-        builtins.pathExists (./users + "/${u}")
-        && builtins.readFileType (./users + "/${u}") == "directory"
-        && builtins.pathExists (./users + "/${u}/programs/default.nix")
-    ) (builtins.attrNames userEntries);
-
-    getUserPrograms = pkgs: inputs: username: let
-      programsFile = ./users + "/${username}/programs/default.nix";
-    in
-      import programsFile {
-        inherit pkgs inputs;
-        inherit (pkgs) lib;
-      };
-
     getHostSystem = hostName: let
       systemFile = ./hosts/${hostName}/system;
     in
@@ -49,8 +33,7 @@
       nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
-          inherit inputs self getUserPrograms;
-          availableUsers = userNames;
+          inherit inputs self;
         };
         modules = [
           ./hosts
@@ -70,10 +53,8 @@
           inherit
             inputs
             self
-            getUserPrograms
             nix-darwin
             ;
-          availableUsers = userNames;
         };
         modules = [
           ./modules/options
