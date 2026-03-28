@@ -40,6 +40,20 @@
     }
   },
 
+  "svelte.enable-ts-plugin": true,
+
+
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+
+  "explorer.confirmDelete": false,
+
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.terminal.activateEnvironment": false,
   "python.linting.enabled": true,
