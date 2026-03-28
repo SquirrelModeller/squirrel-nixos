@@ -9,6 +9,7 @@
         jnoortheen.nix-ide
 
         ms-python.python
+        ms-python.black-formatter
 
         ms-toolsai.jupyter
         ms-toolsai.jupyter-keymap
@@ -19,6 +20,10 @@
         yzhang.markdown-all-in-one
         usernamehw.errorlens
         tomoki1207.pdf
+
+        svelte.svelte-vscode
+        esbenp.prettier-vscode
+        dbaeumer.vscode-eslint
       ];
     })
   ];
