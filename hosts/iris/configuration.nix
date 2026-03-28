@@ -131,6 +131,15 @@
       "sendiron.talosvault.net".extraConfig = ''
         respond "Factorio server running on UDP port 34197"
       '';
+
+      "squirrel.talosvault.net".extraConfig = ''
+        header {
+          Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+          Pragma "no-cache"
+          Expires "0"
+        }
+        reverse_proxy 10.0.0.2:3975
+      '';
     };
   };
 

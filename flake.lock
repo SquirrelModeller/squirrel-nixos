@@ -148,6 +148,7 @@
         "nix-qml-support": "nix-qml-support",
         "nixpkgs": "nixpkgs",
         "quickshell": "quickshell",
+        "squirrel-website": "squirrel-website",
         "systems": "systems_2"
       }
     },
@@ -193,6 +194,26 @@
       "original": {
         "owner": "feel-co",
         "repo": "smfh",
+        "type": "github"
+      }
+    },
+    "squirrel-website": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774543830,
+        "narHash": "sha256-P9Inx4XudboaW2KKK9JQ132UhRNNc+oUu5GVDSJBRrU=",
+        "owner": "SquirrelModeller",
+        "repo": "squirrel-website",
+        "rev": "949505efb25a0d1446d252b53edf324edf4152ae",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "squirrel-website",
         "type": "github"
       }
     },
