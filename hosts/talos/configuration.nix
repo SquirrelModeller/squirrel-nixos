@@ -20,6 +20,7 @@
     "${self}/modules/services/vaultwarden.nix"
     "${self}/modules/services/factorio.nix"
     "${self}/modules/services/website.nix"
+    "${self}/modules/services/rrss.nix"
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
     "${self}/modules/notifications/zfs-gotify-notifications.nix"
   ];
@@ -116,6 +117,10 @@
       iptables -I FORWARD -i wg0 -d 172.16.0.0/12 -j DROP
     '';
   };
+
+  age.identityPaths = [
+    "/etc/ssh/ssh_host_ed25519_key"
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

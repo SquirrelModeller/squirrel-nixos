@@ -109,6 +109,10 @@ in {
     openFirewall = true;
   };
 
+  age.identityPaths = [
+    "/etc/ssh/ssh_host_ed25519_key"
+  ];
+
   hardware.enableRedistributableFirmware = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

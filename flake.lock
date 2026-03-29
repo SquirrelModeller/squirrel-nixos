@@ -1,5 +1,50 @@
 {
   "nodes": {
+    "agenix": {
+      "inputs": {
+        "darwin": "darwin",
+        "home-manager": "home-manager",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1770165109,
+        "narHash": "sha256-9VnK6Oqai65puVJ4WYtCTvlJeXxMzAp/69HhQuTdl/I=",
+        "owner": "ryantm",
+        "repo": "agenix",
+        "rev": "b027ee29d959fda4b60b57566d64c98a202e0feb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryantm",
+        "repo": "agenix",
+        "type": "github"
+      }
+    },
+    "darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "agenix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1744478979,
+        "narHash": "sha256-dyN+teG9G82G+m+PX/aSAagkC+vUv0SgUw3XkPhQodQ=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "43975d782b418ebf4969e9ccba82466728c2851b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "ref": "master",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "domacro": {
       "inputs": {
         "nixpkgs": [
@@ -39,6 +84,27 @@
       "original": {
         "owner": "feel-co",
         "repo": "hjem",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "agenix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1745494811,
+        "narHash": "sha256-YZCh2o9Ua1n9uCvrvi5pRxtuVNml8X2a03qIFfRKpFs=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "abfad3d2958c9e6300a883bd443512c55dfeb1be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
         "type": "github"
       }
     },
@@ -142,14 +208,36 @@
     },
     "root": {
       "inputs": {
+        "agenix": "agenix",
         "domacro": "domacro",
         "hjem": "hjem",
         "nix-darwin": "nix-darwin_2",
         "nix-qml-support": "nix-qml-support",
         "nixpkgs": "nixpkgs",
         "quickshell": "quickshell",
+        "rrss": "rrss",
         "squirrel-website": "squirrel-website",
-        "systems": "systems_2"
+        "systems": "systems_3"
+      }
+    },
+    "rrss": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774742092,
+        "narHash": "sha256-pkxpzlXXzKGRL+aO5H7MeE1o56tYgtYJslGXQX3M+oo=",
+        "owner": "SquirrelModeller",
+        "repo": "rrss",
+        "rev": "0f629d4b12c36bf074a8062a34569b821599159a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "rrss",
+        "type": "github"
       }
     },
     "rust-overlay": {
@@ -181,7 +269,7 @@
           "nixpkgs"
         ],
         "rust-overlay": "rust-overlay",
-        "systems": "systems"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1771208268,
@@ -204,11 +292,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774543830,
-        "narHash": "sha256-P9Inx4XudboaW2KKK9JQ132UhRNNc+oUu5GVDSJBRrU=",
+        "lastModified": 1774731924,
+        "narHash": "sha256-NeRV5JFkrT8xWzQVvRHySfscMocHconvdU7WQZGxNAI=",
         "owner": "SquirrelModeller",
         "repo": "squirrel-website",
-        "rev": "949505efb25a0d1446d252b53edf324edf4152ae",
+        "rev": "8f4bd7f3282168ab4c16555735604666dd4cbb5f",
         "type": "github"
       },
       "original": {
@@ -233,6 +321,21 @@
       }
     },
     "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
       "locked": {
         "lastModified": 1689347949,
         "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",

@@ -41,6 +41,14 @@
           ./modules/users/nixos.nix
           (./hosts + "/${hostName}/configuration.nix")
           inputs.hjem.nixosModules.default
+          inputs.agenix.nixosModules.default
+          inputs.rrss.nixosModules.rrss
+
+          {
+            environment.systemPackages = [
+              inputs.agenix.packages.${system}.default
+            ];
+          }
         ];
       };
 
@@ -61,6 +69,13 @@
           ./modules/users/darwin.nix
           (./hosts + "/${hostName}/configuration.nix")
           inputs.hjem.darwinModules.default
+          inputs.agenix.darwinModules.default
+
+          {
+            environment.systemPackages = [
+              inputs.agenix.packages.${system}.default
+            ];
+          }
         ];
       };
   in {
@@ -89,6 +104,18 @@
     };
     domacro = {
       url = "github:SquirrelModeller/domacroc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    squirrel-website = {
+      url = "github:SquirrelModeller/squirrel-website";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    rrss = {
+      url = "github:SquirrelModeller/rrss";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    agenix = {
+      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
