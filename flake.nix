@@ -9,17 +9,19 @@
   } @ inputs: let
     inherit (nixpkgs) lib;
 
-    vscodiumOverlay = final: prev: {
-      vscodium = prev.vscodium.overrideAttrs (old: let
-        version = "1.109.51242";
-      in {
-        inherit version;
+    vscodiumOverlay = prev: {
+      vscodium = prev.vscodium.overrideAttrs (
+        let
+          version = "1.109.51242";
+        in {
+          inherit version;
 
-        src = prev.fetchurl {
-          url = "https://github.com/VSCodium/vscodium/releases/download/${version}/VSCodium-darwin-arm64-${version}.zip";
-          hash = "sha256-zFRvn9BT5xx+HMWhnI5APKUDekOvZjzbN3SlqtdMBOE=";
-        };
-      });
+          src = prev.fetchurl {
+            url = "https://github.com/VSCodium/vscodium/releases/download/${version}/VSCodium-darwin-arm64-${version}.zip";
+            hash = "sha256-zFRvn9BT5xx+HMWhnI5APKUDekOvZjzbN3SlqtdMBOE=";
+          };
+        }
+      );
     };
 
     hostEntries = builtins.readDir ./hosts;
