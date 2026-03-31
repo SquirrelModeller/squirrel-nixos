@@ -3,10 +3,8 @@
     git
     vim
     wget
+    nh
   ];
-  #   ++ lib.optionals isLinux[
-  #   cifs-utils
-  # ];
 
   programs = {
     direnv = {
