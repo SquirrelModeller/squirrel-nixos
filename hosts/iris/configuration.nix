@@ -38,16 +38,32 @@
   '';
 
   networking = {
-    nameservers = ["1.1.1.1" "8.8.8.8"];
     hostName = "iris";
-    interfaces.ens3.ipv4.addresses = [
-      {
-        address = "159.195.8.188";
-        prefixLength = 22;
-      }
-    ];
+
+    interfaces.ens3 = {
+      ipv4.addresses = [
+        {
+          address = "159.195.8.188";
+          prefixLength = 22;
+        }
+      ];
+
+      ipv6.addresses = [
+        {
+          address = "2a0a:4cc0:ff:a44::2";
+          prefixLength = 64;
+        }
+      ];
+    };
+
     defaultGateway = "159.195.8.1";
-    enableIPv6 = false;
+
+    defaultGateway6 = {
+      address = "fe80::1";
+      interface = "ens3";
+    };
+
+    nameservers = ["1.1.1.1" "8.8.8.8"];
   };
 
   networking.firewall = {
