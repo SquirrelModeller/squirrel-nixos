@@ -227,11 +227,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774742092,
-        "narHash": "sha256-pkxpzlXXzKGRL+aO5H7MeE1o56tYgtYJslGXQX3M+oo=",
+        "lastModified": 1775169723,
+        "narHash": "sha256-sIk7X9Tv/0ZS8sbulojzsLWGVd+Mut9P8zJ5cb5Sf2I=",
         "owner": "SquirrelModeller",
         "repo": "rrss",
-        "rev": "0f629d4b12c36bf074a8062a34569b821599159a",
+        "rev": "3c07e68b903c725973d30f55835d6a4a824da7b4",
         "type": "github"
       },
       "original": {
