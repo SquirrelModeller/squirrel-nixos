@@ -24,6 +24,8 @@
         svelte.svelte-vscode
         esbenp.prettier-vscode
         dbaeumer.vscode-eslint
+
+        rust-lang.rust-analyzer
       ];
     })
   ];

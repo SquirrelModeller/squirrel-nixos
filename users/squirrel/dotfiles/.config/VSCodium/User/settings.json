@@ -52,7 +52,13 @@
     "editor.formatOnSave": true
   },
 
+  "[rust]": {
+  "editor.defaultFormatter": "rust-lang.rust-analyzer",
+  "editor.formatOnSave": true
+},
+
   "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
 
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.terminal.activateEnvironment": false,
