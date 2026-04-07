@@ -55,7 +55,16 @@
   "[rust]": {
   "editor.defaultFormatter": "rust-lang.rust-analyzer",
   "editor.formatOnSave": true
-},
+  },
+
+  "[c]": {
+  "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+  "editor.formatOnSave": true
+  },
+  "clangd.arguments": [
+    "--background-index",
+    "--clang-tidy"
+  ],
 
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,

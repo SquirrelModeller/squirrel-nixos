@@ -26,6 +26,9 @@
         dbaeumer.vscode-eslint
 
         rust-lang.rust-analyzer
+
+        llvm-vs-code-extensions.vscode-clangd
+        vadimcn.vscode-lldb
       ];
     })
   ];
