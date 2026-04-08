@@ -21,6 +21,7 @@
     "${self}/modules/services/factorio.nix"
     "${self}/modules/services/website.nix"
     "${self}/modules/services/rrss.nix"
+    "${self}/modules/services/forgejo.nix"
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
     "${self}/modules/notifications/zfs-gotify-notifications.nix"
   ];
@@ -115,6 +116,7 @@
       iptables -I FORWARD -o wg0 -s 192.168.0.0/16 -j DROP
       iptables -I FORWARD -i wg0 -d 10.0.0.0/8 -j DROP
       iptables -I FORWARD -i wg0 -d 172.16.0.0/12 -j DROP
+
     '';
   };
 

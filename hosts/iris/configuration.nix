@@ -26,6 +26,7 @@
 
   services.openssh = {
     enable = true;
+    ports = [2222];
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
@@ -69,7 +70,7 @@
   networking.firewall = {
     enable = true;
     allowPing = true;
-    allowedTCPPorts = [22 80 443];
+    allowedTCPPorts = [2222 22 80 443];
     allowedUDPPorts = [51820 34197];
 
     extraCommands = ''
@@ -77,6 +78,10 @@
       iptables -A FORWARD -i ens3 -o wg0 -p udp --dport 34197 -d 10.0.0.2 -j ACCEPT
       iptables -A FORWARD -i wg0 -o ens3 -p udp --sport 34197 -s 10.0.0.2 -j ACCEPT
       iptables -t nat -A POSTROUTING -o wg0 -d 10.0.0.2 -p udp --dport 34197 -j MASQUERADE
+
+      iptables -A FORWARD -i ens3 -o wg0 -p tcp --dport 2222 -d 10.0.0.2 -j ACCEPT
+      iptables -A FORWARD -i wg0 -o ens3 -p tcp --sport 2222 -s 10.0.0.2 -j ACCEPT
+      iptables -t nat -A POSTROUTING -o wg0 -d 10.0.0.2 -p tcp --dport 2222 -j MASQUERADE
     '';
   };
 
@@ -109,6 +114,12 @@
         sourcePort = 34197;
         proto = "udp";
         destination = "10.0.0.2:34197";
+      }
+
+      {
+        sourcePort = 22;
+        proto = "tcp";
+        destination = "10.0.0.2:2222";
       }
     ];
   };
@@ -155,6 +166,10 @@
           Expires "0"
         }
         reverse_proxy 10.0.0.2:3975
+      '';
+
+      "git.talosvault.net".extraConfig = ''
+        reverse_proxy 10.0.0.2:3000
       '';
     };
   };
