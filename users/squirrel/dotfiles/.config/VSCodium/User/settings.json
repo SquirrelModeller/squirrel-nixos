@@ -1,9 +1,6 @@
 {
   "telemetry.telemetryLevel": "off",
-  "telemetry.enableTelemetry": false,
-  "telemetry.enableCrashReporter": false,
   "extensions.ignoreRecommendations": true,
-  "extensions.showRecommendationsOnlyOnDemand": true,
   "update.mode": "none",
   "extensions.autoUpdate": false,
   "extensions.autoCheckUpdates": false,
