@@ -1,4 +1,4 @@
-let
+{lib, ...}: let
   dataDir = "/talos/services/jellyfin";
   cacheDir = "/talos/services/jellyfin/cache";
 in {
@@ -7,31 +7,19 @@ in {
     openFirewall = false;
     inherit dataDir;
     inherit cacheDir;
+    hardwareAcceleration = {
+      enable = true;
+      device = "/dev/dri/renderD128";
+    };
   };
-
-  # environment.systemPackages = with pkgs; [
-  #   jellyfin
-  #   jellyfin-web
-  #   jellyfin-ffmpeg
-  # ];
 
   users.users.jellyfin.extraGroups = ["media" "render" "video"];
   systemd = {
-    # services.jellyfin.serviceConfig = {
-    #   DeviceAllow = [
-    #     "/dev/dri/renderD128 rw"
-    #     "/dev/nvidia0 rw"
-    #     "/dev/nvidiactl rw"
-    #     "/dev/nvidia-modeset rw"
-    #     "/dev/nvidia-uvm rw"
-    #     "/dev/nvidia-uvm-tools rw"
-    #   ];
-    #   PrivateDevices = false;
-    # };
-
-    # services.jellyfin.environment = {
-    #   LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
-    # };
+    services.jellyfin.serviceConfig = {
+      ProtectSystem = lib.mkForce "strict";
+      ReadWritePaths = [dataDir cacheDir];
+      BindReadOnlyPaths = ["/talos/media"];
+    };
 
     tmpfiles.rules = [
       "d ${dataDir}  0750 jellyfin jellyfin - -"

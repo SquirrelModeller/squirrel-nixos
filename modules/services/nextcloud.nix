@@ -42,7 +42,7 @@ in {
       config = {
         dbtype = "pgsql";
         adminuser = "admin";
-        adminpassFile = "/var/nextcloud-admin-pass";
+        adminpassFile = "/var/nextcloud-admin-pass"; # TODO: migrate to agenix
       };
 
       settings = {
@@ -68,6 +68,17 @@ in {
         ssl = false;
       }
     ];
+  };
+
+  systemd.services.nginx.serviceConfig = {
+    ProtectHostname = true;
+    ProtectClock = true;
+    ProtectKernelTunables = true;
+    ProtectKernelModules = true;
+    ProtectKernelLogs = true;
+    LockPersonality = true;
+    RestrictRealtime = true;
+    SystemCallArchitectures = "native";
   };
 
   networking.firewall = {

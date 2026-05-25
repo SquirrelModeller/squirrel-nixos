@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   self,
   pkgs,
   ...
@@ -82,6 +83,13 @@
         static_configs = [{targets = ["localhost:9100"];}];
       }
     ];
+  };
+
+  systemd.services.prometheus.serviceConfig = {
+    ProtectSystem = lib.mkForce "strict";
+    ReadWritePaths = ["/var/lib/prometheus2"];
+    ProcSubset = "pid";
+    UMask = "0077";
   };
 
   services.grafana = {

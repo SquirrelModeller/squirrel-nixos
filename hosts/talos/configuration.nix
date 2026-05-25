@@ -14,7 +14,7 @@
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
     "${self}/modules/services/jellyfin.nix"
-    "${self}/modules/services/nextcloud.nix"
+    # "${self}/modules/services/nextcloud.nix"
     "${self}/modules/services/navidrome.nix"
     "${self}/modules/services/samba.nix"
     "${self}/modules/services/vaultwarden.nix"
@@ -125,6 +125,8 @@
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "talos";
 
