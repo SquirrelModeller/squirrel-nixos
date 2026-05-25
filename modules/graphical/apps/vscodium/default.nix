@@ -3,17 +3,18 @@
     nil
     nixpkgs-fmt
     qt6.qtdeclarative
-    (pkgs.vscode-with-extensions.override {
-      vscode = pkgs.vscodium;
-      vscodeExtensions = with pkgs.vscode-extensions; [
+
+    (vscode-with-extensions.override {
+      vscode = vscodium;
+      vscodeExtensions = with vscode-extensions; [
         jnoortheen.nix-ide
 
-        ms-python.python
-        ms-python.black-formatter
+        # ms-python.python
+        # ms-python.black-formatter
 
-        ms-toolsai.jupyter
-        ms-toolsai.jupyter-keymap
-        ms-toolsai.jupyter-renderers
+        # ms-toolsai.jupyter
+        # ms-toolsai.jupyter-keymap
+        # ms-toolsai.jupyter-renderers
 
         mkhl.direnv
         eamodio.gitlens
@@ -29,19 +30,11 @@
 
         llvm-vs-code-extensions.vscode-clangd
         vadimcn.vscode-lldb
+
+        anthropic.claude-code
+
+        geequlim.godot-tools
       ];
     })
   ];
-
-  programs = {
-    direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-
-    bash.enable = true;
-    zsh.enable = true;
-  };
 }

@@ -10,6 +10,7 @@
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
+    "${self}/modules/services/monitoring.nix"
   ];
 
   boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
@@ -127,13 +128,24 @@
   services.caddy = {
     enable = true;
     email = "squirrelmodeller@protonmail.com";
+    globalConfig = ''
+      metrics {
+        per_host
+      }
+      log access-log {
+        output stdout
+        format json
+      }
+    '';
 
     virtualHosts = {
       "watch.talosvault.net".extraConfig = ''
+        log access-log
         reverse_proxy 10.0.0.2:8096
       '';
 
       "files.talosvault.net".extraConfig = ''
+        log access-log
         @carddav  path /.well-known/carddav
         @caldav   path /.well-known/caldav
         redir @carddav /remote.php/dav/ 301
@@ -142,34 +154,46 @@
       '';
 
       "music.talosvault.net".extraConfig = ''
+        log access-log
         reverse_proxy 10.0.0.2:4533
       '';
 
       "notify.talosvault.net".extraConfig = ''
+        log access-log
         reverse_proxy 10.0.0.2:8090
       '';
 
       "vault.talosvault.net".extraConfig = ''
+        log access-log
         reverse_proxy 10.0.0.2:8000
         reverse_proxy /notifications/hub 10.0.0.2:3012
         reverse_proxy /notifications/hub/negotiate 10.0.0.2:8000
       '';
 
       "sendiron.talosvault.net".extraConfig = ''
+        log access-log
         respond "Factorio server running on UDP port 34197"
       '';
 
       "squirrel.talosvault.net".extraConfig = ''
+        log access-log
         header {
           Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
           Pragma "no-cache"
           Expires "0"
+          X-Content-Type-Options "nosniff"
         }
         reverse_proxy 10.0.0.2:3975
       '';
 
       "git.talosvault.net".extraConfig = ''
+        log access-log
         reverse_proxy 10.0.0.2:3000
+      '';
+
+      "monitor.talosvault.net".extraConfig = ''
+        log access-log
+        reverse_proxy localhost:3001
       '';
     };
   };

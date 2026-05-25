@@ -20,5 +20,6 @@ in
     pkgs.vesktop
   ]
   ++ lib.optionals isLinux [
-    inputs.domacro.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.domacroc.packages.${pkgs.stdenv.hostPlatform.system}.default
+    pkgs.steam
   ]

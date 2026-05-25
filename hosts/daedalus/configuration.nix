@@ -14,7 +14,6 @@ in {
     "${self}/modules/hardware/gpu/amd.nix"
     "${self}/modules/graphical/apps/firefox/nixos.nix"
     "${self}/modules/graphical/apps/quickshell.nix"
-    "${self}/modules/graphical/apps/steam.nix"
     "${self}/modules/graphical/apps/vscodium/default.nix"
     "${self}/modules/graphical/apps/unicode-picker.nix"
     "${self}/modules/graphical/theme/wallust-colorscheme.nix"
@@ -113,11 +112,17 @@ in {
     "/etc/ssh/ssh_host_ed25519_key"
   ];
 
+  networking.networkmanager.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+
   hardware.enableRedistributableFirmware = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   networking.hostName = "daedalus";
+
+  services.domacroc.enable = true;
 
   squirrelOS.users.enabled = ["squirrel"];
 

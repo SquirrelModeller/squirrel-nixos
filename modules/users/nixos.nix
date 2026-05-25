@@ -56,6 +56,7 @@ in {
               "networkmanager"
               "libvirt"
               "libvirtd"
+              "input"
             ];
             packages = import (getUserProgramsPath username) {
               inherit

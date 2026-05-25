@@ -58,6 +58,7 @@
           inputs.hjem.nixosModules.default
           inputs.agenix.nixosModules.default
           inputs.rrss.nixosModules.rrss
+          inputs.domacroc.nixosModules.default
 
           {
             environment.systemPackages = [
@@ -119,7 +120,7 @@
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    domacro = {
+    domacroc = {
       url = "github:SquirrelModeller/domacroc";
       inputs.nixpkgs.follows = "nixpkgs";
     };
