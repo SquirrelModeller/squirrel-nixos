@@ -96,4 +96,8 @@
   "direnv.status.showChangedStatus": true,
 
   "claudeCode.preferredLocation": "panel",
+
+  "qt-qml.qmlls.customExePath": "/run/current-system/sw/bin/qmlls",
+  "qt-qml.qmlls.useQmlImportPathEnvVar": true,
+  "qt-qml.doNotAskForQmllsDownload": true,
 }
