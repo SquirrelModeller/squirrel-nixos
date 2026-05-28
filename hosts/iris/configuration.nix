@@ -11,6 +11,7 @@
     "${self}/modules/terminal/zsh"
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
     "${self}/modules/services/monitoring.nix"
+    "${self}/modules/services/caddy-dashboard.nix"
   ];
 
   boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
