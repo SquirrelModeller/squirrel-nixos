@@ -11,6 +11,5 @@
   pkgs.wl-clipboard
   pkgs.playerctl
   pkgs.capitaine-cursors
-  inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
   pkgs.keepassxc
 ]

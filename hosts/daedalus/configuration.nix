@@ -30,6 +30,8 @@ in {
 
   environment.systemPackages = with pkgs; [
     btrfs-progs
+    # I have to declare package here to avoid getting this compiled on other systems
+    inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   environment.variables = {

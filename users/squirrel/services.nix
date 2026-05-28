@@ -3,23 +3,26 @@
   inputs,
   ...
 }: let
-  qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  # Cannot let this run as it'll be declared as system-wide application.
+  # qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   hjem.users.squirrel = {
     systemd = {
       enable = true;
-      services.quickshell = {
-        description = "Quickshell";
-        wantedBy = ["graphical-session.target"];
-        after = ["graphical-session.target"];
-        partOf = ["graphical-session.target"];
 
-        serviceConfig = {
-          ExecStart = "${qs}/bin/quickshell";
-          Restart = "on-failure";
-          RestartSec = 5;
-        };
-      };
+      # services.quickshell = {
+      #   description = "Quickshell";
+      #   wantedBy = ["graphical-session.target"];
+      #   after = ["graphical-session.target"];
+      #   partOf = ["graphical-session.target"];
+
+      #   serviceConfig = {
+      #     ExecStart = "${qs}/bin/quickshell";
+      #     Restart = "on-failure";
+      #     RestartSec = 5;
+      #   };
+      # };
+
       services.hypridle = {
         description = "Hypridle";
         wantedBy = ["default.target"];
