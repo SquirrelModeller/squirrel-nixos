@@ -68,7 +68,10 @@ in {
     defaults.email = "squirrelmodeller@protonmail.com";
   };
 
-  networking.firewall.allowedTCPPorts = [22 80 443 3000 2222];
+  networking.firewall = {
+    interfaces."enp3s0".allowedTCPPorts = [3000 2222];
+    interfaces.wg0.allowedTCPPorts = [3000 2222];
+  };
 
   age.secrets.forgejo-admin-password = {
     file = "${self}/secrets/forgejo-admin-password.age";

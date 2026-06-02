@@ -84,6 +84,12 @@
       iptables -A FORWARD -i ens3 -o wg0 -p tcp --dport 2222 -d 10.0.0.2 -j ACCEPT
       iptables -A FORWARD -i wg0 -o ens3 -p tcp --sport 2222 -s 10.0.0.2 -j ACCEPT
       iptables -t nat -A POSTROUTING -o wg0 -d 10.0.0.2 -p tcp --dport 2222 -j MASQUERADE
+
+      # Caddy egress filter: only allow caddy to reach the specific talos ports it proxies.
+      # Any connection from the caddy process to talos on an unlisted port is dropped.
+      # Internet traffic (Let's Encrypt) is unaffected by these rules.
+      iptables -A OUTPUT -m owner --uid-owner caddy -d 10.0.0.2 -p tcp -m multiport --dports 8096,8080,4533,8090,8000,3012,3975,3000 -j ACCEPT
+      iptables -A OUTPUT -m owner --uid-owner caddy -d 10.0.0.2 -j DROP
     '';
   };
 

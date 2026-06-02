@@ -48,17 +48,6 @@
     };
   };
 
-  security.sudo.extraRules = [
-    {
-      users = ["squirrel"];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/nixos-rebuild";
-          options = ["NOPASSWD"];
-        }
-      ];
-    }
-  ];
   networking = {
     hostId = "0e0a5617";
     networkmanager.enable = true;
