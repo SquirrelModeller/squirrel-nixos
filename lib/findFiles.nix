@@ -18,7 +18,7 @@
       listToAttrs
       (map
         (filepath: {
-          name = removePrefix directoryPrefix (toString filepath);
+          name = builtins.unsafeDiscardStringContext (removePrefix directoryPrefix (toString filepath));
           value.source = filepath;
         })
         (listFilesRecursive directory))

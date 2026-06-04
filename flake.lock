@@ -215,6 +215,7 @@
         "nixpkgs": "nixpkgs",
         "quickshell": "quickshell",
         "rrss": "rrss",
+        "squirrel-quickshell": "squirrel-quickshell",
         "squirrel-website": "squirrel-website",
         "systems": "systems_2"
       }
@@ -236,6 +237,22 @@
       "original": {
         "owner": "SquirrelModeller",
         "repo": "rrss",
+        "type": "github"
+      }
+    },
+    "squirrel-quickshell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780596347,
+        "narHash": "sha256-0eGBkJ4ot3GAn2wEEKVrC1uOHcvn7WOrdGRDFg57yhk=",
+        "owner": "SquirrelModeller",
+        "repo": "zesis",
+        "rev": "21bbc4d5fb2dc4458b5231352dc03423b711fb16",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "zesis",
         "type": "github"
       }
     },

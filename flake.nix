@@ -132,6 +132,11 @@
       url = "github:SquirrelModeller/rrss";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    squirrel-quickshell = {
+      url = "github:SquirrelModeller/zesis";
+      inputs.nixpkgs.follows = "nixpkgs";
+      flake = false;
+    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
