@@ -5,11 +5,11 @@
 }: [
   pkgs.hyprpaper
   pkgs.hypridle
-  pkgs.hyprlock
   pkgs.grim
   pkgs.slurp
   pkgs.wl-clipboard
   pkgs.playerctl
   pkgs.capitaine-cursors
   pkgs.keepassxc
+  pkgs.libnotify
 ]

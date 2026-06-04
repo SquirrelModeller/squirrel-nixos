@@ -2,10 +2,7 @@
   pkgs,
   inputs,
   ...
-}: let
-  # Cannot let this run as it'll be declared as system-wide application.
-  # qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
-in {
+}: {
   hjem.users.squirrel = {
     systemd = {
       enable = true;
@@ -28,7 +25,7 @@ in {
         wantedBy = ["default.target"];
         after = ["graphical-session.target"];
 
-        path = [pkgs.hypridle pkgs.hyprlock pkgs.procps pkgs.coreutils pkgs.util-linux pkgs.systemd];
+        path = [pkgs.hypridle inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default pkgs.procps pkgs.coreutils pkgs.util-linux pkgs.systemd];
         serviceConfig = {
           ExecStart = "${pkgs.hypridle}/bin/hypridle";
           Restart = "on-failure";

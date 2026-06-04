@@ -1,3 +1,10 @@
+local _c_ok, _c = pcall(dofile, os.getenv("HOME") .. "/.cache/theme/hyprland/colors.lua")
+local c = _c_ok and _c or { color11 = "#d89060", color9 = "#b05848", background = "#272422" }
+
+local function rgba(hex, alpha)
+    return "rgba(" .. hex:sub(2) .. alpha .. ")"
+end
+
 hl.on("hyprland.start", function()
     hl.exec_cmd(
         "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE && " ..
@@ -15,7 +22,7 @@ hl.config({
     general = {
         border_size = 2,
         col = {
-            active_border   = { colors = { "rgba(F2C798ee)", "rgba(A88A5Fee)" }, angle = 45 },
+            active_border   = { colors = { rgba(c.color11, "ee"), rgba(c.color9, "ee") }, angle = 45 },
             inactive_border = "rgba(00000000)",
         },
         gaps_in  = 5,

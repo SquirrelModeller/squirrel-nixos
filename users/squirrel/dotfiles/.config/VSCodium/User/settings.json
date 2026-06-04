@@ -100,4 +100,9 @@
   "qt-qml.qmlls.customExePath": "/run/current-system/sw/bin/qmlls",
   "qt-qml.qmlls.useQmlImportPathEnvVar": true,
   "qt-qml.doNotAskForQmllsDownload": true,
+    "workbench.editorAssociations": {
+    "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc": "default",
+    "*.qrc": "qt-core.qrcEditor"
+  },
+  "qt-core.showWelcomePageOnActivation": false,
 }
