@@ -4,4 +4,6 @@ palette = "dark"
 
 [templates]
 theme_colors = { template = 'kitty.conf', target = '~/.cache/theme/kitty/colors.conf' }
-emacs = { template = 'emacs.el', target = '~/.cache/theme/emacs/my-kitty-theme.el' }
+firefox = { template = 'userChrome.css', target = '~/.mozilla/firefox/squirrel/chrome/userChrome.css' }
+hyprland_colors = { template = 'hyprland-colors.lua', target = '~/.cache/theme/hyprland/colors.lua' }
+quickshell_colors = { template = 'quickshell-colors.json', target = '~/.cache/theme/quickshell/colors.json' }

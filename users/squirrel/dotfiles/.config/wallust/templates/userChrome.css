@@ -1,12 +1,12 @@
 :root {
-  --sfwindow: base99;
-  --sfsecondary: base99;
-  --tab-text: base02;
-  --tab-text-focus: base00;
+  --sfwindow: {{ background }};
+  --sfsecondary: {{ background }};
+  --tab-text: {{ color7 }};
+  --tab-text-focus: {{ foreground }};
 
   --background-transparent: rgba(255, 255, 255, 0.2);
 
-  --sub-text: white;
+  --sub-text: {{ foreground }};
 }
 
 :root {
@@ -41,24 +41,25 @@
   /* Back button for SVG and some text apparently */
   --arrowpanel-color: var(--sub-text) !important;
 
+  /* URL bar text when window is unfocused */
+  --toolbar-field-color: var(--sub-text) !important;
 
-  /* Tab selected highlight */
-  --toolbar-bgcolor: var(--background-transparent) !important;
+  /* Selected tab background highlight */
+  --tab-selected-bgcolor: var(--background-transparent) !important;
 }
 
 * {
   box-shadow: 0 0 0 0 !important;
 }
 
-
 /* Autofill form */
 #PopupAutoComplete > richlistbox > richlistitem {
   > .two-line-wrapper {
     > .labels-wrapper {
       > .label-row {
-	color: var(--sub-text);
+        color: var(--sub-text);
       }
-    }    
+    }
   }
 }
 .ac-title-text,
@@ -67,7 +68,6 @@
 .ac-text-overflow-container {
   color: var(--sub-text);
 }
-
 
 .sidebar-splitter {
   border: none !important;
@@ -99,10 +99,8 @@ findbar {
   background-color: var(--sfwindow) !important;
 }
 
-
 /* Allow transparency */
 /* browser.tabs.allow_transparent_browser */
-
 
 /* Background of browser */
 /* Browser spacer */
@@ -110,8 +108,7 @@ findbar {
 /* Browser URL (top) */
 .browser-toolbox-background,
 /* Tabs */
-#tabbrowser-tabs
-{
+#tabbrowser-tabs {
   background-color: var(--sfwindow) !important;
 }
 
@@ -127,7 +124,7 @@ findbar {
 
 /* Disable browser outline between URL/NAV and the browser contents */
 #tabbrowser-tabbox {
-  outline: none !important;    
+  outline: none !important;
 }
 
 /* Attempt to make the URL bar have blur. It only works for about: pages. */
@@ -178,7 +175,11 @@ tooltip {
   outline: none !important;
 }
 
-.tab-labeld {
+#urlbar .urlbar-background {
+  border: 0px solid transparent !important;
+}
+
+.tab-label {
   color: var(--tab-text-focus) !important;
 }
 
@@ -189,12 +190,34 @@ tab:where([visuallyselected="true"]) {
   color: var(--sub-text) !important;
 }
 
+/* Splitter at the sidebar */
+#sidebar-tools-and-extensions-splitter {
+  background-color: transparent !important;
+}
+
 menupopup,
 panel {
   --panel-background: var(--sfsecondary) !important;
-  --panel-border-color: none !important;
+  --panel-border-color: transparent !important;
 }
 
 #unified-extensions-view {
   background-color: var(--sfsecondary) !important;
+}
+
+/* Sidebar header bar, background-color doesn't inherit, so explicit dark bg needed */
+#sidebar-header {
+  background-color: var(--sfsecondary) !important;
+  border: none !important;
+  color: var(--sub-text) !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+/* App menu and context menu: keep text visible on hover/active items */
+menuitem[_moz-menuactive="true"],
+menu[_moz-menuactive="true"],
+.subviewbutton:hover,
+.subviewbutton[_moz-menuactive="true"] {
+  color: var(--sub-text) !important;
 }

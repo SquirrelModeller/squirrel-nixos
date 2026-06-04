@@ -1,12 +1,11 @@
-{firefoxShared, ...}: let
-  inherit (firefoxShared) mkMerge mkCssFile mkProfilesIni enabledUsers colors;
+{firefoxShared, config, ...}: let
+  inherit (firefoxShared) mkMerge mkProfilesIni enabledUsers;
+  inherit (config.modules.style.colorScheme) colors;
 
   mkPerUserFiles = username: let
-    cssFile = mkCssFile username;
     profilesIni = mkProfilesIni username;
   in {
     ".mozilla/firefox/profiles.ini".source = profilesIni;
-    ".mozilla/firefox/squirrel/chrome/userChrome.css".source = cssFile;
   };
 in {
   imports = [./default.nix];

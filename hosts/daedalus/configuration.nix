@@ -2,6 +2,7 @@
   lib,
   pkgs,
   self,
+  inputs,
   ...
 }: let
   systeminfo = pkgs.callPackage "${self}/modules/terminal/systeminfo" {};
@@ -92,6 +93,8 @@ in {
       KERNEL=="event*", SUBSYSTEM=="input", MODE="0660", GROUP="libvirtd"
     '';
   };
+
+  security.pam.services.quickshell = {};
 
   services.openssh = {
     enable = true;

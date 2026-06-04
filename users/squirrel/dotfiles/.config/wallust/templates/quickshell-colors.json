@@ -1,0 +1,10 @@
+{
+    "bg":          "{{ background }}",
+    "surface":     "{{ color0 }}",
+    "surfaceHigh": "{{ color8 }}",
+    "accent":      "{{ color11 }}",
+    "muted":       "{{ color3 }}",
+    "text":        "{{ foreground }}",
+    "textDim":     "{{ color7 }}",
+    "outline":     "{{ color8 }}"
+}
