@@ -17,72 +17,120 @@
     mode = "400";
   };
 
-  services.loki = {
-    enable = true;
-    configuration = {
-      auth_enabled = false;
-      server.http_listen_port = 3100;
-      common = {
-        ring = {
-          instance_addr = "127.0.0.1";
-          kvstore.store = "inmemory";
-        };
-        replication_factor = 1;
-        path_prefix = "/var/lib/loki";
-      };
-      schema_config.configs = [
-        {
-          from = "2024-01-01";
-          store = "tsdb";
-          object_store = "filesystem";
-          schema = "v13";
-          index = {
-            prefix = "index_";
-            period = "24h";
+  services = {
+    loki = {
+      enable = true;
+      configuration = {
+        auth_enabled = false;
+        server.http_listen_port = 3100;
+        common = {
+          ring = {
+            instance_addr = "127.0.0.1";
+            kvstore.store = "inmemory";
           };
+          replication_factor = 1;
+          path_prefix = "/var/lib/loki";
+        };
+        schema_config.configs = [
+          {
+            from = "2024-01-01";
+            store = "tsdb";
+            object_store = "filesystem";
+            schema = "v13";
+            index = {
+              prefix = "index_";
+              period = "24h";
+            };
+          }
+        ];
+      };
+    };
+    alloy = {
+      enable = true;
+      configPath = pkgs.writeText "alloy.alloy" ''
+        loki.source.journal "caddy" {
+          max_age    = "12h"
+          labels     = {job = "caddy"}
+          matches    = "_SYSTEMD_UNIT=caddy.service"
+          forward_to = [loki.write.local.receiver]
+        }
+
+        loki.write "local" {
+          endpoint {
+            url = "http://localhost:3100/loki/api/v1/push"
+          }
+        }
+      '';
+    };
+
+    prometheus = {
+      enable = true;
+      port = 9090;
+
+      exporters.node = {
+        enable = true;
+        port = 9100;
+        enabledCollectors = ["systemd" "processes" "network_route"];
+      };
+
+      scrapeConfigs = [
+        {
+          job_name = "caddy";
+          static_configs = [{targets = ["localhost:2019"];}];
+        }
+        {
+          job_name = "node";
+          static_configs = [{targets = ["localhost:9100"];}];
         }
       ];
     };
-  };
 
-  services.alloy = {
-    enable = true;
-    configPath = pkgs.writeText "alloy.alloy" ''
-      loki.source.journal "caddy" {
-        max_age    = "12h"
-        labels     = {job = "caddy"}
-        matches    = "_SYSTEMD_UNIT=caddy.service"
-        forward_to = [loki.write.local.receiver]
-      }
-
-      loki.write "local" {
-        endpoint {
-          url = "http://localhost:3100/loki/api/v1/push"
-        }
-      }
-    '';
-  };
-
-  services.prometheus = {
-    enable = true;
-    port = 9090;
-
-    exporters.node = {
+    grafana = {
       enable = true;
-      port = 9100;
-      enabledCollectors = ["systemd" "processes" "network_route"];
-    };
 
-    scrapeConfigs = [
-      {
-        job_name = "caddy";
-        static_configs = [{targets = ["localhost:2019"];}];
-      }
-      {
-        job_name = "node";
-        static_configs = [{targets = ["localhost:9100"];}];
-      }
-    ];
+      settings.server = {
+        http_addr = "127.0.0.1";
+        http_port = 3001;
+      };
+
+      settings.security = {
+        admin_user = "admin";
+        admin_password = "$__file{${config.age.secrets.grafana-admin-password.path}}";
+        secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
+      };
+
+      provision = {
+        enable = true;
+        datasources.settings = {
+          apiVersion = 1;
+          deleteDatasources = [
+            {
+              name = "Prometheus";
+              orgId = 1;
+            }
+            {
+              name = "Loki";
+              orgId = 1;
+            }
+          ];
+          datasources = [
+            {
+              name = "Prometheus";
+              type = "prometheus";
+              uid = "prometheus";
+              url = "http://localhost:9090";
+              isDefault = true;
+            }
+            {
+              name = "Loki";
+              type = "loki";
+              uid = "loki";
+              url = "http://localhost:3100";
+            }
+          ];
+        };
+      };
+    };
   };
 
   systemd.services.prometheus.serviceConfig = {
@@ -90,52 +138,5 @@
     ReadWritePaths = ["/var/lib/prometheus2"];
     ProcSubset = "pid";
     UMask = "0077";
-  };
-
-  services.grafana = {
-    enable = true;
-
-    settings.server = {
-      http_addr = "127.0.0.1";
-      http_port = 3001;
-    };
-
-    settings.security = {
-      admin_user = "admin";
-      admin_password = "$__file{${config.age.secrets.grafana-admin-password.path}}";
-      secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
-    };
-
-    provision = {
-      enable = true;
-      datasources.settings = {
-        apiVersion = 1;
-        deleteDatasources = [
-          {
-            name = "Prometheus";
-            orgId = 1;
-          }
-          {
-            name = "Loki";
-            orgId = 1;
-          }
-        ];
-        datasources = [
-          {
-            name = "Prometheus";
-            type = "prometheus";
-            uid = "prometheus";
-            url = "http://localhost:9090";
-            isDefault = true;
-          }
-          {
-            name = "Loki";
-            type = "loki";
-            uid = "loki";
-            url = "http://localhost:3100";
-          }
-        ];
-      };
-    };
   };
 }

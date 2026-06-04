@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: [
+{pkgs, ...}: [
   pkgs.hyprpaper
   pkgs.hypridle
   pkgs.grim

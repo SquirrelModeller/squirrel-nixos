@@ -1,4 +1,8 @@
-{firefoxShared, config, ...}: let
+{
+  firefoxShared,
+  config,
+  ...
+}: let
   inherit (firefoxShared) mkMerge mkProfilesIni enabledUsers;
   inherit (config.modules.style.colorScheme) colors;
 

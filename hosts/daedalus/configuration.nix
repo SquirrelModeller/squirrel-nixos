@@ -96,37 +96,40 @@ in {
 
   security.pam.services.quickshell = {};
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "prohibit-password";
+  services = {
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "prohibit-password";
+      };
     };
-  };
-  networking.firewall.allowedTCPPorts = [22];
 
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    domacroc.enable = true;
+  };
+
+  networking = {
+    firewall.allowedTCPPorts = [22];
+    networkmanager.enable = true;
+    hostName = "daedalus";
   };
 
   age.identityPaths = [
     "/etc/ssh/ssh_host_ed25519_key"
   ];
 
-  networking.networkmanager.enable = true;
-
   nixpkgs.config.allowUnfree = true;
 
   hardware.enableRedistributableFirmware = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-  networking.hostName = "daedalus";
-
-  services.domacroc.enable = true;
 
   squirrelOS.users.enabled = ["squirrel"];
 
