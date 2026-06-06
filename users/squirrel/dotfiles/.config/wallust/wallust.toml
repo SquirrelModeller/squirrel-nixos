@@ -1,6 +1,7 @@
 backend = "fastresize"
 color_space = "labmixed"
 palette = "dark"
+check_contrast = true
 
 [templates]
 theme_colors = { template = 'kitty.conf', target = '~/.cache/theme/kitty/colors.conf' }

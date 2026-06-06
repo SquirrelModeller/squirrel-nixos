@@ -23,6 +23,27 @@
         "type": "github"
       }
     },
+    "athroisma": {
+      "inputs": {
+        "nixpkgs": [
+          "squirrel-quickshell",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780762642,
+        "narHash": "sha256-EWZOLDqyq+0mSO0qMKoBwhEjaCvHs/lwNQUHx0ktC3Q=",
+        "owner": "SquirrelModeller",
+        "repo": "athroisma",
+        "rev": "f0429ea4a54937e6195c8d90cbc429c5e2766c0a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "athroisma",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -241,13 +262,18 @@
       }
     },
     "squirrel-quickshell": {
-      "flake": false,
+      "inputs": {
+        "athroisma": "athroisma",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1780596347,
-        "narHash": "sha256-0eGBkJ4ot3GAn2wEEKVrC1uOHcvn7WOrdGRDFg57yhk=",
+        "lastModified": 1780765667,
+        "narHash": "sha256-TBxwbq0/YFcbcvst6LtkAJDVi7lhd31P+QWQPLtkf8U=",
         "owner": "SquirrelModeller",
         "repo": "zesis",
-        "rev": "21bbc4d5fb2dc4458b5231352dc03423b711fb16",
+        "rev": "779f208f6bb1f4f6ea0dc228faee8dc54bf06981",
         "type": "github"
       },
       "original": {

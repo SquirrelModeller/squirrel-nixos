@@ -11,7 +11,7 @@ hl.on("hyprland.start", function()
         "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE && " ..
         "systemctl --user restart hyprland-session.target"
     )
-    hl.exec_cmd("hyprpaper")
+    hl.exec_cmd("bash -c 'awww-daemon & sleep 0.3 && (awww restore 2>/dev/null || awww img \"$HOME/Desktop/Files/Pictures/Backgrounds/CableCars.jpg\" --transition-type none)'")
     hl.exec_cmd("quickshell -d")
 end)
 

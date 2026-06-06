@@ -1,5 +1,5 @@
 {pkgs, ...}: [
-  pkgs.hyprpaper
+  pkgs.awww
   pkgs.hypridle
   pkgs.grim
   pkgs.slurp

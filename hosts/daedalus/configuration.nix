@@ -4,9 +4,7 @@
   self,
   inputs,
   ...
-}: let
-  systeminfo = pkgs.callPackage "${self}/modules/terminal/systeminfo" {};
-in {
+}: {
   imports = [
     ./fs
     "${self}/modules/options/host-context.nix"
@@ -34,10 +32,6 @@ in {
     # I have to declare package here to avoid getting this compiled on other systems
     inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
-
-  environment.variables = {
-    systemPackages = [systeminfo];
-  };
 
   squirrelOS = {
     host.roles = ["workstation"];

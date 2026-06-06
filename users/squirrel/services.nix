@@ -6,6 +6,7 @@
 }: let
   findFiles = import ../../lib/findFiles.nix {inherit lib;};
   qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  athroisma = inputs.squirrel-quickshell.packages.${pkgs.stdenv.hostPlatform.system}.athroisma;
   qsConfigFiles = lib.mapAttrs' (name: value:
     lib.nameValuePair ".config/quickshell/${name}" value)
   (findFiles inputs.squirrel-quickshell);
@@ -21,6 +22,7 @@ in {
         wantedBy = ["graphical-session.target"];
         after = ["graphical-session.target"];
         partOf = ["graphical-session.target"];
+        path = [athroisma];
         serviceConfig = {
           ExecStart = "${qs}/bin/quickshell";
           Restart = "on-failure";
