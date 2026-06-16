@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   modulesPath,
   self,
   ...
@@ -18,7 +19,7 @@
     "${self}/modules/services/navidrome.nix"
     "${self}/modules/services/samba.nix"
     "${self}/modules/services/vaultwarden.nix"
-    "${self}/modules/services/factorio.nix"
+    #"${self}/modules/services/factorio.nix"
     "${self}/modules/services/website.nix"
     "${self}/modules/services/rrss.nix"
     "${self}/modules/services/forgejo.nix"
@@ -114,6 +115,8 @@
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  environment.systemPackages = [pkgs.kitty.terminfo];
 
   nixpkgs.config.allowUnfree = true;
 

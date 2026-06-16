@@ -1,4 +1,4 @@
-let
+{lib, ...}: let
   dataDir = "/talos/services/vaultwarden";
 in {
   services.vaultwarden = {
@@ -28,7 +28,24 @@ in {
 
   systemd = {
     services.vaultwarden.serviceConfig = {
-      ReadWritePaths = ["/talos/services/vaultwarden"];
+      ProtectSystem = lib.mkForce "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      NoNewPrivileges = true;
+      LockPersonality = true;
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      SystemCallArchitectures = "native";
+      ReadWritePaths = [dataDir];
+      InaccessiblePaths = [
+        "/talos/users"
+        "/talos/shared"
+        "/talos/media"
+        "/talos/services/jellyfin"
+        "/talos/services/nextcloud"
+        "/boot"
+        "/root"
+      ];
     };
 
     services.vaultwarden.after = ["zfs-mount.service"];

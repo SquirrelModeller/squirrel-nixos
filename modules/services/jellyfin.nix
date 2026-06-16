@@ -17,8 +17,23 @@ in {
   systemd = {
     services.jellyfin.serviceConfig = {
       ProtectSystem = lib.mkForce "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      NoNewPrivileges = true;
+      LockPersonality = true;
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      SystemCallArchitectures = "native";
       ReadWritePaths = [dataDir cacheDir];
       BindReadOnlyPaths = ["/talos/media"];
+      InaccessiblePaths = [
+        "/talos/users"
+        "/talos/services/nextcloud"
+        "/talos/services/vaultwarden"
+        "/talos/shared"
+        "/boot"
+        "/root"
+      ];
     };
 
     tmpfiles.rules = [

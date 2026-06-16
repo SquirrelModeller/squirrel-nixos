@@ -149,17 +149,17 @@ in {
     };
   };
 
-  systemd.services.samba-smbd.serviceConfig = {
-    ProtectClock = true;
-    ProtectHostname = true;
-    ProtectKernelLogs = true;
-    ProtectKernelModules = true;
-    ProtectKernelTunables = true;
-    RestrictAddressFamilies = ["AF_UNIX" "AF_INET" "AF_INET6" "AF_NETLINK"];
-    RestrictRealtime = true;
-    SystemCallArchitectures = "native";
-    LockPersonality = true;
-  };
+  # systemd.services.samba-smbd.serviceConfig = {
+  #   ProtectClock = true;
+  #   ProtectHostname = true;
+  #   ProtectKernelLogs = true;
+  #   ProtectKernelModules = true;
+  #   ProtectKernelTunables = true;
+  #   RestrictAddressFamilies = ["AF_UNIX" "AF_INET" "AF_INET6" "AF_NETLINK"];
+  #   RestrictRealtime = true;
+  #   SystemCallArchitectures = "native";
+  #   LockPersonality = true;
+  # };
 
   networking.firewall = {
     interfaces.${lanIf} = {

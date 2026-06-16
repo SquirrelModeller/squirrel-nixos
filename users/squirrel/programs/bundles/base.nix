@@ -14,7 +14,7 @@ in
     pkgs.yazi
     pkgs.nixpkgs-fmt
     pkgs.kitty
-    pkgs.wallust
+    pkgs.matugen
     pkgs.comma
     pkgs.sshfs
     pkgs.vesktop

@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   self,
   ...
 }: {
@@ -204,6 +205,8 @@
       '';
     };
   };
+
+  environment.systemPackages = [pkgs.kitty.terminfo];
 
   nixpkgs.config.allowUnfree = true;
 

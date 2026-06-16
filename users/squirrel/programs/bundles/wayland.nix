@@ -6,6 +6,5 @@
   pkgs.wl-clipboard
   pkgs.playerctl
   pkgs.capitaine-cursors
-  pkgs.keepassxc
   pkgs.libnotify
 ]

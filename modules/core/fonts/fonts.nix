@@ -40,6 +40,6 @@
         noto-fonts-color-emoji
         unifont
         ;
-    };
+    } ++ [ pkgs.nerd-fonts.symbols-only ];
   };
 }
