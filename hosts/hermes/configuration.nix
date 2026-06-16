@@ -3,10 +3,11 @@
   pkgs,
   self,
   ...
-}: let
-  allUsers = ["squirrel"];
-in {
-  squirrelOS.users.enabled = allUsers;
+}: {
+  squirrelOS = {
+    users.enabled = ["squirrel"];
+    host.capabilities = {graphical = true;};
+  };
 
   imports = [
     "${self}/modules/options/host-context.nix"
