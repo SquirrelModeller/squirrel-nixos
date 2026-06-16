@@ -98,56 +98,63 @@ hl.window_rule({
 local MOD = "SUPER"
 
 -- Window management
-hl.bind(MOD .. " + C", hl.dsp.window.close())
-hl.bind(MOD .. " + M", hl.dsp.exit())
-hl.bind(MOD .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(MOD .. " + P", hl.dsp.window.pseudo())
-hl.bind(MOD .. " + J", hl.dsp.layout("togglesplit"))
-hl.bind(MOD .. " + F", hl.dsp.window.fullscreen())
+hl.bind(MOD .. " + C", hl.dsp.window.close(),                  { description = "Window: Close"})
+hl.bind(MOD .. " + M", hl.dsp.exit(),                          { description = "Session: Exit"})
+hl.bind(MOD .. " + V", hl.dsp.window.float({ action = "toggle" }), { description = "Window: Toggle float"})
+hl.bind(MOD .. " + P", hl.dsp.window.pseudo(),                 { description = "Window: Toggle pseudo"})
+hl.bind(MOD .. " + J", hl.dsp.layout("togglesplit"),           { description = "Window: Toggle split"})
+hl.bind(MOD .. " + F", hl.dsp.window.fullscreen(),             { description = "Window: Fullscreen"})
 
 -- Focus movement
-hl.bind(MOD .. " + up",    hl.dsp.focus({ direction = "up" }))
-hl.bind(MOD .. " + down",  hl.dsp.focus({ direction = "down" }))
-hl.bind(MOD .. " + left",  hl.dsp.focus({ direction = "left" }))
-hl.bind(MOD .. " + right", hl.dsp.focus({ direction = "right" }))
+hl.bind(MOD .. " + up",    hl.dsp.focus({ direction = "up" }),    { description = "Window: Focus up"})
+hl.bind(MOD .. " + down",  hl.dsp.focus({ direction = "down" }),  { description = "Window: Focus down"})
+hl.bind(MOD .. " + left",  hl.dsp.focus({ direction = "left" }),  { description = "Window: Focus left"})
+hl.bind(MOD .. " + right", hl.dsp.focus({ direction = "right" }), { description = "Window: Focus right"})
 
 -- Workspaces
 for i = 1, 9 do
-    hl.bind(MOD .. " + " .. i,         hl.dsp.focus({ workspace = i }))
-    hl.bind(MOD .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
+    hl.bind(MOD .. " + " .. i,         hl.dsp.focus({ workspace = i }),       { description = "Workspace: Switch [1-9]"})
+    hl.bind(MOD .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }), { description = "Workspace: Move window [1-9]"})
 end
 
--- Mouse binds
+-- Mouse binds (no description, excluded from cheatsheet)
 hl.bind(MOD .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(MOD .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- App launchers
-hl.bind(MOD .. " + R", hl.dsp.exec_cmd("tofi-drun --drun-launch=true"))
-hl.bind(MOD .. " + B", hl.dsp.exec_cmd("firefox"))
-hl.bind(MOD .. " + O", hl.dsp.exec_cmd("codium"))
-hl.bind(MOD .. " + Q", hl.dsp.exec_cmd("kitty"))
-hl.bind(MOD .. " + S", hl.dsp.exec_cmd('grim -g "$(slurp -w 0 -d)" - | wl-copy'))
-hl.bind(MOD .. " + CTRL + P", hl.dsp.exec_cmd("hyprpicker -a"))
-hl.bind(MOD .. " + E", hl.dsp.exec_cmd("emacs"))
-hl.bind(MOD .. " + SHIFT + E", hl.dsp.exec_cmd("unicode-picker"))
+hl.bind(MOD .. " + R", hl.dsp.exec_cmd("tofi-drun --drun-launch=true"),        { description = "App: Launcher"})
+hl.bind(MOD .. " + B", hl.dsp.exec_cmd("firefox"),                             { description = "App: Browser"})
+hl.bind(MOD .. " + O", hl.dsp.exec_cmd("codium"),                              { description = "App: Editor"})
+hl.bind(MOD .. " + Q", hl.dsp.exec_cmd("kitty"),                               { description = "App: Terminal"})
+hl.bind(MOD .. " + E", hl.dsp.exec_cmd("emacs"),                               { description = "App: Emacs"})
+hl.bind(MOD .. " + S", hl.dsp.exec_cmd('grim -g "$(slurp -w 0 -d)" - | wl-copy'), { description = "Screenshot: Region"})
+hl.bind(MOD .. " + CTRL + P", hl.dsp.exec_cmd("hyprpicker -a"),                { description = "Utilities: Color picker"})
+hl.bind(MOD .. " + SHIFT + E", hl.dsp.exec_cmd("unicode-picker"),              { description = "Utilities: Unicode picker"})
+
+-- Shell overlays
+local QS = "qs -p " .. os.getenv("HOME") .. "/Documents/squirrel-quickshell"
+hl.bind("ALT + Tab",         hl.dsp.exec_cmd(QS .. " ipc call appswitcher cycle"),   { repeating = true, description = "Shell: App switcher next" })
+hl.bind("ALT + SHIFT + Tab", hl.dsp.exec_cmd(QS .. " ipc call appswitcher back"),    { repeating = true, description = "Shell: App switcher prev" })
+hl.bind("ALT + Alt_L",       hl.dsp.exec_cmd(QS .. " ipc call appswitcher confirm"), { release = true })
+hl.bind("ALT + Escape",      hl.dsp.exec_cmd(QS .. " ipc call appswitcher cancel"),  { description = "Shell: App switcher cancel" })
 
 -- Zoom
 hl.bind(MOD .. " + Z", hl.dsp.exec_cmd(
     "hyprctl keyword cursor:zoom_factor \"$(hyprctl getoption cursor:zoom_factor | awk '/float/ {v=$2+0.5; if(v>5.0)v=8.0; print v}')\""
-), { repeating = true })
+), { repeating = true, description = "Utilities: Zoom in" })
 hl.bind(MOD .. " + SHIFT + Z", hl.dsp.exec_cmd(
     "hyprctl keyword cursor:zoom_factor \"$(hyprctl getoption cursor:zoom_factor | awk '/float/ {v=$2-0.5; if(v<1.0)v=1.0; print v}')\""
-), { repeating = true })
+), { repeating = true, description = "Utilities: Zoom out" })
 
 -- Media keys
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"),       { locked = true })
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Media: Play/Pause"})
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"),       { locked = true, description = "Media: Next"})
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"),   { locked = true, description = "Media: Prev"})
 
 -- Volume
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),       { repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true, description = "Volume: Raise" })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),       { repeating = true, description = "Volume: Lower" })
 
--- Stardew Valley animation cancelling
+-- Stardew Valley animation cancelling (no description, excluded from cheatsheet)
 hl.bind("mouse:277", hl.dsp.exec_cmd( "domacro-send unique stardewvalley keyHold c 100 sleep 100 keyPress rshift keyPress delete keyPress r sleep 80 keyRelease rshift keyRelease delete keyRelease r"
 ), { repeating = true })
