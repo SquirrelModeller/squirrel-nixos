@@ -2,7 +2,6 @@
   pkgs,
   config,
   lib,
-  getUserDotfiles,
   ...
 }: let
   inherit (lib) mkIf;
@@ -22,32 +21,16 @@
         })
       ];
   };
-
-  getUserVSCodiumFiles = username: let
-    dotfiles = getUserDotfiles username;
-    settingsPath = ".config/VSCodium/User/settings.json";
-    hasSettings = dotfiles ? ${settingsPath};
-  in
-    {
-      ".vscode-oss/extensions" = {
-        source = "${extensionsDrv}/share/vscode/extensions";
-      };
-    }
-    // (
-      if hasSettings
-      then {
-        "Library/Application Support/VSCodium/User/settings.json" = {
-          inherit (dotfiles.${settingsPath}) source;
-        };
-      }
-      else {}
-    );
 in {
   imports = [./default.nix];
 
   config = mkIf (enabledUsers != []) {
     hjem.users = lib.genAttrs enabledUsers (username: {
-      files = getUserVSCodiumFiles username;
+      files = {
+        ".vscode-oss/extensions" = {
+          source = "${extensionsDrv}/share/vscode/extensions";
+        };
+      };
     });
   };
 }

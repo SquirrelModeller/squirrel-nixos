@@ -9,21 +9,6 @@
   } @ inputs: let
     inherit (nixpkgs) lib;
 
-    vscodiumOverlay = _final: prev: {
-      vscodium = prev.vscodium.overrideAttrs (
-        let
-          version = "1.109.51242";
-        in {
-          inherit version;
-
-          src = prev.fetchurl {
-            url = "https://github.com/VSCodium/vscodium/releases/download/${version}/VSCodium-darwin-arm64-${version}.zip";
-            hash = "sha256-zFRvn9BT5xx+HMWhnI5APKUDekOvZjzbN3SlqtdMBOE=";
-          };
-        }
-      );
-    };
-
     hostEntries = builtins.readDir ./hosts;
     hostNames = builtins.filter (
       h:
@@ -88,7 +73,6 @@
           inputs.agenix.darwinModules.default
 
           {
-            nixpkgs.overlays = [vscodiumOverlay];
 
             environment.systemPackages = [
               inputs.agenix.packages.${system}.default
