@@ -25,19 +25,9 @@ in {
   hjem.users.squirrel.directory = lib.mkForce "/Users/squirrel";
   users.users.squirrel.home = lib.mkForce "/Users/squirrel";
 
-  system.primaryUser = "squirrel";
-
   nixpkgs.config.allowUnfree = true;
 
-
   security.pam.services.sudo_local.touchIdAuth = true;
-
-  system.defaults.dock = {
-    autohide = true;
-    persistent-apps = [];
-    persistent-others = [];
-    tilesize = 50;
-  };
 
   networking = {
     hostName = "hermes";
@@ -46,19 +36,29 @@ in {
   };
 
   system = {
+    primaryUser = "squirrel";
+
     defaults = {
+      dock = {
+        autohide = true;
+        persistent-apps = [];
+        persistent-others = [];
+        tilesize = 50;
+      };
+
       CustomUserPreferences = {
         "com.apple.WindowManager" = {
           EnableStandardClickToShowDesktop = false;
         };
       };
+
+      NSGlobalDomain = {
+        "com.apple.swipescrolldirection" = false;
+        InitialKeyRepeat = 15;
+        KeyRepeat = 2;
+      };
     };
 
-    defaults.NSGlobalDomain = {
-      "com.apple.swipescrolldirection" = false;
-      InitialKeyRepeat = 15;
-      KeyRepeat = 2;
-    };
     configurationRevision = self.rev or self.dirtyRev or null;
 
     stateVersion = 6;

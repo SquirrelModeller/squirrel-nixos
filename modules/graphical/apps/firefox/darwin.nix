@@ -58,5 +58,5 @@ in {
 
   environment.systemPackages = with pkgs; [firefox];
 
-  hjem.users = mkMerge (map (u: { ${u}.files = mkPerUserFiles u; }) enabledUsers);
+  hjem.users = mkMerge (map (u: {${u}.files = mkPerUserFiles u;}) enabledUsers);
 }

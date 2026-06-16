@@ -31,15 +31,17 @@
       enable = true;
       decompressFonts = true;
     };
-    packages = lib.attrValues {
-      inherit
-        (pkgs)
-        jetbrains-mono
-        noto-fonts
-        noto-fonts-cjk-sans
-        noto-fonts-color-emoji
-        unifont
-        ;
-    } ++ [ pkgs.nerd-fonts.symbols-only ];
+    packages =
+      lib.attrValues {
+        inherit
+          (pkgs)
+          jetbrains-mono
+          noto-fonts
+          noto-fonts-cjk-sans
+          noto-fonts-color-emoji
+          unifont
+          ;
+      }
+      ++ [pkgs.nerd-fonts.symbols-only];
   };
 }

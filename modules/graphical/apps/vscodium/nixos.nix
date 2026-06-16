@@ -25,7 +25,7 @@ in {
   imports = [./default.nix];
 
   config = mkIf (enabledUsers != []) {
-    hjem.users = lib.genAttrs enabledUsers (username: {
+    hjem.users = lib.genAttrs enabledUsers (lib.const {
       files = {
         ".vscode-oss/extensions" = {
           source = "${extensionsDrv}/share/vscode/extensions";

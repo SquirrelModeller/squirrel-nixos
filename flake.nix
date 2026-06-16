@@ -73,7 +73,6 @@
           inputs.agenix.darwinModules.default
 
           {
-
             environment.systemPackages = [
               inputs.agenix.packages.${system}.default
             ];
