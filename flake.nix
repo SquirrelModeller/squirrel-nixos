@@ -37,7 +37,6 @@
         };
         modules = [
           ./hosts
-          ./modules/options
           ./modules/users/nixos.nix
           (./hosts + "/${hostName}/configuration.nix")
           inputs.hjem.nixosModules.default
@@ -66,7 +65,6 @@
             ;
         };
         modules = [
-          ./modules/options
           ./modules/users/darwin.nix
           (./hosts + "/${hostName}/configuration.nix")
           inputs.hjem.darwinModules.default

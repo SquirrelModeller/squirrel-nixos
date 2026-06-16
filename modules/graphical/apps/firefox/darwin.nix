@@ -1,11 +1,9 @@
 {
   pkgs,
-  config,
   firefoxShared,
   ...
 }: let
   inherit (firefoxShared) mkMerge mkProfilesIni enabledUsers;
-  inherit (config.modules.style.colorScheme) colors;
 
   mkPerUserFiles = username: let
     profilesIni = mkProfilesIni username;
@@ -21,7 +19,6 @@
       // UI
       user_pref("browser.toolbars.bookmarks.visibility", "never");
       user_pref("browser.tabs.allow_transparent_browser", true);
-      user_pref("browser.display.background_color", "${colors.background}");
 
       // Telemetry / studies
       user_pref("toolkit.telemetry.enabled", false);

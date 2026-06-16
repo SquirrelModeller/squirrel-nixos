@@ -1,41 +1,31 @@
 # Squirrel NixOS Config
 
-*This README is still a work in progress. Likewise, the entire Nix config is heavily a work in progress.*
-
 My personal NixOS configuration.
 
 ## Cool things
 
-- Hosts are auto-discovered from `hosts/*` and turned into `nixosConfigurations.<host>`.
+- Both NixOS and nix-darwin are supported. Each host declares its target platform in a `system` file, and the flake automatically routes it to `nixosConfigurations` or `darwinConfigurations`. Modules that differ per platform (e.g. Firefox, VSCodium, security) split into `nixos.nix` / `darwin.nix` siblings with a shared `default.nix`.
+- Hosts are auto-discovered from `hosts/*`, no manual registration needed.
 - Users are auto-discovered from `users/*`. Each host can set which users are active:
-  ```
+  ```nix
   # hosts/<host>/configuration.nix
   {
     squirrelOS.users.enabled = [ "squirrel" "guest" ];
   }
   ```
+- A `ctx` object (platform, roles, capabilities) is passed to every user package definition. This is the only host-level context in the config, it keeps macOS support clean and prevents graphical or workstation packages from leaking onto servers.
 - There are declarative per-user services from `users/<name>/services.nix`.
+- Theming is handled by [matugen](https://github.com/InioX/matugen), which generates a consistent color scheme across all applications from a wallpaper.
 
 ## Philosophy
-I aim to keep my NixOS setup as minimal as possible when it comes to external dependencies.
 
-I used to use Home Manager; however, it felt too bloated to me, with lots of obscure variables. I use Hjem now, which is much simpler and just writes the necessary symlinks directly. It's still a dependency, but a lightweight and fast one.
+I avoid heavy custom abstractions. Most modules here are standard NixOS options with minimal wrapping, which keeps them loosely coupled and easy to reference or borrow from other configurations without pulling in a bespoke option framework.
 
-Automation is a big focus for me. That's why hosts and users are also auto-discovered: I can just add a new host folder and build it, without ever having to hardcode any paths. I find that process very satisfying.
-
-I'm still learning Nix, and I know there's a lot of room for improvement. I'm probably making some major mistakes here, and I'd love to learn from them. I'm open to suggestions anytime.
+Automation is a big focus for me. That's why hosts and users are auto-discovered: I can just add a new host folder and build it, without ever having to hardcode any paths. I find that process very satisfying.
 
 This repository is designed with multiple users in mind. I don't want to force system-wide applications, especially since I want to use this configuration for workstations, laptops, and servers - each with their own needs and users.
-
-## Work in progress
-
-Currently, I'm working on integrating Wallust for theme syncing across all applications. It should make my Nix files less tightly coupled, while still allowing me to have a consistent look everywhere.
 
 ## Credits
 
 - Greek naming convention taken from [Nyx](https://github.com/NotAShelf/nyx).
 - Thanks to the entire Hyprland community for helping me!
-
-## Contributions
-
-See [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)

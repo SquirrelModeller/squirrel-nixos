@@ -25,7 +25,6 @@
         battery = false;
       };
     userFeatures = config.squirrelOS.userFeatures or {};
-    colors = config.modules.style.colorScheme.colors or {};
   };
 
   ctx = mkCtx config;

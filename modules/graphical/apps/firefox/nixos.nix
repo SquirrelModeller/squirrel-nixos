@@ -1,10 +1,5 @@
-{
-  firefoxShared,
-  config,
-  ...
-}: let
+{firefoxShared, ...}: let
   inherit (firefoxShared) mkMerge mkProfilesIni enabledUsers;
-  inherit (config.modules.style.colorScheme) colors;
 
   mkPerUserFiles = username: let
     profilesIni = mkProfilesIni username;
@@ -49,7 +44,6 @@ in {
         "browser.startup.page" = {Value = 3;};
         "browser.toolbars.bookmarks.visibility" = {Value = "never";};
         "browser.tabs.allow_transparent_browser" = {Value = true;};
-        "browser.display.background_color" = {Value = colors.background;};
       };
 
       "signon.autofillForms" = {
