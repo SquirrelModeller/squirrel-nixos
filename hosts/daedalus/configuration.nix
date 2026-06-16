@@ -14,7 +14,6 @@
     "${self}/modules/graphical/apps/firefox/nixos.nix"
     "${self}/modules/graphical/apps/vscodium/nixos.nix"
     "${self}/modules/graphical/apps/unicode-picker.nix"
-    "${self}/modules/graphical/theme/wallust-colorscheme.nix"
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/graphical/dms/greetd.nix"
     "${self}/modules/packages"
@@ -29,6 +28,9 @@
 
   environment.systemPackages = with pkgs; [
     btrfs-progs
+    cifs-utils
+    samba
+    smbnetfs
     # I have to declare package here to avoid getting this compiled on other systems
     inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];

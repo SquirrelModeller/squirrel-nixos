@@ -1,0 +1,7 @@
+[config]
+caching = false
+version_check = true
+
+[templates.quickshell]
+input_path = "~/.config/matugen/templates/quickshell.json"
+output_path = "~/.cache/theme/quickshell/colors.json"
