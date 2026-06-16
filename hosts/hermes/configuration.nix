@@ -25,6 +25,11 @@ in {
   hjem.users.squirrel.directory = lib.mkForce "/Users/squirrel";
   users.users.squirrel.home = lib.mkForce "/Users/squirrel";
 
+  system.primaryUser = "squirrel";
+
+  nixpkgs.config.allowUnfree = true;
+
+
   security.pam.services.sudo_local.touchIdAuth = true;
 
   system.defaults.dock = {

@@ -9,7 +9,7 @@
   } @ inputs: let
     inherit (nixpkgs) lib;
 
-    vscodiumOverlay = prev: {
+    vscodiumOverlay = _final: prev: {
       vscodium = prev.vscodium.overrideAttrs (
         let
           version = "1.109.51242";

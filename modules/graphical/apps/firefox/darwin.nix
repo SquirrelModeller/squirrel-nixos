@@ -1,12 +1,13 @@
 {
   pkgs,
+  config,
   firefoxShared,
   ...
 }: let
-  inherit (firefoxShared) mkMerge mkCssFile mkProfilesIni enabledUsers colors;
+  inherit (firefoxShared) mkMerge mkProfilesIni enabledUsers;
+  inherit (config.modules.style.colorScheme) colors;
 
   mkPerUserFiles = username: let
-    cssFile = mkCssFile username;
     profilesIni = mkProfilesIni username;
 
     # Darwin needs user.js for preferences since policies don't work
@@ -51,12 +52,11 @@
   in {
     "Library/Application Support/Firefox/profiles.ini".source = profilesIni;
     "Library/Application Support/Firefox/squirrel/user.js".source = userJs;
-    "Library/Application Support/Firefox/squirrel/chrome/userChrome.css".source = cssFile;
   };
 in {
   imports = [./default.nix];
 
   environment.systemPackages = with pkgs; [firefox];
 
-  hjem.users = mkMerge (map (u: {${u}.files = mkPerUserFiles u;}) enabledUsers);
+  hjem.users = mkMerge (map (u: { ${u}.files = mkPerUserFiles u; }) enabledUsers);
 }
