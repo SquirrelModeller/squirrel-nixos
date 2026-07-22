@@ -43,6 +43,11 @@
             };
           }
         ];
+        compactor = {
+          working_directory = "/var/lib/loki/compactor";
+          retention_enabled = true;
+          delete_request_store = "filesystem";
+        };
       };
     };
     alloy = {
@@ -52,6 +57,22 @@
           max_age    = "12h"
           labels     = {job = "caddy"}
           matches    = "_SYSTEMD_UNIT=caddy.service"
+          forward_to = [loki.process.caddy.receiver]
+        }
+
+        loki.process "caddy" {
+          stage.json {
+            expressions = {
+              vhost = "request.host",
+            }
+          }
+
+          stage.labels {
+            values = {
+              vhost = "",
+            }
+          }
+
           forward_to = [loki.write.local.receiver]
         }
 

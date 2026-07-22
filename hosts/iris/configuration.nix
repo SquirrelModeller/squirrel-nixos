@@ -217,7 +217,6 @@
         '';
 
         "diaspora.talosvault.net".extraConfig = ''
-          log access-log
           reverse_proxy unix//var/lib/diaspora/http.sock {
             header_up X-Real-IP {http.request.remote.host}
           }
