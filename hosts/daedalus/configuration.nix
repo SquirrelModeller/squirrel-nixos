@@ -23,6 +23,7 @@
 
   boot = {
     initrd.availableKernelModules = ["nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod"];
+    kernelModules = ["uinput"];
     supportedFilesystems = ["cifs"];
   };
 
@@ -92,7 +93,11 @@
 
   security.pam.services.quickshell = {};
 
+  hardware.bluetooth.enable = true;
+
   services = {
+    upower.enable = true;
+
     openssh = {
       enable = true;
       settings = {
@@ -109,12 +114,32 @@
     };
 
     domacroc.enable = true;
+
+    oo7.enable = true;
+
+    dbus.packages = [pkgs.gcr];
   };
 
   networking = {
-    firewall.allowedTCPPorts = [22];
+    firewall = {
+      interfaces."enp15s0".allowedTCPPorts = [22];
+    };
     networkmanager.enable = true;
     hostName = "daedalus";
+    hosts."10.0.0.1" = ["monitor.talosvault.net"];
+
+    wireguard.interfaces.wg0 = {
+      ips = ["10.0.0.3/24"];
+      privateKeyFile = "/var/lib/wireguard/daedalus.key";
+      peers = [
+        {
+          publicKey = "S6uxm1oXW7qKXt2ubxylqgnKfsYBXh876++aySY+2zI=";
+          endpoint = "159.195.8.188:51820";
+          allowedIPs = ["10.0.0.1/32"];
+          persistentKeepalive = 25;
+        }
+      ];
+    };
   };
 
   age.identityPaths = [
@@ -122,6 +147,7 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.rocmSupport = true;
 
   hardware.enableRedistributableFirmware = true;
 

@@ -6,15 +6,22 @@
   ...
 }: let
   findFiles = import ../../lib/findFiles.nix {inherit lib;};
-  qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  athroisma = inputs.squirrel-quickshell.packages.${pkgs.stdenv.hostPlatform.system}.athroisma;
+  qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default.withModules [pkgs.qt6.qtquick3d];
+  athroisma = inputs.zesis.packages.${pkgs.stdenv.hostPlatform.system}.athroisma;
   qsConfigFiles = lib.mapAttrs' (name: value:
     lib.nameValuePair ".config/quickshell/${name}" value)
-  (findFiles inputs.squirrel-quickshell);
+  (findFiles inputs.zesis);
+
+  onThemeChange = pkgs.writeShellScript "on-theme-change" ''
+    ${pkgs.procps}/bin/pkill -SIGUSR1 kitty || true
+    ${pkgs.hyprland}/bin/hyprctl reload || true
+  '';
 in
   lib.mkIf config.squirrelOS.host.capabilities.graphical {
     hjem.users.squirrel = {
-      files = qsConfigFiles;
+      files = qsConfigFiles // {
+        ".config/zesis/on-theme-change".source = onThemeChange;
+      };
 
       systemd = {
         enable = true;
@@ -57,8 +64,9 @@ in
                 if [ ! -f "$STATE" ]; then exit 0; fi
                 WALL=$(${pkgs.jq}/bin/jq -r '.lastWallpaper // ""' "$STATE" 2>/dev/null)
                 SCHEME=$(${pkgs.jq}/bin/jq -r '.schemeType // "scheme-tonal-spot"' "$STATE" 2>/dev/null)
+                MODE=$(${pkgs.jq}/bin/jq -r '.palette // "dark"' "$STATE" 2>/dev/null)
                 if [ -n "$WALL" ] && [ -f "$WALL" ]; then
-                  exec ${pkgs.matugen}/bin/matugen image "$WALL" --source-color-index 0 --type "$SCHEME"
+                  exec ${pkgs.matugen}/bin/matugen image "$WALL" --source-color-index 0 --type "$SCHEME" --mode "$MODE"
                 fi
               '');
             };
