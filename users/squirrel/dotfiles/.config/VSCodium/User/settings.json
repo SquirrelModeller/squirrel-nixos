@@ -9,7 +9,7 @@
   "npm.fetchOnlinePackageInfo": false,
 
   "editor.fontSize": 14,
-  "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace'",
+  "editor.fontFamily": "'JetBrains Mono', 'Symbols Nerd Font Mono', monospace",
   "editor.fontLigatures": true,
   "editor.lineNumbers": "on",
   "editor.rulers": [80, 120],

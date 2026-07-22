@@ -7,4 +7,5 @@ in {
   "forgejo-admin-password.age".publicKeys = [talos daedalus];
   "grafana-admin-password.age".publicKeys = [iris];
   "grafana-secret-key.age".publicKeys = [iris];
+  "factorio-mod-credentials.age".publicKeys = [talos];
 }
