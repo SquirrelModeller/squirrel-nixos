@@ -19,9 +19,11 @@
 in
   lib.mkIf config.squirrelOS.host.capabilities.graphical {
     hjem.users.squirrel = {
-      files = qsConfigFiles // {
-        ".config/zesis/on-theme-change".source = onThemeChange;
-      };
+      files =
+        qsConfigFiles
+        // {
+          ".config/zesis/on-theme-change".source = onThemeChange;
+        };
 
       systemd = {
         enable = true;

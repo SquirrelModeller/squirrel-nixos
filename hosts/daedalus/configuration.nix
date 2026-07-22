@@ -146,8 +146,10 @@
     "/etc/ssh/ssh_host_ed25519_key"
   ];
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.rocmSupport = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    rocmSupport = true;
+  };
 
   hardware.enableRedistributableFirmware = true;
 

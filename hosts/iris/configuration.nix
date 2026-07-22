@@ -27,25 +27,6 @@
     serverUrl = "https://notify.talosvault.net";
   };
 
-  services.diaspora = {
-    enable = true;
-    geoDbPath = "/var/lib/diaspora/GeoLite2-City.mmdb";
-    geoDbUrl = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb";
-    asnDbPath = "/var/lib/diaspora/GeoLite2-ASN.mmdb";
-    asnDbUrl = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-ASN.mmdb";
-    landMaskPath = "/var/lib/diaspora/land_mask.bin";
-  };
-
-  services.openssh = {
-    enable = true;
-    ports = [2222];
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "prohibit-password";
-    };
-  };
-
   environment.etc."gai.conf".text = ''
     precedence ::ffff:0:0/96  100
   '';
@@ -149,84 +130,105 @@
     ];
   };
 
-  services.caddy = {
-    enable = true;
-    email = "squirrelmodeller@protonmail.com";
-    globalConfig = ''
-      metrics {
-        per_host
-      }
-      log access-log {
-        output stdout
-        format json
-      }
-    '';
+  services = {
+    diaspora = {
+      enable = true;
+      geoDbPath = "/var/lib/diaspora/GeoLite2-City.mmdb";
+      geoDbUrl = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb";
+      asnDbPath = "/var/lib/diaspora/GeoLite2-ASN.mmdb";
+      asnDbUrl = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-ASN.mmdb";
+      landMaskPath = "/var/lib/diaspora/land_mask.bin";
+    };
 
-    virtualHosts = {
-      "watch.talosvault.net".extraConfig = ''
-        log access-log
-        reverse_proxy 10.0.0.2:8096
-      '';
+    openssh = {
+      enable = true;
+      ports = [2222];
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "prohibit-password";
+      };
+    };
 
-      "files.talosvault.net".extraConfig = ''
-        log access-log
-        @carddav  path /.well-known/carddav
-        @caldav   path /.well-known/caldav
-        redir @carddav /remote.php/dav/ 301
-        redir @caldav  /remote.php/dav/ 301
-        reverse_proxy 10.0.0.2:8080
-      '';
-
-      "music.talosvault.net".extraConfig = ''
-        log access-log
-        reverse_proxy 10.0.0.2:4533
-      '';
-
-      "notify.talosvault.net".extraConfig = ''
-        log access-log
-        reverse_proxy 10.0.0.2:8090
-      '';
-
-      "vault.talosvault.net".extraConfig = ''
-        log access-log
-        reverse_proxy 10.0.0.2:8000
-        reverse_proxy /notifications/hub 10.0.0.2:3012
-        reverse_proxy /notifications/hub/negotiate 10.0.0.2:8000
-      '';
-
-      "sendiron.talosvault.net".extraConfig = ''
-        log access-log
-        respond "Factorio server running on UDP port 34197"
-      '';
-
-      "squirrel.talosvault.net".extraConfig = ''
-        log access-log
-        header {
-          Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-          Pragma "no-cache"
-          Expires "0"
-          X-Content-Type-Options "nosniff"
+    caddy = {
+      enable = true;
+      email = "squirrelmodeller@protonmail.com";
+      globalConfig = ''
+        metrics {
+          per_host
         }
-        reverse_proxy 10.0.0.2:3975
-      '';
-
-      "git.talosvault.net".extraConfig = ''
-        log access-log
-        reverse_proxy 10.0.0.2:3000
-      '';
-
-      "diaspora.talosvault.net".extraConfig = ''
-        log access-log
-        reverse_proxy unix//var/lib/diaspora/http.sock {
-          header_up X-Real-IP {http.request.remote.host}
+        log access-log {
+          output stdout
+          format json
         }
       '';
 
-      "monitor.talosvault.net".extraConfig = ''
-        bind 10.0.0.1
-        log access-log
-        reverse_proxy localhost:3001
-      '';
+      virtualHosts = {
+        "watch.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy 10.0.0.2:8096
+        '';
+
+        "files.talosvault.net".extraConfig = ''
+          log access-log
+          @carddav  path /.well-known/carddav
+          @caldav   path /.well-known/caldav
+          redir @carddav /remote.php/dav/ 301
+          redir @caldav  /remote.php/dav/ 301
+          reverse_proxy 10.0.0.2:8080
+        '';
+
+        "music.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy 10.0.0.2:4533
+        '';
+
+        "notify.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy 10.0.0.2:8090
+        '';
+
+        "vault.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy 10.0.0.2:8000
+          reverse_proxy /notifications/hub 10.0.0.2:3012
+          reverse_proxy /notifications/hub/negotiate 10.0.0.2:8000
+        '';
+
+        "sendiron.talosvault.net".extraConfig = ''
+          log access-log
+          respond "Factorio server running on UDP port 34197"
+        '';
+
+        "squirrel.talosvault.net".extraConfig = ''
+          log access-log
+          header {
+            Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+            Pragma "no-cache"
+            Expires "0"
+            X-Content-Type-Options "nosniff"
+          }
+          reverse_proxy 10.0.0.2:3975
+        '';
+
+        "git.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy 10.0.0.2:3000
+        '';
+
+        "diaspora.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy unix//var/lib/diaspora/http.sock {
+            header_up X-Real-IP {http.request.remote.host}
+          }
+        '';
+
+        "monitor.talosvault.net".extraConfig = ''
+          bind 10.0.0.1
+          log access-log
+          reverse_proxy localhost:3001
+        '';
+      };
     };
   };
 

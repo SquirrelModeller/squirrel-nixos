@@ -3,7 +3,7 @@
   inputs,
   ...
 }: let
-  qtPinnedPkgs = import inputs.nixpkgs-qtpin {system = pkgs.system;};
+  qtPinnedPkgs = import inputs.nixpkgs-qtpin {inherit (pkgs) system;};
 in {
   environment.systemPackages = with pkgs; [
     nil
