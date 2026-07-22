@@ -27,6 +27,15 @@
     serverUrl = "https://notify.talosvault.net";
   };
 
+  services.diaspora = {
+    enable = true;
+    geoDbPath = "/var/lib/diaspora/GeoLite2-City.mmdb";
+    geoDbUrl = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb";
+    asnDbPath = "/var/lib/diaspora/GeoLite2-ASN.mmdb";
+    asnDbUrl = "https://github.com/P3TERX/GeoLite.mmdb/releases/latest/download/GeoLite2-ASN.mmdb";
+    landMaskPath = "/var/lib/diaspora/land_mask.bin";
+  };
+
   services.openssh = {
     enable = true;
     ports = [2222];
@@ -100,8 +109,15 @@
     privateKeyFile = "/etc/wireguard/vps.key";
     peers = [
       {
+        # talos
         publicKey = "PdoaldW68gI55hL+8Xr888YG+FDaNAFrfH11r0ooE3s=";
         allowedIPs = ["10.0.0.2/32"];
+        persistentKeepalive = 25;
+      }
+      {
+        # daedalus
+        publicKey = "Rexvjhos65ftE62gxx0H/5zF6yCgzTnCS+5B4Ec1g3E=";
+        allowedIPs = ["10.0.0.3/32"];
         persistentKeepalive = 25;
       }
     ];
@@ -199,7 +215,15 @@
         reverse_proxy 10.0.0.2:3000
       '';
 
+      "diaspora.talosvault.net".extraConfig = ''
+        log access-log
+        reverse_proxy unix//var/lib/diaspora/http.sock {
+          header_up X-Real-IP {http.request.remote.host}
+        }
+      '';
+
       "monitor.talosvault.net".extraConfig = ''
+        bind 10.0.0.1
         log access-log
         reverse_proxy localhost:3001
       '';

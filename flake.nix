@@ -42,6 +42,7 @@
           inputs.hjem.nixosModules.default
           inputs.agenix.nixosModules.default
           inputs.rrss.nixosModules.rrss
+          inputs.diaspora.nixosModules.diaspora
           inputs.domacroc.nixosModules.default
 
           {
@@ -85,6 +86,7 @@
   inputs = {
     systems.url = "github:nix-systems/default-linux";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs-qtpin.url = "github:nixos/nixpkgs/a799d3e3886da994fa307f817a6bc705ae538eeb";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -113,7 +115,11 @@
       url = "github:SquirrelModeller/rrss";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    squirrel-quickshell = {
+    diaspora = {
+      url = "github:SquirrelModeller/diaspora";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zesis = {
       url = "github:SquirrelModeller/zesis";
       inputs.nixpkgs.follows = "nixpkgs";
     };

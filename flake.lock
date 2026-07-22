@@ -26,16 +26,16 @@
     "athroisma": {
       "inputs": {
         "nixpkgs": [
-          "squirrel-quickshell",
+          "zesis",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1780762642,
-        "narHash": "sha256-EWZOLDqyq+0mSO0qMKoBwhEjaCvHs/lwNQUHx0ktC3Q=",
+        "lastModified": 1780872866,
+        "narHash": "sha256-wnmNMSbJeIHKbNEh9C9k/HfkV7k9Adw0ek5OqAtkuxE=",
         "owner": "SquirrelModeller",
         "repo": "athroisma",
-        "rev": "f0429ea4a54937e6195c8d90cbc429c5e2766c0a",
+        "rev": "1fea764f319a31a728ebbb886afdd7cb205e8ede",
         "type": "github"
       },
       "original": {
@@ -66,6 +66,27 @@
         "type": "github"
       }
     },
+    "diaspora": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1784681444,
+        "narHash": "sha256-ChGonBkZfu5L8nYFt8ifCylq9oxfHTniVR3N68mMWT8=",
+        "owner": "SquirrelModeller",
+        "repo": "diaspora",
+        "rev": "f3342bc34a59c7eab24488040949e6e2feca87f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "diaspora",
+        "type": "github"
+      }
+    },
     "domacroc": {
       "inputs": {
         "nixpkgs": [
@@ -88,17 +109,16 @@
     },
     "hjem": {
       "inputs": {
-        "nix-darwin": "nix-darwin",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1780971222,
-        "narHash": "sha256-q4+HMlbi80dbN4KfFxhO84MEBMQE0E87ShbNKXOKLao=",
+        "lastModified": 1782267080,
+        "narHash": "sha256-so1hIImuLtTKTVUokJ/6C2D2b2D4znCx+/PAjMSAnpw=",
         "owner": "feel-co",
         "repo": "hjem",
-        "rev": "3aaf5f238fb3b2f9efdc926e6024730636f0de23",
+        "rev": "dd0ba9e22fb46581f843e6121de33ca7a4a80224",
         "type": "github"
       },
       "original": {
@@ -131,36 +151,15 @@
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
-          "hjem",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1777780666,
-        "narHash": "sha256-8wURyQMdDkGUarSTKOGdCuFfYiwa3HbzwscUfn3STDE=",
+        "lastModified": 1783395956,
+        "narHash": "sha256-AAbexQvDoK+6GFJdhY6kqjA+6ECKRkidgWxkn4gMwAA=",
         "owner": "nix-darwin",
         "repo": "nix-darwin",
-        "rev": "8c62fba0854ba15c8917aed18894dbccb48a3777",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-darwin",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
-    "nix-darwin_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1781196189,
-        "narHash": "sha256-8ZFs9+ylq+YRDnkw9/ITEcxcl1GjMvIDgWUFIsKwJH8=",
-        "owner": "nix-darwin",
-        "repo": "nix-darwin",
-        "rev": "d0d0978f34fbd7da190801f7549992718057a8d6",
+        "rev": "d5bd9cd77aea4c0a8f49e7fd85545671a208ed15",
         "type": "github"
       },
       "original": {
@@ -192,6 +191,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1784497964,
+        "narHash": "sha256-vlHUuqAcbcH2RKmHbPiuQzbv1pnzzavXnI62RD0bqCU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "241313f4e8e508cb9b13278c2b0fa25b9ca27163",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-qtpin": {
+      "locked": {
         "lastModified": 1780749050,
         "narHash": "sha256-3av0pIjlOWQ6rDbNOmpUSvbNnJkGORQKKjb4LtCZsIY=",
         "owner": "nixos",
@@ -201,8 +216,8 @@
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
         "type": "github"
       }
     },
@@ -213,11 +228,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781053488,
-        "narHash": "sha256-P4WEBaKgl8flRckHxXGHzT0potPvB3x8ZFIp9gLEAMY=",
+        "lastModified": 1783673918,
+        "narHash": "sha256-cFG5vnmjJcZRVCSUaqQLOdwkX6iqF6bY8IvvmBSGSRs=",
         "ref": "refs/heads/master",
-        "rev": "d99d87d5e5ec4e696815348692fdaaf0b6be1b2c",
-        "revCount": 822,
+        "rev": "4df562dfb2475a9057f0f33a8db75808efad8670",
+        "revCount": 830,
         "type": "git",
         "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
       },
@@ -229,16 +244,18 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "diaspora": "diaspora",
         "domacroc": "domacroc",
         "hjem": "hjem",
-        "nix-darwin": "nix-darwin_2",
+        "nix-darwin": "nix-darwin",
         "nix-qml-support": "nix-qml-support",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-qtpin": "nixpkgs-qtpin",
         "quickshell": "quickshell",
         "rrss": "rrss",
-        "squirrel-quickshell": "squirrel-quickshell",
         "squirrel-website": "squirrel-website",
-        "systems": "systems_2"
+        "systems": "systems_2",
+        "zesis": "zesis"
       }
     },
     "rrss": {
@@ -248,11 +265,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775169723,
-        "narHash": "sha256-sIk7X9Tv/0ZS8sbulojzsLWGVd+Mut9P8zJ5cb5Sf2I=",
+        "lastModified": 1784475236,
+        "narHash": "sha256-M5QzsIREKNlUO+lKVOOpLp7Kw50NpJkq+3ep3KQMeXM=",
         "owner": "SquirrelModeller",
         "repo": "rrss",
-        "rev": "3c07e68b903c725973d30f55835d6a4a824da7b4",
+        "rev": "7f52c7e9d8b63957ffc05cf6b460a429c4a7ae35",
         "type": "github"
       },
       "original": {
@@ -261,24 +278,24 @@
         "type": "github"
       }
     },
-    "squirrel-quickshell": {
+    "rust-overlay": {
       "inputs": {
-        "athroisma": "athroisma",
         "nixpkgs": [
+          "diaspora",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1781033642,
-        "narHash": "sha256-vw/Owyf0hiX/04I6EL6MNe7VbXrhxFmfl17HRuEy6do=",
-        "owner": "SquirrelModeller",
-        "repo": "zesis",
-        "rev": "f6208f3bd934f5b9627712bb30724662878ad565",
+        "lastModified": 1784611586,
+        "narHash": "sha256-OfqgY+0hp/zseZB7uyH0U8kIDPS4scZZCyAurEplvG0=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "14f58845249f3552a89b07772626b8d3c632fa86",
         "type": "github"
       },
       "original": {
-        "owner": "SquirrelModeller",
-        "repo": "zesis",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
         "type": "github"
       }
     },
@@ -289,11 +306,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781297574,
-        "narHash": "sha256-1vpTdbYL46zii5EhYaCtyLfhaAUaUDPQq8TgJ4PUOBU=",
+        "lastModified": 1784475729,
+        "narHash": "sha256-2bt7nP0iB+ndxOXfcecvX8/Y9HzlL4FGWpIpAjUZQ94=",
         "owner": "SquirrelModeller",
         "repo": "squirrel-website",
-        "rev": "f619229f12ab88513208b406f8b63955b5d5bcb1",
+        "rev": "20a0dceabafeb35d15af0f2cc129d2ad52c8e356",
         "type": "github"
       },
       "original": {
@@ -329,6 +346,27 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default-linux",
+        "type": "github"
+      }
+    },
+    "zesis": {
+      "inputs": {
+        "athroisma": "athroisma",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783295093,
+        "narHash": "sha256-DF8AdUDee4OzZV8lalq7ZM+eYgsLZ6HN6oxukjT0N0Q=",
+        "owner": "SquirrelModeller",
+        "repo": "zesis",
+        "rev": "ceddea23fbc1d1f8791de698e3f173df7214afd4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SquirrelModeller",
+        "repo": "zesis",
         "type": "github"
       }
     }
