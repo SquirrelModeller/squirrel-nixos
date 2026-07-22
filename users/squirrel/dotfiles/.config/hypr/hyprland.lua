@@ -73,6 +73,8 @@ hl.monitor({
     cm       = "srgb",
 })
 
+hl.layer_rule({ match = { namespace = "zesis:homePanel" }, animation = "popin 80%" })
+
 hl.window_rule({
     name              = "firefox",
     border_size       = 0,
@@ -127,16 +129,20 @@ hl.bind(MOD .. " + B", hl.dsp.exec_cmd("firefox"),                             {
 hl.bind(MOD .. " + O", hl.dsp.exec_cmd("codium"),                              { description = "App: Editor"})
 hl.bind(MOD .. " + Q", hl.dsp.exec_cmd("kitty"),                               { description = "App: Terminal"})
 hl.bind(MOD .. " + E", hl.dsp.exec_cmd("emacs"),                               { description = "App: Emacs"})
-hl.bind(MOD .. " + S", hl.dsp.exec_cmd('grim -g "$(slurp -w 0 -d)" - | wl-copy'), { description = "Screenshot: Region"})
+hl.bind(MOD .. " + S", hl.dsp.exec_cmd('grimblast --freeze copy area'),              { description = "Screenshot: Region"})
 hl.bind(MOD .. " + CTRL + P", hl.dsp.exec_cmd("hyprpicker -a"),                { description = "Utilities: Color picker"})
 hl.bind(MOD .. " + SHIFT + E", hl.dsp.exec_cmd("unicode-picker"),              { description = "Utilities: Unicode picker"})
 
 -- Shell overlays
-local QS = "qs -p " .. os.getenv("HOME") .. "/Documents/squirrel-quickshell"
-hl.bind("ALT + Tab",         hl.dsp.exec_cmd(QS .. " ipc call appswitcher cycle"),   { repeating = true, description = "Shell: App switcher next" })
-hl.bind("ALT + SHIFT + Tab", hl.dsp.exec_cmd(QS .. " ipc call appswitcher back"),    { repeating = true, description = "Shell: App switcher prev" })
-hl.bind("ALT + Alt_L",       hl.dsp.exec_cmd(QS .. " ipc call appswitcher confirm"), { release = true })
-hl.bind("ALT + Escape",      hl.dsp.exec_cmd(QS .. " ipc call appswitcher cancel"),  { description = "Shell: App switcher cancel" })
+local ZESIS_DEV = os.getenv("HOME") .. "/Documents/zesis"
+local function zesis_ipc(cmd)
+    return string.format("sh -c 'qs -p %s ipc call %s 2>/dev/null || qs ipc call %s'", ZESIS_DEV, cmd, cmd)
+end
+hl.bind("ALT + Tab",         hl.dsp.exec_cmd(zesis_ipc("appswitcher cycle")),   { repeating = true, description = "Shell: App switcher next" })
+hl.bind("ALT + SHIFT + Tab", hl.dsp.exec_cmd(zesis_ipc("appswitcher back")),    { repeating = true, description = "Shell: App switcher prev" })
+hl.bind("ALT + Alt_L",       hl.dsp.exec_cmd(zesis_ipc("appswitcher confirm")), { release = true })
+hl.bind("ALT + Escape",      hl.dsp.exec_cmd(zesis_ipc("appswitcher cancel")),  { description = "Shell: App switcher cancel" })
+hl.bind(MOD .. " + D",       hl.dsp.exec_cmd(zesis_ipc("desktop toggleConfig")), { description = "Shell: Desktop toggle config" })
 
 -- Zoom
 hl.bind(MOD .. " + Z", hl.dsp.exec_cmd(

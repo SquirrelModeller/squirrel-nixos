@@ -1,12 +1,12 @@
 :root {
-  --sfwindow: {{ background }};
-  --sfsecondary: {{ background }};
-  --tab-text: {{ color7 }};
-  --tab-text-focus: {{ foreground }};
+  --sfwindow: {{colors.background.default.hex}};
+  --sfsecondary: {{colors.background.default.hex}};
+  --tab-text: {{colors.on_surface_variant.default.hex}};
+  --tab-text-focus: {{colors.on_background.default.hex}};
 
   --background-transparent: rgba(255, 255, 255, 0.2);
 
-  --sub-text: {{ foreground }};
+  --sub-text: {{colors.on_background.default.hex}};
 }
 
 :root {

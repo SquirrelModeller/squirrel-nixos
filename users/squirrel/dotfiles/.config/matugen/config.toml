@@ -4,4 +4,24 @@ version_check = true
 
 [templates.quickshell]
 input_path = "~/.config/matugen/templates/quickshell.json"
-output_path = "~/.cache/theme/quickshell/colors.json"
+output_path = "~/.cache/theme/zesis/colors.json"
+
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty.conf"
+output_path = "~/.cache/theme/kitty/colors.conf"
+
+[templates.hyprland_colors]
+input_path = "~/.config/matugen/templates/hyprland-colors.lua"
+output_path = "~/.cache/theme/hyprland/colors.lua"
+
+[templates.firefox]
+input_path = "~/.config/matugen/templates/userChrome.css"
+output_path = "~/.mozilla/firefox/squirrel/chrome/userChrome.css"
+
+[templates.vscodium_dark]
+input_path = "~/.config/matugen/templates/vscodium-dark.json"
+output_path = "~/.cache/theme/vscodium/dark.json"
+
+[templates.vscodium_light]
+input_path = "~/.config/matugen/templates/vscodium-light.json"
+output_path = "~/.cache/theme/vscodium/light.json"

@@ -1,5 +1,0 @@
-{
-    "bg":     "{{ background }}",
-    "text":   "{{ foreground }}",
-    "accent": "{{ color11 }}"
-}
