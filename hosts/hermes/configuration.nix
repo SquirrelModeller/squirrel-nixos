@@ -17,7 +17,10 @@
     "${self}/modules/graphical/apps/firefox/darwin.nix"
   ];
 
-  environment.systemPackages = [pkgs.vim];
+  environment = {
+    systemPackages = [pkgs.vim];
+    variables.NH_DARWIN_FLAKE = "/Users/squirrel/Projects/squirrel-nixos";
+  };
 
   programs.direnv.enable = true;
 

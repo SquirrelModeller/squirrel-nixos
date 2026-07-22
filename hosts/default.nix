@@ -8,6 +8,7 @@
   environment.variables = {
     EDITOR = "vim";
     VISUAL = "vim";
+    NH_OS_FLAKE = "/home/squirrel/squirrel-nixos";
   };
 
   documentation = {
