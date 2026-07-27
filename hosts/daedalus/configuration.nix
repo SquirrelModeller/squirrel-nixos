@@ -27,6 +27,8 @@
     supportedFilesystems = ["cifs"];
   };
 
+  programs.fuse.enable = true;
+
   environment.systemPackages = with pkgs; [
     btrfs-progs
     cifs-utils
