@@ -2,7 +2,7 @@
   "telemetry.telemetryLevel": "off",
   "extensions.ignoreRecommendations": true,
   "update.mode": "none",
-  "extensions.autoUpdate": false,
+  "extensions.autoUpdate": "off",
   "extensions.autoCheckUpdates": false,
   "workbench.enableExperiments": false,
   "workbench.settings.enableNaturalLanguageSearch": false,
@@ -36,6 +36,8 @@
     }
   },
 
+  "glsl-analyzer.path": "glsl_analyzer",
+
   "svelte.enable-ts-plugin": true,
 
 
@@ -57,10 +59,7 @@
   "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
   "editor.formatOnSave": true
   },
-  "clangd.arguments": [
-    "--background-index",
-    "--clang-tidy"
-  ],
+  "clangd.arguments": ["--background-index", "--clang-tidy"],
 
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,

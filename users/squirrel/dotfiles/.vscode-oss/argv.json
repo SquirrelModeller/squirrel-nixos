@@ -1,0 +1,9 @@
+{
+	"enable-crash-reporter": false,
+
+	"crash-reporter-id": "dc4eb01c-1911-4f2e-8df2-89242e5b9510",
+
+	// Use a plaintext secret store instead of the system keyring/libsecret
+	// Needed because greetd auth via hardware key never unlocks the oo7 "Login" collection
+	"password-store": "basic"
+}
