@@ -84,7 +84,6 @@
   };
 
   inputs = {
-    systems.url = "github:nix-systems/default-linux";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixpkgs-qtpin.url = "github:nixos/nixpkgs/a799d3e3886da994fa307f817a6bc705ae538eeb";
     nix-darwin = {
