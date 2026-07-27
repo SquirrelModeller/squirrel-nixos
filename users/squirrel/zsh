@@ -52,9 +52,9 @@ PROMPT='%F{green}%n%f@%F{blue}%m%f %F{yellow} %~%f$(git_prompt)
 
 # Aliases
 if (( $+commands[eza] )); then
-  alias ls='eza --icons=always --group-directories-first --classify'
-  alias ll='eza -l --icons=always --group-directories-first --classify --git'
-  alias la='eza -la --icons=always --group-directories-first --classify --git'
+  alias ls='eza --icons=always --group-directories-first --classify=always'
+  alias ll='eza -l --icons=always --group-directories-first --classify=always --git'
+  alias la='eza -la --icons=always --group-directories-first --classify=always --git'
 else
   alias ls='ls --color=auto -F'
   alias ll='ls -alF --color=auto'
