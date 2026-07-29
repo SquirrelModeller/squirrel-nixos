@@ -216,7 +216,7 @@
           reverse_proxy 10.0.0.2:3000
         '';
 
-        "diaspora.talosvault.net".extraConfig = ''
+        "diaspora.zesis.net, diaspora.talosvault.net".extraConfig = ''
           reverse_proxy unix//var/lib/diaspora/http.sock {
             header_up X-Real-IP {http.request.remote.host}
           }
