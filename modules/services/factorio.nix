@@ -41,7 +41,7 @@
     ];
   };
 
-  networking.firewall.interfaces."enp3s0".allowedUDPPorts = [34197];
+  networking.firewall.interfaces."lan0".allowedUDPPorts = [34197];
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (pkg.pname or pkg.name) ["factorio-headless"];

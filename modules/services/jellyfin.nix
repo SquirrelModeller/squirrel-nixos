@@ -9,6 +9,7 @@ in {
     inherit cacheDir;
     hardwareAcceleration = {
       enable = true;
+      type = "vaapi";
       device = "/dev/dri/renderD128";
     };
   };
@@ -43,7 +44,7 @@ in {
   };
 
   networking.firewall = {
-    interfaces."enp3s0".allowedTCPPorts = [8096];
+    interfaces."lan0".allowedTCPPorts = [8096];
     interfaces.wg0.allowedTCPPorts = [8096];
   };
 }

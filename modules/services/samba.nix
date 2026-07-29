@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  lanIf = "enp3s0";
+  lanIf = "lan0";
   smbZfsEnsureMounted = pkgs.writeShellScriptBin "smb-zfs-ensure-mounted" ''
     set -eu
     user="''${1:-}"

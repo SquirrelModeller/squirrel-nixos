@@ -69,7 +69,7 @@ in {
   };
 
   networking.firewall = {
-    interfaces."enp3s0".allowedTCPPorts = [3000 2222];
+    interfaces."lan0".allowedTCPPorts = [3000 2222];
     interfaces.wg0.allowedTCPPorts = [3000 2222];
   };
 

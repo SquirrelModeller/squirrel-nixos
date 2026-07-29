@@ -11,7 +11,8 @@
     "${self}/modules/options/host-context.nix"
     "${self}/modules/core"
     #"${self}/modules/hardware/gpu/nvidia.nix"
-    "${self}/modules/hardware/gpu/amd.nix"
+    #"${self}/modules/hardware/gpu/amd.nix"
+    "${self}/modules/hardware/gpu/intel-arc.nix"
     "${self}/modules/packages"
     "${self}/modules/terminal/zsh"
     "${self}/modules/services/jellyfin.nix"
@@ -32,7 +33,7 @@
     initrd.availableKernelModules = ["nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "uas" "sd_mod"];
     zfs.extraPools = ["talos"];
     zfs.requestEncryptionCredentials = false;
-    kernelModules = ["amdgpu"];
+    kernelModules = ["i915"];
   };
 
   squirrelOS = {
@@ -47,6 +48,11 @@
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
+  };
+
+  systemd.network.links."10-lan0" = {
+    matchConfig.MACAddress = "9c:6b:00:7a:72:b7";
+    linkConfig.Name = "lan0";
   };
 
   networking = {
@@ -93,7 +99,7 @@
 
   networking.firewall = {
     enable = true;
-    interfaces."enp3s0" = {
+    interfaces."lan0" = {
       allowedTCPPorts = [22 5357 8090];
       allowedUDPPorts = [5353 3702 34197];
     };
