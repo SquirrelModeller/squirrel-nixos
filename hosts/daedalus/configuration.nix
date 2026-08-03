@@ -38,6 +38,10 @@
     inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
+  services.udev.extraRules = ''
+    SUBSYSTEM=="input", ENV{ID_VENDOR_ID}=="3434", ENV{ID_MODEL_ID}=="0251", ENV{ID_USB_INTERFACE_NUM}=="02", ENV{ID_INPUT_JOYSTICK}=""
+  '';
+
   squirrelOS = {
     host.roles = ["workstation"];
     host.capabilities = {graphical = true;};
