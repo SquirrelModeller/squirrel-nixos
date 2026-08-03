@@ -64,10 +64,14 @@ hl.config({
         middle_click_paste       = false,
     },
 })
-
+-- Reads the display picked by Zesis. If you're copying this config,
+-- keep this call around or the monitor block below won't do anything useful.
+local _d_ok, _d = pcall(dofile, os.getenv("HOME") .. "/.cache/zesis/display.lua")
+local d = _d_ok and _d or {}
 hl.monitor({
-    output   = "DP-1",
-    mode     = "preferred",
+    -- Only output and mode matter here, the rest is free to customize.
+    output   = d.output or "DP-1",
+    mode     = d.mode or "preferred",
     position = "auto",
     bitdepth = 10,
     cm       = "srgb",
