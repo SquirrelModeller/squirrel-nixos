@@ -13,7 +13,3 @@ output_path = "~/.cache/theme/kitty/colors.conf"
 [templates.hyprland_colors]
 input_path = "~/.config/matugen/templates/hyprland-colors.lua"
 output_path = "~/.cache/theme/hyprland/colors.lua"
-
-[templates.firefox]
-input_path = "~/.config/matugen/templates/userChrome.css"
-output_path = "~/.mozilla/firefox/squirrel/chrome/userChrome.css"
