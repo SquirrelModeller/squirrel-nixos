@@ -115,11 +115,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     diaspora = {
-      url = "github:SquirrelModeller/diaspora";
+      url = "github:zesis-shell/diaspora";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zesis = {
-      url = "github:SquirrelModeller/zesis";
+      url = "github:zesis-shell/zesis";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {

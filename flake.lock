@@ -31,16 +31,37 @@
         ]
       },
       "locked": {
-        "lastModified": 1780872866,
-        "narHash": "sha256-wnmNMSbJeIHKbNEh9C9k/HfkV7k9Adw0ek5OqAtkuxE=",
-        "owner": "SquirrelModeller",
+        "lastModified": 1785369829,
+        "narHash": "sha256-foW1lI8pV153RJdbAAZyPrvjWesBdSYPN4ZS04/Recg=",
+        "owner": "zesis-shell",
         "repo": "athroisma",
-        "rev": "1fea764f319a31a728ebbb886afdd7cb205e8ede",
+        "rev": "64cf8c84ea922afd605efdc9b83d40fd3afb8dd2",
         "type": "github"
       },
       "original": {
-        "owner": "SquirrelModeller",
+        "owner": "zesis-shell",
         "repo": "athroisma",
+        "type": "github"
+      }
+    },
+    "congeries": {
+      "inputs": {
+        "nixpkgs": [
+          "zesis",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785246343,
+        "narHash": "sha256-03tvxWSUZ82LEZ3tDSrBHPxlNFGYlGHRrGeKXTq0340=",
+        "owner": "zesis-shell",
+        "repo": "congeries",
+        "rev": "afdcfe3254fb2bdb8b86c21c52514f546234e656",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zesis-shell",
+        "repo": "congeries",
         "type": "github"
       }
     },
@@ -74,15 +95,15 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1784681444,
-        "narHash": "sha256-ChGonBkZfu5L8nYFt8ifCylq9oxfHTniVR3N68mMWT8=",
-        "owner": "SquirrelModeller",
+        "lastModified": 1785240350,
+        "narHash": "sha256-yPXiuSNg3sPFY1YkQnczZfi2Sw2TapOyt7dRvCw7AZk=",
+        "owner": "zesis-shell",
         "repo": "diaspora",
-        "rev": "f3342bc34a59c7eab24488040949e6e2feca87f7",
+        "rev": "f74825c2667334d044bad9319e38b5e74e5e7183",
         "type": "github"
       },
       "original": {
-        "owner": "SquirrelModeller",
+        "owner": "zesis-shell",
         "repo": "diaspora",
         "type": "github"
       }
@@ -336,20 +357,21 @@
     "zesis": {
       "inputs": {
         "athroisma": "athroisma",
+        "congeries": "congeries",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1783295093,
-        "narHash": "sha256-DF8AdUDee4OzZV8lalq7ZM+eYgsLZ6HN6oxukjT0N0Q=",
-        "owner": "SquirrelModeller",
+        "lastModified": 1785377943,
+        "narHash": "sha256-aiIoE5CveMacSfEsKtARGVjpt6TPvPPduImu6pIdMYU=",
+        "owner": "zesis-shell",
         "repo": "zesis",
-        "rev": "ceddea23fbc1d1f8791de698e3f173df7214afd4",
+        "rev": "784a36a0e7be8a05faab95f7d16e848882128d72",
         "type": "github"
       },
       "original": {
-        "owner": "SquirrelModeller",
+        "owner": "zesis-shell",
         "repo": "zesis",
         "type": "github"
       }
