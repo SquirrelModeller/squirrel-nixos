@@ -2,52 +2,31 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }: let
-  findFiles = import ../../lib/findFiles.nix {inherit lib;};
-  qs = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default.withModules [pkgs.qt6.qtquick3d];
-  athroisma = inputs.zesis.packages.${pkgs.stdenv.hostPlatform.system}.athroisma;
-  qsConfigFiles = lib.mapAttrs' (name: value:
-    lib.nameValuePair ".config/quickshell/${name}" value)
-  (findFiles inputs.zesis);
-
   onThemeChange = pkgs.writeShellScript "on-theme-change" ''
     ${pkgs.procps}/bin/pkill -SIGUSR1 kitty || true
     ${pkgs.hyprland}/bin/hyprctl reload || true
   '';
 in
   lib.mkIf config.squirrelOS.host.capabilities.graphical {
+    services.zesis.enable = true;
+
     hjem.users.squirrel = {
-      files =
-        qsConfigFiles
-        // {
-          ".config/zesis/on-theme-change".source = onThemeChange;
-        };
+      files = {
+        ".config/zesis/on-theme-change".source = onThemeChange;
+      };
 
       systemd = {
         enable = true;
 
         services = {
-          quickshell = {
-            description = "Quickshell";
-            wantedBy = ["graphical-session.target"];
-            after = ["graphical-session.target"];
-            partOf = ["graphical-session.target"];
-            path = [athroisma];
-            serviceConfig = {
-              ExecStart = "${qs}/bin/quickshell";
-              Restart = "on-failure";
-              RestartSec = 5;
-            };
-          };
-
           hypridle = {
             description = "Hypridle";
             wantedBy = ["default.target"];
             after = ["graphical-session.target"];
 
-            path = [pkgs.hypridle inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default pkgs.procps pkgs.coreutils pkgs.util-linux pkgs.systemd];
+            path = [pkgs.hypridle pkgs.quickshell pkgs.procps pkgs.coreutils pkgs.util-linux pkgs.systemd];
             serviceConfig = {
               ExecStart = "${pkgs.hypridle}/bin/hypridle";
               Restart = "on-failure";

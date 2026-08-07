@@ -35,7 +35,7 @@
   ctx = mkCtx config;
 in {
   imports =
-    [./default.nix]
+    [./default.nix inputs.zesis.nixosModules.default]
     ++ lib.filter (x: x != null) (map getUserServicesImport availableUsers);
 
   config = mkIf (enabledUsers != []) {

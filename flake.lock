@@ -52,11 +52,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785246343,
-        "narHash": "sha256-03tvxWSUZ82LEZ3tDSrBHPxlNFGYlGHRrGeKXTq0340=",
+        "lastModified": 1785866117,
+        "narHash": "sha256-TX6zHZm40GMiMYqExjPWL1vGVB75++YBkwBeqQuIEUM=",
         "owner": "zesis-shell",
         "repo": "congeries",
-        "rev": "afdcfe3254fb2bdb8b86c21c52514f546234e656",
+        "rev": "f49e56b5ac632f1af7cf6134596eae7c981b1d46",
         "type": "github"
       },
       "original": {
@@ -135,11 +135,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782267080,
-        "narHash": "sha256-so1hIImuLtTKTVUokJ/6C2D2b2D4znCx+/PAjMSAnpw=",
+        "lastModified": 1785929776,
+        "narHash": "sha256-qwppDYdtxqtDpI1iSp7bs8prOJ0KQSvhJchfROD04f0=",
         "owner": "feel-co",
         "repo": "hjem",
-        "rev": "dd0ba9e22fb46581f843e6121de33ca7a4a80224",
+        "rev": "b610953d0c56da6b28fd39c21bd193b88e91341c",
         "type": "github"
       },
       "original": {
@@ -176,11 +176,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783395956,
-        "narHash": "sha256-AAbexQvDoK+6GFJdhY6kqjA+6ECKRkidgWxkn4gMwAA=",
+        "lastModified": 1785389976,
+        "narHash": "sha256-0tLW8Ff5yt8AH97jw4ZpFJ0OCJ122zIlgWGDmOfU/VU=",
         "owner": "nix-darwin",
         "repo": "nix-darwin",
-        "rev": "d5bd9cd77aea4c0a8f49e7fd85545671a208ed15",
+        "rev": "15abb8c98f336cd8bd840d71059adebabe60bf04",
         "type": "github"
       },
       "original": {
@@ -212,11 +212,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1784497964,
-        "narHash": "sha256-vlHUuqAcbcH2RKmHbPiuQzbv1pnzzavXnI62RD0bqCU=",
+        "lastModified": 1785967620,
+        "narHash": "sha256-IItrdb7Puk05RqOBWZYFC5X6Wl1sJmCfh5MWVHw5iMM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "241313f4e8e508cb9b13278c2b0fa25b9ca27163",
+        "rev": "b7c2ada94fe99c15b0dbcf4d11fd7850b957a436",
         "type": "github"
       },
       "original": {
@@ -242,26 +242,6 @@
         "type": "github"
       }
     },
-    "quickshell": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1783673918,
-        "narHash": "sha256-cFG5vnmjJcZRVCSUaqQLOdwkX6iqF6bY8IvvmBSGSRs=",
-        "ref": "refs/heads/master",
-        "rev": "4df562dfb2475a9057f0f33a8db75808efad8670",
-        "revCount": 830,
-        "type": "git",
-        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -272,7 +252,6 @@
         "nix-qml-support": "nix-qml-support",
         "nixpkgs": "nixpkgs",
         "nixpkgs-qtpin": "nixpkgs-qtpin",
-        "quickshell": "quickshell",
         "rrss": "rrss",
         "squirrel-website": "squirrel-website",
         "zesis": "zesis"
@@ -363,11 +342,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785377943,
-        "narHash": "sha256-aiIoE5CveMacSfEsKtARGVjpt6TPvPPduImu6pIdMYU=",
+        "lastModified": 1786064346,
+        "narHash": "sha256-P+Y4BpsHC3jT48oe88n6NAcRxOsZIEpmAlu5HKbk8b8=",
         "owner": "zesis-shell",
         "repo": "zesis",
-        "rev": "784a36a0e7be8a05faab95f7d16e848882128d72",
+        "rev": "6bae66ccb0a48a69d578f059591e0be1a3bde23d",
         "type": "github"
       },
       "original": {

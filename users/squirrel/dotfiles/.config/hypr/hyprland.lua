@@ -12,7 +12,6 @@ hl.on("hyprland.start", function()
         "systemctl --user restart hyprland-session.target"
     )
     hl.exec_cmd("bash -c 'awww-daemon & sleep 0.3 && (awww restore 2>/dev/null || awww img \"$HOME/Desktop/Files/Pictures/Backgrounds/CableCars.jpg\" --transition-type none)'")
-    hl.exec_cmd("quickshell -d")
 end)
 
 hl.env("XCURSOR_THEME", "capitaine-cursors")
@@ -140,7 +139,7 @@ hl.bind(MOD .. " + SHIFT + E", hl.dsp.exec_cmd("unicode-picker"),              {
 -- Shell overlays
 local ZESIS_DEV = os.getenv("HOME") .. "/Documents/zesis"
 local function zesis_ipc(cmd)
-    return string.format("sh -c 'qs -p %s ipc call %s 2>/dev/null || qs ipc call %s'", ZESIS_DEV, cmd, cmd)
+    return string.format("sh -c 'qs -p %s ipc call %s 2>/dev/null || qs -c zesis ipc call %s'", ZESIS_DEV, cmd, cmd)
 end
 hl.bind("ALT + Tab",         hl.dsp.exec_cmd(zesis_ipc("appswitcher cycle")),   { repeating = true, description = "Shell: App switcher next" })
 hl.bind("ALT + SHIFT + Tab", hl.dsp.exec_cmd(zesis_ipc("appswitcher back")),    { repeating = true, description = "Shell: App switcher prev" })
