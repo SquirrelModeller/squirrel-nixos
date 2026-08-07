@@ -2,7 +2,6 @@
   lib,
   pkgs,
   self,
-  inputs,
   ...
 }: {
   imports = [
@@ -33,9 +32,8 @@
     btrfs-progs
     cifs-utils
     samba
-    smbnetfs
-    # I have to declare package here to avoid getting this compiled on other systems
-    inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default
+    # smbnetfs # this got dropped from packages :(
+    quickshell
   ];
 
   services.udev.extraRules = ''
