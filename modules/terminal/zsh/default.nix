@@ -8,6 +8,20 @@
   inherit (lib) mkMerge mapAttrsToList optionalString hasAttr concatStringsSep filter;
   enabledUsers = config.squirrelOS.users.enabled;
 
+  zsh-async-src = pkgs.fetchFromGitHub {
+    owner = "marlonrichert";
+    repo = "z-async";
+    rev = "5370537de80670b4a97e49cd253d15067709c0a6";
+    sha256 = "0yl544misjpmfzipr1p68x28rlq5pp3fsvqsd6hl8sajhqb2ryml";
+  };
+  zsh-autocomplete-fixed = pkgs.zsh-autocomplete.overrideAttrs (old: {
+    installPhase =
+      old.installPhase
+      + ''
+        cp -R ${zsh-async-src} $out/share/zsh-autocomplete/z-async
+      '';
+  });
+
   plugins = {
     zsh-completions = {
       src = "${pkgs.zsh-completions}/share/zsh/site-functions";
@@ -17,7 +31,7 @@
       file = "nix-zsh-completions.plugin.zsh";
     };
     zsh-autocomplete = {
-      src = "${pkgs.zsh-autocomplete}/share/zsh-autocomplete";
+      src = "${zsh-autocomplete-fixed}/share/zsh-autocomplete";
       file = "zsh-autocomplete.plugin.zsh";
     };
     zsh-syntax-highlighting = {
