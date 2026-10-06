@@ -2,10 +2,6 @@
 caching = false
 version_check = true
 
-[templates.quickshell]
-input_path = "~/.config/matugen/templates/quickshell.json"
-output_path = "~/.cache/theme/zesis/colors.json"
-
 [templates.kitty]
 input_path = "~/.config/matugen/templates/kitty.conf"
 output_path = "~/.cache/theme/kitty/colors.conf"
