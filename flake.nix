@@ -46,6 +46,7 @@
           inputs.domacroc.nixosModules.default
 
           {
+            hjem.extraModules = [inputs.zesis.hjemModules.default];
             environment.systemPackages = [
               inputs.agenix.packages.${system}.default
             ];
