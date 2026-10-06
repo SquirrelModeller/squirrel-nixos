@@ -1,7 +1,7 @@
 [user]
     name = Squirrel Modeller
     email = squirrelmodeller@protonmail.com
-    signingkey = A61A6DDAAE2526E0DDF8AB4BEE6427BC35FDCAD7
+    signingkey = 9635197FE5C02262B008A0E14B08156B7AE1B1C2
 [gpg]
     format = openpgp
 
