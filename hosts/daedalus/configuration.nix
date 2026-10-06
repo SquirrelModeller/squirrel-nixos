@@ -16,6 +16,7 @@
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/graphical/dms/greetd.nix"
     "${self}/modules/packages"
+    "${self}/modules/services/ollama.nix"
     "${self}/modules/terminal/security/nixos.nix"
     "${self}/modules/terminal/zsh"
   ];
@@ -35,6 +36,8 @@
     # smbnetfs # this got dropped from packages :(
     quickshell
   ];
+
+  security.polkit.enablePkexecWrapper = true;
 
   services.udev.extraRules = ''
     SUBSYSTEM=="input", ENV{ID_VENDOR_ID}=="3434", ENV{ID_MODEL_ID}=="0251", ENV{ID_USB_INTERFACE_NUM}=="02", ENV{ID_INPUT_JOYSTICK}=""
@@ -121,7 +124,7 @@
 
     oo7.enable = true;
 
-    dbus.packages = [pkgs.gcr];
+    dbus.packages = [pkgs.gcr_4];
   };
 
   networking = {
