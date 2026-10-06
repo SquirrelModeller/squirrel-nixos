@@ -2,8 +2,9 @@ pkgs:
 (with pkgs.vscode-extensions; [
   jnoortheen.nix-ide
 
-  # ms-python.python
-  # ms-python.black-formatter
+  ms-python.python
+  ms-python.black-formatter
+  detachhead.basedpyright
 
   # ms-toolsai.jupyter
   # ms-toolsai.jupyter-keymap
