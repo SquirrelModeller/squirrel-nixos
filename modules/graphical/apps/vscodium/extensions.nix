@@ -30,6 +30,17 @@ pkgs:
   geequlim.godot-tools
 ])
 ++ [
+  (pkgs.vscode-utils.buildVscodeExtension {
+    pname = "claude-session-names";
+    version = "0.1.0";
+    src = ./claude-session-names;
+    # src is a plain directory, not a .vsix
+    sourceRoot = "ext";
+    unpackPhase = "mkdir ext && cp -r --no-preserve=mode $src/. ext";
+    vscodeExtPublisher = "squirrel";
+    vscodeExtName = "claude-session-names";
+    vscodeExtUniqueId = "squirrel.claude-session-names";
+  })
   (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
     mktplcRef = {
       publisher = "TheQtCompany";

@@ -1,0 +1,27 @@
+{
+  "name": "claude-session-names",
+  "displayName": "Claude Session Names",
+  "description": "Restores user-chosen Claude Code session names into the live session registry after a relaunch.",
+  "publisher": "squirrel",
+  "version": "0.1.0",
+  "engines": { "vscode": "^1.85.0" },
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "extensionKind": ["workspace", "ui"],
+  "contributes": {
+    "commands": [
+      { "command": "claudeSessionNames.restoreNow", "title": "Claude Session Names: Restore Now" },
+      { "command": "claudeSessionNames.dryRun", "title": "Claude Session Names: Dry Run" }
+    ],
+    "configuration": {
+      "title": "Claude Session Names",
+      "properties": {
+        "claudeSessionNames.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically restore stored session names for live Claude Code sessions."
+        }
+      }
+    }
+  }
+}
