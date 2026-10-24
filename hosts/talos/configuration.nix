@@ -24,8 +24,10 @@
     "${self}/modules/services/website.nix"
     "${self}/modules/services/rrss.nix"
     "${self}/modules/services/forgejo.nix"
-    "${self}/modules/notifications/gotify-rebuild-notify.nix"
-    "${self}/modules/notifications/zfs-gotify-notifications.nix"
+    "${self}/modules/services/ntfy.nix"
+    "${self}/modules/notifications/ntfy.nix"
+    # "${self}/modules/notifications/gotify-rebuild-notify.nix"
+    # "${self}/modules/notifications/zfs-gotify-notifications.nix"
   ];
 
   boot = {
@@ -80,22 +82,24 @@
       interval = "monthly";
     };
 
-    gotify = {
-      enable = true;
-      environment.GOTIFY_SERVER_PORT = 8090;
-    };
+    # gotify = {
+    #   enable = true;
+    #   environment.GOTIFY_SERVER_PORT = 8090;
+    # };
   };
 
-  squirrelOS.notifications.gotify = {
-    enable = true;
-    serverUrl = "http://localhost:8090";
-  };
+  # squirrelOS.notifications.gotify = {
+  #   enable = true;
+  #   serverUrl = "http://localhost:8090";
+  # };
 
-  squirrelOS.notifications.zfs = {
-    enableHealthCheck = true;
-    enableScrubNotifications = true;
-    sendOkNotification = false;
-  };
+  squirrelOS.notifications.ntfy.enable = true;
+
+  # squirrelOS.notifications.zfs = {
+  #   enableHealthCheck = true;
+  #   enableScrubNotifications = true;
+  #   sendOkNotification = false;
+  # };
 
   networking.firewall = {
     enable = true;
