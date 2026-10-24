@@ -44,7 +44,8 @@
 
   systemd.tmpfiles.rules = [
     "d /vmdata 0755 squirrel users -"
-    "d /work 0755 squirrel users -"
+    # root-owned so tmpfiles may create service-owned dirs (microvms, ollama) below it
+    "d /work 0775 root users -"
     "d /games 0755 squirrel users -"
   ];
 }
