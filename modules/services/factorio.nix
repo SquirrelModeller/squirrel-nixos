@@ -10,18 +10,18 @@
 
     game-password = "itisjustastarterbasetrustmebro";
 
-    saveName = "wetestinprod";
+    saveName = "idiotsLLC";
 
     admins = [
       "Wabar"
     ];
 
     package = pkgs.factorio-headless.overrideAttrs (_old: rec {
-      version = "2.1.8";
+      version = "2.1.23";
       src = pkgs.fetchurl {
         url = "https://factorio.com/get-download/${version}/headless/linux64";
         name = "factorio-headless-${version}.tar.xz";
-        hash = "sha256-FrEizV9IEYzUS8rx0n/ZM66mC5kCu9Qm/SY1lEB1nxI=";
+        hash = "sha256-RjMlD3dHZ2J5+yEKFxe6NMrta5iQyVH7Pkae7+Q8Rrk=";
       };
     });
   };
