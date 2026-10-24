@@ -16,9 +16,10 @@
     "${self}/modules/graphical/wms/hyprland.nix"
     "${self}/modules/graphical/dms/greetd.nix"
     "${self}/modules/packages"
-    "${self}/modules/services/ollama.nix"
+    # "${self}/modules/services/ollama.nix"
     "${self}/modules/terminal/security/nixos.nix"
     "${self}/modules/terminal/zsh"
+    "${self}/modules/notifications/ntfy.nix"
   ];
 
   boot = {
@@ -46,6 +47,11 @@
   squirrelOS = {
     host.roles = ["workstation"];
     host.capabilities = {graphical = true;};
+  };
+
+  squirrelOS.notifications.ntfy = {
+    enable = true;
+    claudeChannel.enable = true;
   };
 
   specialisation.gpu-passthrough.configuration = {
