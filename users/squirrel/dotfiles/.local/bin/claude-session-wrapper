@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# claudeCode.claudeProcessWrapper for the Claude Code VSCodium extension.
+#
+# Called as: claude-session-wrapper <claude-binary> <claude args...>
+#
+# When a session is resumed (--resume=<id>), pass its stored name to the CLI
+# with --name. Otherwise the CLI registers a derived name like
+# "helkos-mountain-generation-2f" both in memory and in the session registry,
+# even though the transcript holds the name given with /rename.
+set -u
+
+bin=$1
+shift
+
+# ntfy notify tool for Claude (see modules/notifications/ntfy.nix). Only present on
+# hosts that enable it. Replies need the development-channel flag too, and only
+# when the host marks them on. The = form keeps the variadic flags from consuming
+# a positional prompt.
+channel=()
+ntfy_channel=/etc/claude-code/ntfy-channel.json
+if [[ -r $ntfy_channel ]]; then
+  channel=(--mcp-config="$ntfy_channel")
+  if [[ -e /etc/claude-code/ntfy-replies ]]; then
+    channel+=(--dangerously-load-development-channels=server:ntfy)
+  fi
+fi
+
+has_name=0
+resume=""
+prev=""
+for arg in "$@"; do
+  case $arg in
+    -n | --name | --name=*) has_name=1 ;;
+    --resume=*) resume=${arg#--resume=} ;;
+  esac
+  [[ $prev == --resume ]] && resume=$arg
+  prev=$arg
+done
+
+if [[ $has_name == 0 && $resume =~ ^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$ ]]; then
+  shopt -s nullglob
+  files=("$HOME"/.claude/projects/*/"$resume".jsonl)
+  if ((${#files[@]})); then
+    file=${files[0]}
+    # Last value of a transcript entry, same precedence the CLI uses for display
+    # (agent-name, then custom-title). ai-title is auto-generated, so ignored.
+    stored() {
+      grep -a "\"type\":\"$1\"" "$file" | tail -n1 |
+        sed -n "s/.*\"$2\":\"\\([^\"\\\\]*\\)\".*/\\1/p"
+    }
+    name=$(stored agent-name agentName)
+    [[ -n $name ]] || name=$(stored custom-title customTitle)
+    [[ -n $name ]] && exec "$bin" "$@" "${channel[@]}" --name "$name"
+  fi
+fi
+
+exec "$bin" "$@" "${channel[@]}"

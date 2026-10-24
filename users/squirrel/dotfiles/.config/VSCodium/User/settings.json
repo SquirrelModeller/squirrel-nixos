@@ -96,6 +96,7 @@
   "direnv.status.showChangedStatus": true,
 
   "claudeCode.preferredLocation": "panel",
+  "claudeCode.claudeProcessWrapper": "/home/squirrel/.local/bin/claude-session-wrapper",
 
   "qt-qml.qmlls.customExePath": "/run/current-system/sw/bin/qmlls",
   "qt-qml.qmlls.useQmlImportPathEnvVar": true,
