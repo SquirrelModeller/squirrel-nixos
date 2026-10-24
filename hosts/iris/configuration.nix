@@ -13,6 +13,7 @@
     "${self}/modules/notifications/gotify-rebuild-notify.nix"
     "${self}/modules/services/monitoring.nix"
     "${self}/modules/services/caddy-dashboard.nix"
+    "${self}/modules/notifications/ntfy.nix"
   ];
 
   boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
@@ -22,10 +23,11 @@
     host.capabilities = {graphical = false;};
   };
 
-  squirrelOS.notifications.gotify = {
-    enable = true;
-    serverUrl = "https://notify.talosvault.net";
-  };
+  # squirrelOS.notifications.gotify = {
+  #   enable = true;
+  #   serverUrl = "https://notify.talosvault.net";
+  # };
+  squirrelOS.notifications.ntfy.enable = true;
 
   environment.etc."gai.conf".text = ''
     precedence ::ffff:0:0/96  100
@@ -79,7 +81,7 @@
       # Caddy egress filter: only allow caddy to reach the specific talos ports it proxies.
       # Any connection from the caddy process to talos on an unlisted port is dropped.
       # Internet traffic (Let's Encrypt) is unaffected by these rules.
-      iptables -A OUTPUT -m owner --uid-owner caddy -d 10.0.0.2 -p tcp -m multiport --dports 8096,8080,4533,8090,8000,3012,3975,3000 -j ACCEPT
+      iptables -A OUTPUT -m owner --uid-owner caddy -d 10.0.0.2 -p tcp -m multiport --dports 8096,4533,8090,8000,3012,3975,3000,2586 -j ACCEPT
       iptables -A OUTPUT -m owner --uid-owner caddy -d 10.0.0.2 -j DROP
     '';
   };
@@ -169,15 +171,6 @@
           reverse_proxy 10.0.0.2:8096
         '';
 
-        "files.talosvault.net".extraConfig = ''
-          log access-log
-          @carddav  path /.well-known/carddav
-          @caldav   path /.well-known/caldav
-          redir @carddav /remote.php/dav/ 301
-          redir @caldav  /remote.php/dav/ 301
-          reverse_proxy 10.0.0.2:8080
-        '';
-
         "music.talosvault.net".extraConfig = ''
           log access-log
           reverse_proxy 10.0.0.2:4533
@@ -186,6 +179,11 @@
         "notify.talosvault.net".extraConfig = ''
           log access-log
           reverse_proxy 10.0.0.2:8090
+        '';
+
+        "ntfy.talosvault.net".extraConfig = ''
+          log access-log
+          reverse_proxy 10.0.0.2:2586
         '';
 
         "vault.talosvault.net".extraConfig = ''
