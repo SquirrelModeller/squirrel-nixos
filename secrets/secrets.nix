@@ -8,4 +8,6 @@ in {
   "grafana-admin-password.age".publicKeys = [iris];
   "grafana-secret-key.age".publicKeys = [iris];
   "factorio-mod-credentials.age".publicKeys = [talos];
+  "ntfy-env.age".publicKeys = [talos];
+  "ntfy-token.age".publicKeys = [daedalus talos iris];
 }
