@@ -1,6 +1,41 @@
+# Keys: emacs keymap (normal text-editor behaviour).
+# EDITOR=vim makes zsh default to the vi insert keymap, which has no ctrl+arrow bindings.
+bindkey -e
+KEYTIMEOUT=1
+
+# Word motion and deletion
+bindkey '^[[1;5C' emacs-forward-word     # ctrl+right
+bindkey '^[[1;5D' emacs-backward-word    # ctrl+left
+bindkey '^[Oc' emacs-forward-word        # ctrl+right (application cursor mode)
+bindkey '^[Od' emacs-backward-word       # ctrl+left (application cursor mode)
+bindkey '^[[1;3C' emacs-forward-word     # alt+right
+bindkey '^[[1;3D' emacs-backward-word    # alt+left
+bindkey '^[[3;5~' kill-word              # ctrl+delete
+
+# Home / End
+bindkey '^[[H' beginning-of-line
+bindkey '^[OH' beginning-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[OF' end-of-line
+bindkey '^[[4~' end-of-line
+
 # History
-setopt hist_ignore_all_dups hist_ignore_space share_history inc_append_history extended_history
-setopt notify auto_cd interactive_comments prompt_subst
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+setopt hist_ignore_all_dups hist_ignore_space hist_reduce_blanks share_history inc_append_history extended_history
+
+setopt notify auto_cd auto_pushd pushd_ignore_dups interactive_comments prompt_subst no_beep
+
+# Completion styles
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+# First word: only commands, builtins and aliases (no parameters, functions or reserved words)
+zstyle ':completion:*:-command-:*' tag-order 'commands' 'builtins' 'aliases'
 
 # Fast compinit
 zmodload zsh/complist
@@ -8,10 +43,16 @@ autoload -Uz compinit
 
 # Caching
 typeset -g ZCOMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+typeset -g ZCOMPFPATH="$ZCOMPDUMP.fpath"
 mkdir -p "${ZCOMPDUMP:h}"
 
-if [[ ! -r $ZCOMPDUMP ]]; then
+# compinit -C skips rescanning fpath, so do a full scan whenever fpath changed (full scan takes ~250ms).
+typeset -g ZCOMPFPATH_PREV=""
+[[ -r $ZCOMPFPATH ]] && ZCOMPFPATH_PREV=$(<$ZCOMPFPATH)
+
+if [[ ! -r $ZCOMPDUMP || "${(F)fpath}" != "$ZCOMPFPATH_PREV" ]]; then
   compinit -i -d "$ZCOMPDUMP"
+  print -rl -- $fpath >| "$ZCOMPFPATH"
 else
   compinit -C -d "$ZCOMPDUMP"
 fi
@@ -23,7 +64,83 @@ fi
 
 # Completion bindings
 bindkey '^I' expand-or-complete
-bindkey '^[[Z' menu-complete
+bindkey '^[[Z' reverse-menu-complete
+
+# Live command-name list while typing the first word (only in command position, not arguments).
+# Shown with zle -M so zle clears it again when the line is emptied.
+_live_command_list() {
+  if [[ -n $LBUFFER && $LBUFFER != *[[:space:]]* ]]; then
+    local -a names=( ${(k)commands} ${(k)builtins} ${(k)aliases} )
+    names=( ${(o)${(M)${(u)names}:#${(b)LBUFFER}*}:#fzf-tab-*} )
+    if (( $#names )); then
+      zle -M "$(print -c -- ${names[1,60]})"
+      return
+    fi
+  fi
+  zle -M ""
+}
+
+live-self-insert() {
+  zle self-insert
+  _live_command_list
+}
+
+live-backward-delete-char() {
+  zle backward-delete-char
+  _live_command_list
+}
+
+zle -N live-self-insert
+zle -N live-backward-delete-char
+
+# Up arrow opens a highlighted list of earlier commands that start with the text before the cursor.
+# Up/Down move through the list, Enter puts the chosen command on the line, Esc cancels.
+live-history-list() {
+  local -a lines matches
+  lines=( ${(u)${(f)"$(fc -lrn 1)"}##[[:space:]]#} )
+  matches=( ${(M)lines:#${(b)LBUFFER}*} )
+  if (( ! $#matches )); then
+    zle -M "no earlier commands start with '$LBUFFER'"
+    return
+  fi
+  local pick
+  pick=$(print -rl -- $matches | fzf --no-sort --height=40% --prompt='history> ') || return
+  BUFFER=$pick
+  CURSOR=$#BUFFER
+}
+zle -N live-history-list
+bindkey -M emacs '^[[A' live-history-list
+bindkey -M emacs '^[OA' live-history-list
+
+# Down arrow in command position opens zsh's completion menu, so arrows can pick from the list.
+# Inside the menu the arrows, Enter and typing are handled by zsh itself.
+live-menu-down() {
+  if [[ -n $LBUFFER && $LBUFFER != *[[:space:]]* ]]; then
+    zle menu-select
+  else
+    zle down-line-or-history
+  fi
+}
+zle -N live-menu-down
+bindkey -M emacs '^[[B' live-menu-down
+bindkey -M emacs '^[OB' live-menu-down
+
+# Movement
+bindkey -M emacs '^H' backward-char      # ctrl+h = left
+bindkey -M emacs '^L' forward-char       # ctrl+l = right
+bindkey -M emacs '^[h' emacs-backward-word  # alt+h = word left
+bindkey -M emacs '^[l' emacs-forward-word   # alt+l = word right
+bindkey -M emacs '^K' live-history-list  # ctrl+k = up
+bindkey -M emacs '^J' live-menu-down     # ctrl+j = down
+bindkey -M menuselect '^H' backward-char
+bindkey -M menuselect '^L' forward-char
+bindkey -M menuselect '^K' up-line-or-history
+bindkey -M menuselect '^J' down-line-or-history
+
+for key in {a..z} {A..Z} {0..9} - _ . / +; do
+  bindkey -M emacs -- "$key" live-self-insert
+done
+bindkey -M emacs '^?' live-backward-delete-char
 
 autoload -Uz _ls
 compdef eza=ls
@@ -37,17 +154,17 @@ git_prompt() {
     || branch=$(git rev-parse --short HEAD 2>/dev/null) \
     || return 0
 
-  if [[ -n "$(git status --porcelain --ignore-submodules=dirty 2>/dev/null)" ]]; then
+  if [[ -n "$(git --no-optional-locks status --porcelain --ignore-submodules=dirty 2>/dev/null)" ]]; then
     dirty="*"
   else
     dirty=""
   fi
 
-  printf ' %s%s %s%s' "%F{8}" "%f" "%F{13}${branch}%f" "%F{red}${dirty}%f"
+  printf ' %s%s %s%s' "%F{8}" "%f" "%F{13}${branch}%f" "%F{red}${dirty}%f"
 }
 
 # Prompt: user@host dir (newline) ❯
-PROMPT='%F{green}%n%f@%F{blue}%m%f %F{yellow} %~%f$(git_prompt)
+PROMPT='%F{green}%n%f@%F{blue}%m%f %F{yellow} %~%f$(git_prompt)
 %F{8}❯%f '
 
 # Aliases
