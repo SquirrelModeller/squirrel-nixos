@@ -45,7 +45,32 @@ in {
         "/talos/services/nextcloud"
         "/boot"
         "/root"
+        "/run/dbus"
       ];
+      ProtectHostname = true;
+      ProtectClock = true;
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectKernelLogs = true;
+      ProtectControlGroups = true;
+      KeyringMode = "private";
+      RemoveIPC = true;
+      UMask = lib.mkForce "0077";
+      AmbientCapabilities = lib.mkForce [""];
+      CapabilityBoundingSet = lib.mkForce [""];
+
+      # It broke with some of these, and I am too lazy to figure out why. Stays
+      # uncommented for now.
+
+      # RestrictAddressFamilies = lib.mkForce ["AF_INET" "AF_INET6" "AF_UNIX" "AF_NETLINK"];
+      # SystemCallFilter = ["@system-service" "~@privileged"];
+      # # Inbound from iris over wg0 and from LAN clients (lan0 port 8000/3012).
+      # IPAddressDeny = "any";
+      # IPAddressAllow = [
+      #   "localhost"
+      #   "10.0.0.1"
+      #   "192.168.0.0/24"
+      # ];
     };
 
     services.vaultwarden.after = ["zfs-mount.service"];
