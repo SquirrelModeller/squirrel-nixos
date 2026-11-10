@@ -80,6 +80,39 @@ in {
     mode = "400";
   };
 
+  # Git hooks call back into forgejo over localhost, so loopback must stay allowed.
+  systemd.services.forgejo.serviceConfig = {
+    ProtectSystem = lib.mkForce "strict";
+    ProtectHome = true;
+    PrivateTmp = true;
+    NoNewPrivileges = true;
+    LockPersonality = true;
+    RestrictNamespaces = true;
+    RestrictRealtime = true;
+    SystemCallArchitectures = "native";
+    ProtectHostname = true;
+    ProtectClock = true;
+    ProtectKernelTunables = true;
+    ProtectKernelModules = true;
+    ProtectKernelLogs = true;
+    ProtectControlGroups = true;
+    KeyringMode = "private";
+    RemoveIPC = true;
+    UMask = lib.mkForce "0077";
+    AmbientCapabilities = lib.mkForce [""];
+    CapabilityBoundingSet = lib.mkForce [""];
+    RestrictAddressFamilies = lib.mkForce ["AF_INET" "AF_INET6" "AF_UNIX" "AF_NETLINK"];
+    SystemCallFilter = ["@system-service" "~@privileged"];
+    # Inbound from iris (git.talosvault.net), SSH via iris, and LAN clients. Outbound internet
+    # stays open for DEFAULT_ACTIONS_URL (github) and mirrors; other private ranges are denied.
+    IPAddressDeny = ["10.0.0.0/8" "172.16.0.0/12" "192.168.0.0/16"];
+    IPAddressAllow = [
+      "localhost"
+      "10.0.0.1"
+      "192.168.0.0/24"
+    ];
+  };
+
   systemd.services.forgejo.preStart = ''
     ${adminCmd} create \
       --admin \
