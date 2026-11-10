@@ -158,6 +158,6 @@
     ProtectSystem = lib.mkForce "strict";
     ReadWritePaths = ["/var/lib/prometheus2"];
     ProcSubset = "pid";
-    UMask = "0077";
+    UMask = lib.mkForce "0077";
   };
 }
