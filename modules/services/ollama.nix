@@ -9,7 +9,7 @@ in {
     group = "ollama";
     home = dataDir;
     host = "127.0.0.1";
-    loadModels = ["hf.co/mradermacher/Qwen3-32B-heretic-i1-GGUF:Q4_K_M"];
+    loadModels = ["hf.co/mradermacher/Qwen3-8B-heretic-i1-GGUF:Q4_K_M"];
     syncModels = true;
 
     environmentVariables = {
