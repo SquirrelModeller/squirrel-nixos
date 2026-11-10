@@ -34,6 +34,28 @@ in {
         "/talos/shared"
         "/boot"
         "/root"
+        "/run/dbus"
+      ];
+      ProtectHostname = true;
+      ProtectClock = true;
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectKernelLogs = true;
+      ProtectControlGroups = true;
+      KeyringMode = "private";
+      RemoveIPC = true;
+      UMask = lib.mkForce "0077";
+      AmbientCapabilities = lib.mkForce [""];
+      CapabilityBoundingSet = lib.mkForce [""];
+      RestrictAddressFamilies = lib.mkForce ["AF_INET" "AF_INET6" "AF_UNIX" "AF_NETLINK"];
+      SystemCallFilter = ["@system-service" "~@privileged"];
+      # Inbound from iris (watch.talosvault.net) and LAN clients. Outbound internet stays
+      # open for metadata/image providers; other private ranges (wg0 peers, rest of LAN) are denied.
+      IPAddressDeny = ["10.0.0.0/8" "172.16.0.0/12" "192.168.0.0/16"];
+      IPAddressAllow = [
+        "localhost"
+        "10.0.0.1"
+        "192.168.0.0/24"
       ];
     };
 
