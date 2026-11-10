@@ -5,71 +5,37 @@
   inputs,
   ...
 }: let
-  inherit (lib) mkMerge mapAttrsToList optionalString hasAttr concatStringsSep filter;
+  inherit (lib) mkMerge concatMapStringsSep;
   enabledUsers = config.squirrelOS.users.enabled;
 
-  zsh-async-src = pkgs.fetchFromGitHub {
-    owner = "marlonrichert";
-    repo = "z-async";
-    rev = "5370537de80670b4a97e49cd253d15067709c0a6";
-    sha256 = "0yl544misjpmfzipr1p68x28rlq5pp3fsvqsd6hl8sajhqb2ryml";
-  };
-  zsh-autocomplete-fixed = pkgs.zsh-autocomplete.overrideAttrs (old: {
-    installPhase =
-      old.installPhase
-      + ''
-        cp -R ${zsh-async-src} $out/share/zsh-autocomplete/z-async
-      '';
-  });
-
-  plugins = {
-    zsh-completions = {
-      src = "${pkgs.zsh-completions}/share/zsh/site-functions";
-    };
-    nix-zsh-completions = {
-      src = "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix";
-      file = "nix-zsh-completions.plugin.zsh";
-    };
-    zsh-autocomplete = {
-      src = "${zsh-autocomplete-fixed}/share/zsh-autocomplete";
-      file = "zsh-autocomplete.plugin.zsh";
-    };
-    zsh-syntax-highlighting = {
-      src = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
-      file = "zsh-syntax-highlighting.zsh";
-    };
-    fzf-tab = {
+  # fzf-tab must come before zsh-autosuggestions, and zsh-syntax-highlighting must stay last.
+  plugins = [
+    {
       src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
       file = "fzf-tab.plugin.zsh";
-    };
-    zsh-fzf-history-search = {
-      src = "${pkgs.zsh-fzf-history-search}/share/zsh-fzf-history-search";
-      file = "zsh-fzf-history-search.plugin.zsh";
-    };
-    zsh-history-substring-search = {
-      src = "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search";
-      file = "zsh-history-substring-search.zsh";
-    };
-  };
+    }
+    {
+      src = "${pkgs.fzf}/share/fzf";
+      file = "key-bindings.zsh";
+    }
+    {
+      src = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
+      file = "zsh-autosuggestions.zsh";
+    }
+    {
+      src = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
+      file = "zsh-syntax-highlighting.zsh";
+    }
+  ];
 
-  mkPlugins = plugins:
-    concatStringsSep "\n" (
-      mapAttrsToList
-      (
-        _: value: let
-          hasFile = hasAttr "file" value;
-        in
-          concatStringsSep "\n" (filter (s: s != "") [
-            (optionalString (!hasFile) ''fpath+=${value.src}'')
-            (optionalString (hasFile && value.file != null) ''
-              if [[ -f "${value.src}/${value.file}" ]]; then
-                source "${value.src}/${value.file}"
-              fi
-            '')
-          ])
-      )
-      plugins
-    );
+  sourcePlugin = {
+    src,
+    file,
+  }: ''
+    if [[ -f "${src}/${file}" ]]; then
+      source "${src}/${file}"
+    fi
+  '';
 
   userZshOrEmpty = u: let
     p = "${inputs.self}/users/${u}/zsh";
@@ -79,16 +45,27 @@
     else "";
 in {
   config = {
-    programs.zsh.enable = true;
+    programs.zsh = {
+      enable = true;
+      enableCompletion = false;
+    };
+
+    # enableCompletion = false also stops NixOS linking /share/zsh, which site-functions
+    # (nix, nixos-rebuild, nh, ...) depends on for the system fpath.
+    environment.pathsToLink = ["/share/zsh"];
     environment.systemPackages = with pkgs; [
       eza
+      fzf
+      zsh-completions
+      nix-zsh-completions
     ];
 
     hjem.users = mkMerge (map
       (u: {
         ${u}.files.".zshrc".text = ''
-          ${mkPlugins plugins}
           ${userZshOrEmpty u}
+
+          ${concatMapStringsSep "\n" sourcePlugin plugins}
         '';
       })
       enabledUsers);
