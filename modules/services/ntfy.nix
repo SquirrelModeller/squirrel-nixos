@@ -31,7 +31,7 @@
     PrivateUsers = true;
     KeyringMode = "private";
     RemoveIPC = true;
-    UMask = "0077";
+    UMask = lib.mkForce "0077";
     LockPersonality = true;
     SystemCallArchitectures = "native";
     AmbientCapabilities = lib.mkForce [""];
