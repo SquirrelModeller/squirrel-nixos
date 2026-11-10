@@ -1,0 +1,55 @@
+{
+  "name": "claude-reset-ping",
+  "displayName": "Claude Reset Ping",
+  "description": "Shows Claude 5h usage in the status bar and submits a per-session message into the live session when the 5 hour window resets. Needs the patched anthropic.claude-code (claude-vscode.sendToSession).",
+  "publisher": "squirrel",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "extensionKind": [
+    "workspace",
+    "ui"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeResetPing.menu",
+        "title": "Claude Reset Ping: Sessions"
+      },
+      {
+        "command": "claudeResetPing.refresh",
+        "title": "Claude Reset Ping: Refresh Usage"
+      },
+      {
+        "command": "claudeResetPing.fireNow",
+        "title": "Claude Reset Ping: Fire Armed Sessions Now (test)"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Reset Ping",
+      "properties": {
+        "claudeResetPing.defaultMessage": {
+          "type": "string",
+          "default": "continue",
+          "description": "Message used when a session is armed without a custom one."
+        },
+        "claudeResetPing.rearm": {
+          "type": "boolean",
+          "default": false,
+          "description": "Keep a session armed after sending, so it fires again at the next reset. Off means one-shot."
+        },
+        "claudeResetPing.pollSeconds": {
+          "type": "number",
+          "default": 120,
+          "minimum": 15,
+          "description": "How often to re-evaluate (fire checks, status bar). Usage itself is fetched at most every 3 minutes, shared across windows."
+        }
+      }
+    }
+  }
+}

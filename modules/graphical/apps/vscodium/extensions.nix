@@ -25,7 +25,19 @@ pkgs:
   llvm-vs-code-extensions.vscode-clangd
   vadimcn.vscode-lldb
 
-  anthropic.claude-code
+  (anthropic.claude-code.overrideAttrs (old: {
+    # Expose claude-vscode.sendToSession (submit a turn into an open session) and
+    # claude-vscode.getUsage (the sidebar's usage windows) for claude-reset-ping. Fails the build if an update changes the anchors.
+    postInstall = (old.postInstall or "") + ''
+      f=$out/share/vscode/extensions/anthropic.claude-code/extension.js
+      sed -E -i -f ${./claude-send-patch.sed} "$f"
+      test "$(grep -o sendTextToSession "$f" | wc -l)" -ge 2 \
+        || { echo "claude-send-patch.sed no longer matches this extension version" >&2; exit 1; }
+      grep -q claude-vscode.sendToSession "$f" || exit 1
+      grep -q claude-vscode.getUsage "$f" || exit 1
+      grep -q getAnyUsage "$f" || exit 1
+    '';
+  }))
 
   geequlim.godot-tools
 ])
@@ -40,6 +52,16 @@ pkgs:
     vscodeExtPublisher = "squirrel";
     vscodeExtName = "claude-session-names";
     vscodeExtUniqueId = "squirrel.claude-session-names";
+  })
+  (pkgs.vscode-utils.buildVscodeExtension {
+    pname = "claude-reset-ping";
+    version = "0.1.0";
+    src = ./claude-reset-ping;
+    sourceRoot = "ext";
+    unpackPhase = "mkdir ext && cp -r --no-preserve=mode $src/. ext";
+    vscodeExtPublisher = "squirrel";
+    vscodeExtName = "claude-reset-ping";
+    vscodeExtUniqueId = "squirrel.claude-reset-ping";
   })
   (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
     mktplcRef = {
